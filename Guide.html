@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Engine6.0 - Guides</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+:root{
+--text:#f5fdff;
+--muted:rgba(222,238,242,0.62);
+--line:rgba(85,236,255,0.14);
+--line-strong:rgba(85,236,255,0.26);
+}
+
+html,body{
+width:100%;
+min-height:100%;
+background:#05090c;
+color:var(--text);
+overflow-x:hidden;
+scroll-behavior:smooth;
+}
+
+body{
+position:relative;
+isolation:isolate;
+font-family:"Inter",sans-serif;
+background:
+radial-gradient(circle at 50% 100%,rgba(0,235,255,0.42) 0%,rgba(0,235,255,0.16) 14%,rgba(0,235,255,0.06) 28%,rgba(0,0,0,0) 52%),
+radial-gradient(circle at 50% 78%,rgba(0,200,225,0.10) 0%,rgba(0,0,0,0) 38%),
+linear-gradient(180deg,#040607 0%,#071015 36%,#09151a 62%,#05090c 100%);
+}
+
+.frame,.beam-wrap,.orb-glow,.noise,.scanlines,.vignette,.bg-depth{
+position:fixed;
+inset:0;
+pointer-events:none;
+}
+
+.bg-depth{
+z-index:0;
+background:
+radial-gradient(circle at 16% 22%,rgba(255,255,255,0.018) 0%,rgba(255,255,255,0) 26%),
+radial-gradient(circle at 84% 18%,rgba(255,255,255,0.014) 0%,rgba(255,255,255,0) 22%),
+linear-gradient(180deg,rgba(255,255,255,0.012) 0%,rgba(255,255,255,0) 32%);
+opacity:0.9;
+}
+
+.beam-wrap{
+z-index:1;
+overflow:hidden;
+}
+
+.beam{
+position:absolute;
+top:-12%;
+width:14vw;
+height:132%;
+background:linear-gradient(
+180deg,
+rgba(0,0,0,0) 0%,
+rgba(55,222,255,0.03) 16%,
+rgba(55,222,255,0.07) 48%,
+rgba(55,222,255,0.03) 76%,
+rgba(0,0,0,0) 100%
+);
+filter:blur(28px);
+opacity:0.34;
+transform:skewX(-8deg);
+animation:drift 12s ease-in-out infinite;
+}
+
+.beam:nth-child(1){left:5%;animation-delay:-1s;}
+.beam:nth-child(2){left:18%;animation-delay:-5s;}
+.beam:nth-child(3){left:33%;animation-delay:-2.5s;}
+.beam:nth-child(4){left:49%;animation-delay:-7s;}
+.beam:nth-child(5){left:65%;animation-delay:-3.5s;}
+.beam:nth-child(6){left:80%;animation-delay:-6s;}
+
+.orb-glow{
+z-index:2;
+background:
+radial-gradient(circle at 50% 103%,rgba(0,245,255,0.48) 0%,rgba(0,245,255,0.18) 13%,rgba(0,245,255,0.08) 24%,rgba(0,0,0,0) 42%),
+radial-gradient(circle at 50% 84%,rgba(0,200,225,0.08) 0%,rgba(0,0,0,0) 36%);
+filter:blur(30px);
+animation:pulseGlow 6.4s ease-in-out infinite;
+}
+
+#particles{
+position:fixed;
+inset:0;
+z-index:4;
+pointer-events:none;
+}
+
+.scanlines{
+z-index:6;
+opacity:0.05;
+mix-blend-mode:screen;
+background:repeating-linear-gradient(
+to bottom,
+rgba(255,255,255,0.04) 0px,
+rgba(255,255,255,0.012) 1px,
+rgba(0,0,0,0) 3px,
+rgba(0,0,0,0) 6px
+);
+}
+
+.noise{
+z-index:7;
+opacity:0.28;
+mix-blend-mode:overlay;
+background-image:
+radial-gradient(rgba(255,255,255,0.25) 0.6px,transparent 0.8px),
+radial-gradient(rgba(255,255,255,0.18) 0.5px,transparent 0.7px),
+radial-gradient(rgba(255,255,255,0.12) 0.4px,transparent 0.6px);
+background-size:2px 2px,3px 3px,4px 4px;
+animation:grainMove .35s steps(2) infinite;
+}
+
+.vignette{
+z-index:8;
+background:radial-gradient(circle at center,rgba(0,0,0,0) 38%,rgba(0,0,0,0.18) 72%,rgba(0,0,0,0.48) 100%);
+}
+
+.frame{
+z-index:30;
+border:1px solid rgba(85,236,255,0.84);
+box-shadow:
+inset 0 0 0 1px rgba(130,243,255,0.08),
+0 0 20px rgba(0,220,255,0.14);
+}
+
+.topbar-wrap{
+position:fixed;
+top:16px;
+left:50%;
+transform:translateX(-50%);
+z-index:20;
+width:min(1060px,calc(100% - 60px));
+}
+
+.topbar{
+height:56px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 16px 0 18px;
+border-radius:999px;
+border:1px solid rgba(67,218,255,0.18);
+background:linear-gradient(180deg,rgba(2,12,25,0.94) 0%,rgba(1,7,18,0.96) 100%);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.04),
+0 0 0 1px rgba(0,225,255,0.03),
+0 10px 26px rgba(0,0,0,0.28);
+backdrop-filter:blur(8px);
+}
+
+.brand{
+display:flex;
+align-items:center;
+justify-content:center;
+min-width:58px;
+padding:0 10px;
+text-decoration:none;
+}
+
+.brand img{
+height:28px;
+width:auto;
+display:block;
+object-fit:contain;
+}
+
+.nav-links{
+display:flex;
+align-items:center;
+gap:34px;
+}
+
+.nav-links a{
+text-decoration:none;
+color:rgba(214,227,235,0.76);
+font-size:14px;
+font-weight:500;
+transition:color .25s ease,transform .25s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active{
+color:#59f3ff;
+transform:translateY(-1px);
+}
+
+.guides-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+height:34px;
+padding:0 18px;
+border-radius:999px;
+border:1px solid rgba(78,230,255,0.4);
+background:linear-gradient(180deg,rgba(5,54,82,0.62) 0%,rgba(3,31,50,0.56) 100%);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.06),
+0 0 16px rgba(0,210,255,0.08);
+text-decoration:none;
+color:#bff8ff;
+font-size:13px;
+font-weight:600;
+}
+
+.guides-hub,
+.guide-page{
+position:relative;
+z-index:12;
+padding:130px 24px 80px;
+}
+
+.guides-inner,
+.guide-inner{
+width:100%;
+max-width:1160px;
+margin:0 auto;
+}
+
+.guide-page{
+display:none;
+}
+
+.guide-page.active{
+display:block;
+}
+
+.hero{
+text-align:center;
+margin-bottom:36px;
+}
+
+.title{
+font-size:clamp(2.4rem,5vw,4rem);
+line-height:.98;
+letter-spacing:-.05em;
+font-weight:600;
+color:#f7fdff;
+}
+
+.title span{
+color:#8ef6ff;
+}
+
+.subtitle{
+margin:18px auto 0;
+max-width:720px;
+font-size:1rem;
+line-height:1.65;
+color:var(--muted);
+}
+
+.guides-grid{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:22px;
+}
+
+.guide-card{
+position:relative;
+display:block;
+text-decoration:none;
+padding:24px;
+border-radius:20px;
+border:1px solid rgba(85,236,255,0.14);
+background:linear-gradient(180deg,rgba(9,18,31,0.88) 0%,rgba(7,14,24,0.96) 100%);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.03),
+0 16px 34px rgba(0,0,0,0.22);
+transition:transform .3s cubic-bezier(.19,1,.22,1),border-color .3s ease,box-shadow .3s ease;
+cursor:pointer;
+}
+
+.guide-card:hover{
+transform:translateY(-4px);
+border-color:rgba(99,237,255,0.28);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.05),
+0 22px 42px rgba(0,0,0,0.34),
+0 0 20px rgba(0,215,255,0.08);
+}
+
+.guide-badge{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:6px 10px;
+border-radius:999px;
+background:rgba(10,63,59,0.74);
+border:1px solid rgba(64,241,214,0.18);
+color:#4df2d9;
+font-size:10px;
+font-weight:800;
+letter-spacing:.04em;
+text-transform:uppercase;
+}
+
+.guide-card-title{
+margin-top:16px;
+font-size:24px;
+font-weight:700;
+letter-spacing:-.04em;
+color:#f7fdff;
+}
+
+.guide-card-desc{
+margin-top:10px;
+font-size:14px;
+line-height:1.7;
+color:rgba(212,227,235,0.68);
+}
+
+.guide-link{
+margin-top:18px;
+display:inline-flex;
+align-items:center;
+gap:8px;
+color:#59f3ff;
+font-size:13px;
+font-weight:700;
+}
+
+.page-top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:18px;
+margin-bottom:22px;
+flex-wrap:wrap;
+}
+
+.back-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-width:170px;
+padding:11px 20px;
+border-radius:12px;
+border:1px solid rgba(140,245,255,0.55);
+background:linear-gradient(180deg,#53e6f8 0%,#37d3e8 55%,#22bfd4 100%);
+color:#04131b;
+font-size:14px;
+font-weight:800;
+cursor:pointer;
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.25),
+0 10px 20px rgba(0,220,255,0.16);
+transition:transform .3s cubic-bezier(.19,1,.22,1),filter .25s ease;
+}
+
+.back-btn:hover{
+transform:translateY(-2px);
+filter:brightness(1.05);
+}
+
+.guide-status{
+display:inline-flex;
+align-items:center;
+gap:8px;
+padding:7px 12px;
+border-radius:999px;
+border:1px solid rgba(74,232,196,0.18);
+background:rgba(5,54,52,0.42);
+color:#4df2d9;
+font-size:11px;
+font-weight:800;
+letter-spacing:.04em;
+text-transform:uppercase;
+}
+
+.guide-status::before{
+content:"";
+width:7px;
+height:7px;
+border-radius:50%;
+background:#22ebbe;
+box-shadow:0 0 10px rgba(34,235,190,0.45);
+}
+
+.guide-title{
+font-size:clamp(2.3rem,5vw,3.8rem);
+line-height:.98;
+letter-spacing:-.05em;
+font-weight:600;
+color:#f7fdff;
+}
+
+.guide-title span{
+color:#8ef6ff;
+}
+
+.guide-subtitle{
+margin-top:18px;
+max-width:760px;
+font-size:1rem;
+line-height:1.65;
+color:var(--muted);
+}
+
+.steps{
+margin-top:30px;
+display:grid;
+gap:14px;
+}
+
+.step-card{
+border-radius:18px;
+border:1px solid rgba(85,236,255,0.08);
+background:rgba(7,13,22,0.58);
+overflow:hidden;
+}
+
+.step-trigger{
+width:100%;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:16px;
+padding:16px 18px;
+border:none;
+background:transparent;
+color:inherit;
+cursor:pointer;
+text-align:left;
+}
+
+.step-left{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.step-num{
+width:30px;
+height:30px;
+border-radius:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:rgba(89,243,255,0.10);
+border:1px solid rgba(89,243,255,0.14);
+color:#72f3ff;
+font-size:12px;
+font-weight:800;
+flex:0 0 auto;
+}
+
+.step-title{
+font-size:14px;
+font-weight:700;
+color:#f7fcff;
+}
+
+.step-sub{
+margin-top:4px;
+font-size:12px;
+color:rgba(206,225,234,0.46);
+}
+
+.step-arrow{
+font-size:18px;
+color:rgba(214,227,235,0.38);
+transition:transform .25s ease,color .25s ease;
+}
+
+.step-card.open .step-arrow{
+transform:rotate(180deg);
+color:#72f3ff;
+}
+
+.step-panel{
+display:grid;
+grid-template-rows:0fr;
+transition:grid-template-rows .32s cubic-bezier(.19,1,.22,1);
+}
+
+.step-card.open .step-panel{
+grid-template-rows:1fr;
+}
+
+.step-panel-inner{
+overflow:hidden;
+}
+
+.step-panel-content{
+padding:0 18px 18px 62px;
+color:rgba(219,232,238,0.76);
+font-size:13px;
+line-height:1.75;
+}
+
+.step-panel-content a{
+color:#59f3ff;
+text-decoration:none;
+font-weight:700;
+}
+
+.step-panel-content a:hover{
+text-decoration:underline;
+}
+
+.download-row{
+margin-top:24px;
+display:flex;
+gap:14px;
+flex-wrap:wrap;
+}
+
+.download-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-width:190px;
+padding:13px 18px;
+border-radius:14px;
+border:1px solid rgba(140,245,255,0.55);
+background:linear-gradient(180deg,#53e6f8 0%,#37d3e8 55%,#22bfd4 100%);
+color:#04131b;
+text-decoration:none;
+font-size:14px;
+font-weight:800;
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.25),
+0 10px 20px rgba(0,220,255,0.16);
+transition:transform .3s cubic-bezier(.19,1,.22,1),filter .25s ease;
+}
+
+.download-btn:hover{
+transform:translateY(-2px);
+filter:brightness(1.05);
+}
+
+.footer{
+position:relative;
+z-index:12;
+padding:0 24px 36px;
+}
+
+.footer-inner{
+width:100%;
+max-width:1160px;
+margin:0 auto;
+padding-top:22px;
+border-top:1px solid rgba(85,236,255,0.08);
+text-align:center;
+font-size:13px;
+color:rgba(214,227,235,0.44);
+}
+
+@keyframes pulseGlow{
+0%,100%{transform:scale(1);opacity:.92;}
+50%{transform:scale(1.04);opacity:1;}
+}
+
+@keyframes drift{
+0%,100%{transform:translateY(-1%) translateX(0) skewX(-8deg);opacity:.26;}
+50%{transform:translateY(2%) translateX(8px) skewX(-6deg);opacity:.36;}
+}
+
+@keyframes grainMove{
+0%{transform:translate(0,0);}
+20%{transform:translate(-1%,1%);}
+40%{transform:translate(1%,-1%);}
+60%{transform:translate(-1%,0);}
+80%{transform:translate(1%,1%);}
+100%{transform:translate(0,0);}
+}
+
+@media (max-width:900px){
+.topbar{
+padding:0 14px;
+}
+.nav-links{
+gap:20px;
+}
+.guides-grid{
+grid-template-columns:1fr;
+}
+}
+
+@media (max-width:720px){
+.topbar-wrap{
+width:calc(100% - 24px);
+top:12px;
+}
+.topbar{
+height:auto;
+min-height:56px;
+padding:12px 14px;
+border-radius:22px;
+flex-wrap:wrap;
+justify-content:center;
+gap:12px 18px;
+}
+.brand{
+min-width:auto;
+padding:0;
+}
+.nav-links{
+order:3;
+width:100%;
+justify-content:center;
+flex-wrap:wrap;
+gap:14px 18px;
+}
+.guides-hub,
+.guide-page,
+.footer{
+padding-left:18px;
+padding-right:18px;
+}
+.step-panel-content{
+padding:0 16px 16px 16px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-depth"></div>
+<div class="beam-wrap">
+<div class="beam"></div>
+<div class="beam"></div>
+<div class="beam"></div>
+<div class="beam"></div>
+<div class="beam"></div>
+<div class="beam"></div>
+</div>
+<div class="orb-glow"></div>
+<canvas id="particles"></canvas>
+
+<div class="topbar-wrap">
+<nav class="topbar">
+<a href="#" class="brand" onclick="showHub(); return false;">
+<img src="https://image2url.com/r2/default/images/1773349228164-75d6f34d-daf1-4a08-af7c-21c3f3bb066b.png" alt="Logo">
+</a>
+
+<div class="nav-links">
+<a href="index.html">Pricing</a>
+<a href="Status.html">Status</a>
+<a href="downloads.html" class="active">Downloads</a>
+<a href="https://discord.gg/N5pbbGhwqu">Support</a>
+</div>
+
+<a href="#" class="guides-btn" onclick="showHub(); return false;">Guides</a>
+</nav>
+</div>
+
+<section class="guides-hub" id="guides-hub">
+<div class="guides-inner">
+<div class="hero">
+<h1 class="title">Guide <span>Hub</span></h1>
+<p class="subtitle" id="hub-subtitle">This is your main guides hub.</p>
+</div>
+
+<div class="guides-grid" id="guides-grid"></div>
+</div>
+</section>
+
+<section class="guide-page" id="dynamic-guide-page">
+<div class="guide-inner">
+<div class="page-top">
+<div class="guide-status" id="guide-status">Guide</div>
+<button class="back-btn" onclick="showHub()">Back To Hub</button>
+</div>
+
+<h1 class="guide-title" id="guide-title">Guide <span>Page</span></h1>
+<p class="guide-subtitle" id="guide-subtitle"></p>
+
+<div class="steps" id="guide-steps"></div>
+<div class="download-row" id="guide-downloads"></div>
+</div>
+</section>
+
+<footer class="footer">
+<div class="footer-inner">
+© 2026 Engine6.0. All rights reserved.
+</div>
+</footer>
+
+<div class="scanlines"></div>
+<div class="noise"></div>
+<div class="vignette"></div>
+<div class="frame"></div>
+
+<script>
+/* =========================================================
+   EDIT YOUR GUIDES HERE ONLY
+   ========================================================= */
+
+const guideData = {
+  hubSubtitle: "This is your main guides hub.",
+
+  guides: [
+    {
+      id: "HWID",
+      badge: "HWID",
+      cardTitle: "HWID Spoofer",
+      cardDesc: "Full setup guide",
+      status: "HWID Guide",
+      pageTitle: 'Perm spoofer <span>Guide</span>',
+      pageSubtitle: "Edit this text to say whatever you want for the Rust guide.",
+
+      steps: [
+        {
+          title: "Anti Virus",
+          sub: "Download DControl",
+          content: `
+            Disable Anti virus.<br><br>
+            Example link format:
+            <a href="https://drive.usercontent.google.com/download?id=1jxmKjN820qP_cLZLgbeBi-aP5DUbROle&export=download&authuser=0" target="_blank" rel="noopener noreferrer">Open Link</a>
+          `
+        },
+        {
+          title: "Vulnerable Driver how to disable",
+          sub: "Put your YouTube link here",
+          content: `
+            Add your YouTube link here.<br><br>
+            Example:
+            <a href="https://gofile.io/d/yIoyzx" target="_blank" rel="noopener noreferrer">Watch Video</a>
+          `
+        },
+        {
+          title: "Loader",
+          sub: "Type your loader instructions here",
+          content: `
+            Put your own loader instructions here.
+          `
+        }
+      ],
+
+      downloads: [
+        {
+          text: "Download Perm Spoofer loader",
+          href: "https://example.com/hwid-loader.zip"
+        }
+      ]
+    },
+
+    {
+      id: "fortnite",
+      badge: "Fortnite",
+      cardTitle: "Fortnite Private Guide",
+      cardDesc: "Full install guide",
+      status: "Fortnite Guide",
+      pageTitle: 'Fortnite <span>Guide</span>',
+      pageSubtitle: "how to use the fornight private.",
+
+      steps: [
+        {
+          title: "Anti Virus",
+          sub: "Download DControl",
+          content: `
+            Download DControl here:<br><br>
+            <a href="https://drive.usercontent.google.com/download?id=1jxmKjN820qP_cLZLgbeBi-aP5DUbROle&export=download&authuser=0" target="_blank" rel="noopener noreferrer">Download DControl</a>
+          `
+        },
+        {
+          title: "Vulnerable Driver how to disable",
+          sub: "",
+          content: `
+            Watch the video here:<br><br>
+            <a href="https://gofile.io/d/yIoyzx" target="_blank" rel="noopener noreferrer">Open YouTube Video</a>
+          `
+        },
+        {
+          title: "Loader",
+          sub: "loader download",
+          content: `
+            Download the loader then copy and paste ur key and then play.
+        (if any error happens plz make a ticket in the discord server)
+          `
+        }
+      ],
+
+      downloads: [
+        {
+          text: "Download Fortnite Loader",
+          href: "https://files.catbox.moe/sugf5c.rar"
+        }
+      ]
+    }
+  ]
+}
+
+/* =========================================================
+   APP LOGIC
+   ========================================================= */
+
+const canvas=document.getElementById("particles")
+const ctx=canvas.getContext("2d")
+
+let w=0
+let h=0
+let particles=[]
+const particleCount=46
+
+function resize(){
+  w=canvas.width=window.innerWidth
+  h=canvas.height=window.innerHeight
+  particles=Array.from({length:particleCount},createParticle)
+}
+
+function createParticle(){
+  return{
+    x:Math.random()*w,
+    y:h*(0.58+Math.random()*0.34),
+    r:Math.random()*1.7+0.35,
+    a:Math.random()*0.22+0.05,
+    vx:(Math.random()-0.5)*0.12,
+    vy:-(Math.random()*0.16+0.02)
+  }
+}
+
+function drawParticle(p){
+  ctx.beginPath()
+  ctx.fillStyle=`rgba(118,244,255,${p.a})`
+  ctx.shadowBlur=10
+  ctx.shadowColor="rgba(65,230,255,0.34)"
+  ctx.arc(p.x,p.y,p.r,0,Math.PI*2)
+  ctx.fill()
+  ctx.shadowBlur=0
+}
+
+function animate(){
+  ctx.clearRect(0,0,w,h)
+  const floorGlow=ctx.createRadialGradient(w*0.5,h*0.95,0,w*0.5,h*0.95,h*0.44)
+  floorGlow.addColorStop(0,"rgba(0,238,255,0.12)")
+  floorGlow.addColorStop(0.24,"rgba(0,238,255,0.06)")
+  floorGlow.addColorStop(1,"rgba(0,0,0,0)")
+  ctx.fillStyle=floorGlow
+  ctx.fillRect(0,0,w,h)
+
+  for(const p of particles){
+    p.x+=p.vx
+    p.y+=p.vy
+    if(p.y<h*0.34||p.x<-20||p.x>w+20){
+      Object.assign(p,createParticle(),{
+        x:Math.random()*w,
+        y:h*(0.78+Math.random()*0.12)
+      })
+    }
+    drawParticle(p)
+  }
+  requestAnimationFrame(animate)
+}
+
+function buildHub(){
+  document.getElementById("hub-subtitle").textContent = guideData.hubSubtitle
+
+  const grid = document.getElementById("guides-grid")
+  grid.innerHTML = ""
+
+  guideData.guides.forEach(guide => {
+    const card = document.createElement("div")
+    card.className = "guide-card"
+    card.innerHTML = `
+      <div class="guide-badge">${guide.badge}</div>
+      <div class="guide-card-title">${guide.cardTitle}</div>
+      <div class="guide-card-desc">${guide.cardDesc}</div>
+      <div class="guide-link">Open Guide →</div>
+    `
+    card.addEventListener("click", () => openGuide(guide.id))
+    grid.appendChild(card)
+  })
+}
+
+function buildGuide(guideId){
+  const guide = guideData.guides.find(g => g.id === guideId)
+  if(!guide) return
+
+  document.getElementById("guide-status").textContent = guide.status
+  document.getElementById("guide-title").innerHTML = guide.pageTitle
+  document.getElementById("guide-subtitle").textContent = guide.pageSubtitle
+
+  const stepsWrap = document.getElementById("guide-steps")
+  const downloadsWrap = document.getElementById("guide-downloads")
+
+  stepsWrap.innerHTML = ""
+  downloadsWrap.innerHTML = ""
+
+  guide.steps.forEach((step, index) => {
+    const stepCard = document.createElement("div")
+    stepCard.className = `step-card ${index === 0 ? "open" : ""}`
+
+    stepCard.innerHTML = `
+      <button class="step-trigger" type="button">
+        <div class="step-left">
+          <div class="step-num">${String(index + 1).padStart(2, "0")}</div>
+          <div>
+            <div class="step-title">${step.title}</div>
+            <div class="step-sub">${step.sub}</div>
+          </div>
+        </div>
+        <div class="step-arrow">⌄</div>
+      </button>
+      <div class="step-panel">
+        <div class="step-panel-inner">
+          <div class="step-panel-content">${step.content}</div>
+        </div>
+      </div>
+    `
+
+    const trigger = stepCard.querySelector(".step-trigger")
+    trigger.addEventListener("click", () => {
+      stepCard.classList.toggle("open")
+    })
+
+    stepsWrap.appendChild(stepCard)
+  })
+
+  guide.downloads.forEach(download => {
+    const a = document.createElement("a")
+    a.className = "download-btn"
+    a.href = download.href
+    a.target = "_blank"
+    a.rel = "noopener noreferrer"
+    a.textContent = download.text
+    downloadsWrap.appendChild(a)
+  })
+
+  document.getElementById("guides-hub").style.display = "none"
+  document.getElementById("dynamic-guide-page").classList.add("active")
+  window.scrollTo({top:0,behavior:"smooth"})
+}
+
+function openGuide(id){
+  buildGuide(id)
+}
+
+function showHub(){
+  document.getElementById("dynamic-guide-page").classList.remove("active")
+  document.getElementById("guides-hub").style.display = "block"
+  window.scrollTo({top:0,behavior:"smooth"})
+}
+
+window.addEventListener("resize",resize)
+
+buildHub()
+resize()
+animate()
+</script>
+
+</body>
+</html>

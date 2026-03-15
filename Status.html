@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Engine6.0 - Status</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+:root{
+--text:#f5fdff;
+--muted:rgba(222,238,242,0.62);
+--line:rgba(85,236,255,0.14);
+--green:#4df2d9;
+--yellow:#ffd86b;
+--red:#ff6b8a;
+}
+
+html,body{
+width:100%;
+min-height:100%;
+background:#05090c;
+color:var(--text);
+overflow-x:hidden;
+scroll-behavior:smooth;
+}
+
+body{
+position:relative;
+isolation:isolate;
+font-family:"Inter",sans-serif;
+background:
+radial-gradient(circle at 50% 100%,rgba(0,235,255,0.42) 0%,rgba(0,235,255,0.16) 14%,rgba(0,235,255,0.06) 28%,rgba(0,0,0,0) 52%),
+radial-gradient(circle at 50% 78%,rgba(0,200,225,0.10) 0%,rgba(0,0,0,0) 38%),
+linear-gradient(180deg,#040607 0%,#071015 36%,#09151a 62%,#05090c 100%);
+}
+
+.frame,.beam-wrap,.orb-glow,.noise,.scanlines,.vignette,.bg-depth{
+position:fixed;
+inset:0;
+pointer-events:none;
+}
+
+.bg-depth{
+z-index:0;
+background:
+radial-gradient(circle at 16% 22%,rgba(255,255,255,0.018) 0%,rgba(255,255,255,0) 26%),
+radial-gradient(circle at 84% 18%,rgba(255,255,255,0.014) 0%,rgba(255,255,255,0) 22%),
+linear-gradient(180deg,rgba(255,255,255,0.012) 0%,rgba(255,255,255,0) 32%);
+opacity:0.9;
+}
+
+.beam-wrap{
+z-index:1;
+overflow:hidden;
+}
+
+.beam{
+position:absolute;
+top:-12%;
+width:14vw;
+height:132%;
+background:linear-gradient(
+180deg,
+rgba(0,0,0,0) 0%,
+rgba(55,222,255,0.03) 16%,
+rgba(55,222,255,0.07) 48%,
+rgba(55,222,255,0.03) 76%,
+rgba(0,0,0,0) 100%
+);
+filter:blur(28px);
+opacity:0.34;
+transform:skewX(-8deg);
+animation:drift 12s ease-in-out infinite;
+}
+
+.beam:nth-child(1){left:5%;animation-delay:-1s;}
+.beam:nth-child(2){left:18%;animation-delay:-5s;}
+.beam:nth-child(3){left:33%;animation-delay:-2.5s;}
+.beam:nth-child(4){left:49%;animation-delay:-7s;}
+.beam:nth-child(5){left:65%;animation-delay:-3.5s;}
+.beam:nth-child(6){left:80%;animation-delay:-6s;}
+
+.orb-glow{
+z-index:2;
+background:
+radial-gradient(circle at 50% 103%,rgba(0,245,255,0.48) 0%,rgba(0,245,255,0.18) 13%,rgba(0,245,255,0.08) 24%,rgba(0,0,0,0) 42%),
+radial-gradient(circle at 50% 84%,rgba(0,200,225,0.08) 0%,rgba(0,0,0,0) 36%);
+filter:blur(30px);
+animation:pulseGlow 6.4s ease-in-out infinite;
+}
+
+#particles{
+position:fixed;
+inset:0;
+z-index:4;
+pointer-events:none;
+}
+
+.scanlines{
+z-index:6;
+opacity:0.05;
+mix-blend-mode:screen;
+background:repeating-linear-gradient(
+to bottom,
+rgba(255,255,255,0.04) 0px,
+rgba(255,255,255,0.012) 1px,
+rgba(0,0,0,0) 3px,
+rgba(0,0,0,0) 6px
+);
+}
+
+.noise{
+z-index:7;
+opacity:0.28;
+mix-blend-mode:overlay;
+background-image:
+radial-gradient(rgba(255,255,255,0.25) 0.6px,transparent 0.8px),
+radial-gradient(rgba(255,255,255,0.18) 0.5px,transparent 0.7px),
+radial-gradient(rgba(255,255,255,0.12) 0.4px,transparent 0.6px);
+background-size:2px 2px,3px 3px,4px 4px;
+animation:grainMove .35s steps(2) infinite;
+}
+
+.vignette{
+z-index:8;
+background:radial-gradient(circle at center,rgba(0,0,0,0) 38%,rgba(0,0,0,0.18) 72%,rgba(0,0,0,0.48) 100%);
+}
+
+.frame{
+z-index:30;
+border:1px solid rgba(85,236,255,0.84);
+box-shadow:
+inset 0 0 0 1px rgba(130,243,255,0.08),
+0 0 20px rgba(0,220,255,0.14);
+}
+
+.topbar-wrap{
+position:fixed;
+top:16px;
+left:50%;
+transform:translateX(-50%);
+z-index:20;
+width:min(1060px,calc(100% - 60px));
+}
+
+.topbar{
+height:56px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 16px 0 18px;
+border-radius:999px;
+border:1px solid rgba(67,218,255,0.18);
+background:linear-gradient(180deg,rgba(2,12,25,0.94) 0%,rgba(1,7,18,0.96) 100%);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.04),
+0 0 0 1px rgba(0,225,255,0.03),
+0 10px 26px rgba(0,0,0,0.28);
+backdrop-filter:blur(8px);
+}
+
+.brand{
+display:flex;
+align-items:center;
+justify-content:center;
+min-width:58px;
+padding:0 10px;
+text-decoration:none;
+}
+
+.brand img{
+height:28px;
+width:auto;
+display:block;
+object-fit:contain;
+}
+
+.nav-links{
+display:flex;
+align-items:center;
+gap:34px;
+}
+
+.nav-links a{
+text-decoration:none;
+color:rgba(214,227,235,0.76);
+font-size:14px;
+font-weight:500;
+transition:color .25s ease,transform .25s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active{
+color:#59f3ff;
+transform:translateY(-1px);
+}
+
+.guides-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+height:34px;
+padding:0 18px;
+border-radius:999px;
+border:1px solid rgba(78,230,255,0.4);
+background:linear-gradient(180deg,rgba(5,54,82,0.62) 0%,rgba(3,31,50,0.56) 100%);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.06),
+0 0 16px rgba(0,210,255,0.08);
+text-decoration:none;
+color:#bff8ff;
+font-size:13px;
+font-weight:600;
+transition:transform .3s cubic-bezier(.19,1,.22,1),border-color .3s ease,box-shadow .3s ease,background .3s ease;
+}
+
+.guides-btn:hover{
+transform:translateY(-1px);
+border-color:rgba(115,239,255,0.68);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.09),
+0 0 18px rgba(0,220,255,0.14);
+background:linear-gradient(180deg,rgba(7,68,101,0.74) 0%,rgba(4,39,62,0.66) 100%);
+}
+
+.guides-icon{
+position:relative;
+width:14px;
+height:12px;
+display:inline-block;
+}
+
+.guides-icon::before,
+.guides-icon::after{
+content:"";
+position:absolute;
+top:0;
+width:6px;
+height:10px;
+border:1.5px solid #73efff;
+border-radius:2px;
+}
+
+.guides-icon::before{
+left:0;
+border-right:none;
+}
+
+.guides-icon::after{
+right:0;
+border-left:none;
+}
+
+.status-page{
+position:relative;
+z-index:12;
+padding:120px 24px 80px;
+}
+
+.status-inner{
+width:100%;
+max-width:980px;
+margin:0 auto;
+}
+
+.hero-block{
+text-align:center;
+margin-bottom:34px;
+}
+
+.eyebrow{
+display:inline-flex;
+align-items:center;
+gap:8px;
+padding:7px 14px;
+border-radius:999px;
+border:1px solid rgba(69,227,255,0.16);
+background:linear-gradient(180deg,rgba(5,35,53,0.48) 0%,rgba(3,21,35,0.58) 100%);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.03),
+0 0 20px rgba(0,225,255,0.05);
+color:#66f1ff;
+font-size:11px;
+font-weight:700;
+letter-spacing:.04em;
+text-transform:uppercase;
+}
+
+.eyebrow-dot{
+width:6px;
+height:6px;
+border-radius:50%;
+background:#1ee9ff;
+box-shadow:0 0 10px rgba(30,233,255,0.55);
+}
+
+.page-title{
+margin-top:18px;
+font-size:clamp(2.35rem,5vw,4rem);
+line-height:.98;
+letter-spacing:-.05em;
+font-weight:600;
+color:rgba(246,253,255,0.98);
+}
+
+.page-title span{
+color:#8ef6ff;
+}
+
+.page-subtitle{
+margin:18px auto 0;
+max-width:620px;
+font-size:1rem;
+line-height:1.6;
+color:var(--muted);
+}
+
+.panel{
+border-radius:22px;
+border:1px solid var(--line);
+background:linear-gradient(180deg,rgba(9,18,31,0.88) 0%,rgba(7,14,24,0.96) 100%);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.03),
+0 16px 34px rgba(0,0,0,0.22);
+overflow:hidden;
+}
+
+.panel-head{
+padding:20px 22px 16px;
+border-bottom:1px solid rgba(85,236,255,0.08);
+}
+
+.panel-title{
+font-size:20px;
+font-weight:700;
+color:#f6fdff;
+}
+
+.panel-sub{
+margin-top:6px;
+font-size:12px;
+color:rgba(206,225,234,0.42);
+}
+
+.service-list{
+padding:14px;
+display:grid;
+gap:14px;
+}
+
+.service-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:18px;
+padding:18px 16px;
+border-radius:18px;
+border:1px solid rgba(85,236,255,0.08);
+background:rgba(7,13,22,0.58);
+transition:
+transform .35s cubic-bezier(.19,1,.22,1),
+border-color .35s ease,
+background .35s ease,
+box-shadow .35s ease;
+}
+
+.service-row:hover{
+transform:translateY(-2px);
+border-color:rgba(85,236,255,0.22);
+background:rgba(8,16,28,0.78);
+box-shadow:
+0 8px 22px rgba(0,0,0,0.35),
+0 0 18px rgba(0,220,255,0.08),
+inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.service-left{
+display:flex;
+align-items:center;
+gap:14px;
+min-width:0;
+}
+
+.service-dot{
+width:12px;
+height:12px;
+border-radius:50%;
+flex:0 0 auto;
+}
+
+.service-dot.online{
+background:var(--green);
+box-shadow:0 0 14px rgba(77,242,217,0.4);
+}
+
+.service-dot.maintenance{
+background:var(--yellow);
+box-shadow:0 0 14px rgba(255,216,107,0.35);
+}
+
+.service-dot.offline{
+background:var(--red);
+box-shadow:0 0 14px rgba(255,107,138,0.35);
+}
+
+.service-text{
+min-width:0;
+}
+
+.service-name{
+font-size:15px;
+font-weight:700;
+color:#f7fcff;
+}
+
+.service-desc{
+margin-top:5px;
+font-size:13px;
+color:rgba(206,225,234,0.50);
+}
+
+.status-badge{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+height:34px;
+padding:0 13px;
+border-radius:999px;
+font-size:11px;
+font-weight:800;
+letter-spacing:.04em;
+text-transform:uppercase;
+border:1px solid transparent;
+white-space:nowrap;
+}
+
+.status-badge.online{
+background:rgba(10,63,59,0.74);
+border-color:rgba(64,241,214,0.18);
+color:#4df2d9;
+}
+
+.status-badge.maintenance{
+background:rgba(74,60,12,0.52);
+border-color:rgba(255,216,107,0.18);
+color:#ffd86b;
+}
+
+.status-badge.offline{
+background:rgba(76,18,34,0.52);
+border-color:rgba(255,107,138,0.18);
+color:#ff89a2;
+}
+
+.footer{
+position:relative;
+z-index:12;
+padding:0 24px 36px;
+}
+
+.footer-inner{
+width:100%;
+max-width:980px;
+margin:0 auto;
+padding-top:22px;
+border-top:1px solid rgba(85,236,255,0.08);
+text-align:center;
+font-size:13px;
+color:rgba(214,227,235,0.44);
+}
+
+@keyframes pulseGlow{
+0%,100%{transform:scale(1);opacity:.92;}
+50%{transform:scale(1.04);opacity:1;}
+}
+
+@keyframes drift{
+0%,100%{transform:translateY(-1%) translateX(0) skewX(-8deg);opacity:.26;}
+50%{transform:translateY(2%) translateX(8px) skewX(-6deg);opacity:.36;}
+}
+
+@keyframes grainMove{
+0%{transform:translate(0,0);}
+20%{transform:translate(-1%,1%);}
+40%{transform:translate(1%,-1%);}
+60%{transform:translate(-1%,0);}
+80%{transform:translate(1%,1%);}
+100%{transform:translate(0,0);}
+}
+
+@media (max-width:900px){
+.topbar{
+padding:0 14px;
+}
+.nav-links{
+gap:20px;
+}
+}
+
+@media (max-width:720px){
+.topbar-wrap{
+width:calc(100% - 24px);
+top:12px;
+}
+.topbar{
+height:auto;
+min-height:56px;
+padding:12px 14px;
+border-radius:22px;
+flex-wrap:wrap;
+justify-content:center;
+gap:12px 18px;
+}
+.brand{
+min-width:auto;
+padding:0;
+}
+.nav-links{
+order:3;
+width:100%;
+justify-content:center;
+flex-wrap:wrap;
+gap:14px 18px;
+}
+.status-page,
+.footer{
+padding-left:18px;
+padding-right:18px;
+}
+.service-row{
+align-items:flex-start;
+flex-direction:column;
+}
+.status-badge{
+margin-left:26px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-depth"></div>
+
+<div class="beam-wrap">
+<div class="beam"></div>
+<div class="beam"></div>
+<div class="beam"></div>
+<div class="beam"></div>
+<div class="beam"></div>
+<div class="beam"></div>
+</div>
+
+<div class="orb-glow"></div>
+<canvas id="particles"></canvas>
+
+<div class="topbar-wrap">
+<nav class="topbar">
+<a href="#" class="brand">
+<img src="https://image2url.com/r2/default/images/1773349228164-75d6f34d-daf1-4a08-af7c-21c3f3bb066b.png" alt="Logo">
+</a>
+
+<div class="nav-links">
+<a href="index.html">Pricing</a>
+<a href="Status.html" class="active">Status</a>
+<a href="downloads.html" class="active">Downloads</a>
+<a href="https://discord.gg/N5pbbGhwqu">Support</a>
+</div>
+
+<a href="Guide.html" class="guides-btn">
+<span>Guides</span>
+<span class="guides-icon"></span>
+</a>
+</nav>
+</div>
+
+<section class="status-page">
+<div class="status-inner">
+
+<div class="hero-block">
+<div class="eyebrow">
+<span class="eyebrow-dot"></span>
+<span>Engine6.0 Product Status</span>
+</div>
+
+<h1 class="page-title">
+Product <span>Status.</span>
+</h1>
+
+<p class="page-subtitle">
+Live status for all Engine6.0 products.
+</p>
+</div>
+
+<div class="panel">
+<div class="panel-head">
+<div class="panel-title">Status</div>
+<div class="panel-sub">Products Status</div>
+</div>
+
+<div class="service-list">
+
+<div class="service-row">
+<div class="service-left">
+<div class="service-dot online"></div>
+<div class="service-text">
+<div class="service-name">Fortnite Private</div>
+<div class="service-desc">Fully online and working normally.</div>
+</div>
+</div>
+<div class="status-badge online">Operational</div>
+</div>
+
+<div class="service-row">
+<div class="service-left">
+<div class="service-dot online"></div>
+<div class="service-text">
+<div class="service-name">Perm Spoofer</div>
+<div class="service-desc">All systems running normally.</div>
+</div>
+</div>
+<div class="status-badge online">Operational</div>
+</div>
+
+<div class="service-row">
+<div class="service-left">
+<div class="service-dot online"></div>
+<div class="service-text">
+<div class="service-name">COMMING SOON</div>
+<div class="service-desc">Temporary maintenance in progress.</div>
+</div>
+</div>
+<div class="status-badge maintenance">Maintenance</div>
+</div>
+
+<div class="service-row">
+<div class="service-left">
+<div class="service-dot online"></div>
+<div class="service-text">
+<div class="service-name">Cleaner</div>
+<div class="service-desc">All systems running normally.</div>
+</div>
+</div>
+<div class="status-badge online">Operational</div>
+</div>
+
+</div>
+</div>
+
+</div>
+</section>
+
+<footer class="footer">
+<div class="footer-inner">
+© 2026 Engine6.0. All rights reserved.
+</div>
+</footer>
+
+<div class="scanlines"></div>
+<div class="noise"></div>
+<div class="vignette"></div>
+<div class="frame"></div>
+
+<script>
+const canvas=document.getElementById("particles")
+const ctx=canvas.getContext("2d")
+
+let w=0
+let h=0
+let particles=[]
+const particleCount=46
+
+function resize(){
+w=canvas.width=window.innerWidth
+h=canvas.height=window.innerHeight
+particles=Array.from({length:particleCount},createParticle)
+}
+
+function createParticle(){
+return{
+x:Math.random()*w,
+y:h*(0.58+Math.random()*0.34),
+r:Math.random()*1.7+0.35,
+a:Math.random()*0.22+0.05,
+vx:(Math.random()-0.5)*0.12,
+vy:-(Math.random()*0.16+0.02)
+}
+}
+
+function drawParticle(p){
+ctx.beginPath()
+ctx.fillStyle=`rgba(118,244,255,${p.a})`
+ctx.shadowBlur=10
+ctx.shadowColor="rgba(65,230,255,0.34)"
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2)
+ctx.fill()
+ctx.shadowBlur=0
+}
+
+function animate(){
+ctx.clearRect(0,0,w,h)
+
+const floorGlow=ctx.createRadialGradient(
+w*0.5,h*0.95,0,
+w*0.5,h*0.95,h*0.44
+)
+
+floorGlow.addColorStop(0,"rgba(0,238,255,0.12)")
+floorGlow.addColorStop(0.24,"rgba(0,238,255,0.06)")
+floorGlow.addColorStop(1,"rgba(0,0,0,0)")
+
+ctx.fillStyle=floorGlow
+ctx.fillRect(0,0,w,h)
+
+for(const p of particles){
+p.x+=p.vx
+p.y+=p.vy
+
+if(p.y<h*0.34||p.x<-20||p.x>w+20){
+Object.assign(p,createParticle(),{
+x:Math.random()*w,
+y:h*(0.78+Math.random()*0.12)
+})
+}
+
+drawParticle(p)
+}
+
+requestAnimationFrame(animate)
+}
+
+window.addEventListener("resize",resize)
+resize()
+animate()
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Premium Digital Products</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+:root{
+--text:#f5fdff;
+--muted:rgba(222,238,242,0.62);
+--panel:rgba(8,16,28,0.92);
+--panel-2:rgba(7,14,24,0.96);
+--line:rgba(85,236,255,0.14);
+--line-strong:rgba(85,236,255,0.26);
+--teal:#59f3ff;
+--teal-2:#8ef6ff;
+}
+
+html,body{
+width:100%;
+min-height:100%;
+background:#05090c;
+color:var(--text);
+overflow-x:hidden;
+scroll-behavior:smooth;
+}
+
+body{
+position:relative;
+isolation:isolate;
+font-family:"Inter",sans-serif;
+background:
+radial-gradient(circle at 50% 100%,rgba(0,235,255,0.42) 0%,rgba(0,235,255,0.16) 14%,rgba(0,235,255,0.06) 28%,rgba(0,0,0,0) 52%),
+radial-gradient(circle at 50% 78%,rgba(0,200,225,0.10) 0%,rgba(0,0,0,0) 38%),
+linear-gradient(180deg,#040607 0%,#071015 36%,#09151a 62%,#05090c 100%);
+}
+
+.frame,.beam-wrap,.orb-glow,.noise,.scanlines,.vignette,.bg-depth{
+position:fixed;
+inset:0;
+pointer-events:none;
+}
+
+.bg-depth{
+z-index:0;
+background:
+radial-gradient(circle at 16% 22%,rgba(255,255,255,0.018) 0%,rgba(255,255,255,0) 26%),
+radial-gradient(circle at 84% 18%,rgba(255,255,255,0.014) 0%,rgba(255,255,255,0) 22%),
+linear-gradient(180deg,rgba(255,255,255,0.012) 0%,rgba(255,255,255,0) 32%);
+opacity:0.9;
+}
+
+.beam-wrap{
+z-index:1;
+overflow:hidden;
+}
+
+.beam{
+position:absolute;
+top:-12%;
+width:14vw;
+height:132%;
+background:linear-gradient(
+180deg,
+rgba(0,0,0,0) 0%,
+rgba(55,222,255,0.03) 16%,
+rgba(55,222,255,0.07) 48%,
+rgba(55,222,255,0.03) 76%,
+rgba(0,0,0,0) 100%
+);
+filter:blur(28px);
+opacity:0.34;
+transform:skewX(-8deg);
+animation:drift 12s ease-in-out infinite;
+}
+
+.beam:nth-child(1){left:5%;animation-delay:-1s;}
+.beam:nth-child(2){left:18%;animation-delay:-5s;}
+.beam:nth-child(3){left:33%;animation-delay:-2.5s;}
+.beam:nth-child(4){left:49%;animation-delay:-7s;}
+.beam:nth-child(5){left:65%;animation-delay:-3.5s;}
+.beam:nth-child(6){left:80%;animation-delay:-6s;}
+
+.orb-glow{
+z-index:2;
+background:
+radial-gradient(circle at 50% 103%,rgba(0,245,255,0.48) 0%,rgba(0,245,255,0.18) 13%,rgba(0,245,255,0.08) 24%,rgba(0,0,0,0) 42%),
+radial-gradient(circle at 50% 84%,rgba(0,200,225,0.08) 0%,rgba(0,0,0,0) 36%);
+filter:blur(30px);
+animation:pulseGlow 6.4s ease-in-out infinite;
+}
+
+#particles{
+position:fixed;
+inset:0;
+z-index:4;
+pointer-events:none;
+}
+
+.scanlines{
+z-index:6;
+opacity:0.05;
+mix-blend-mode:screen;
+background:repeating-linear-gradient(
+to bottom,
+rgba(255,255,255,0.04) 0px,
+rgba(255,255,255,0.012) 1px,
+rgba(0,0,0,0) 3px,
+rgba(0,0,0,0) 6px
+);
+}
+
+.noise{
+z-index:7;
+opacity:0.28;
+mix-blend-mode:overlay;
+background-image:
+radial-gradient(rgba(255,255,255,0.25) 0.6px,transparent 0.8px),
+radial-gradient(rgba(255,255,255,0.18) 0.5px,transparent 0.7px),
+radial-gradient(rgba(255,255,255,0.12) 0.4px,transparent 0.6px);
+background-size:2px 2px,3px 3px,4px 4px;
+animation:grainMove .35s steps(2) infinite;
+}
+
+.vignette{
+z-index:8;
+background:radial-gradient(circle at center,rgba(0,0,0,0) 38%,rgba(0,0,0,0.18) 72%,rgba(0,0,0,0.48) 100%);
+}
+
+.frame{
+z-index:30;
+border:1px solid rgba(85,236,255,0.84);
+box-shadow:
+inset 0 0 0 1px rgba(130,243,255,0.08),
+0 0 20px rgba(0,220,255,0.14);
+}
+
+.topbar-wrap{
+position:fixed;
+top:16px;
+left:50%;
+transform:translateX(-50%);
+z-index:20;
+width:min(1060px,calc(100% - 60px));
+}
+
+.topbar{
+height:56px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 16px 0 18px;
+border-radius:999px;
+border:1px solid rgba(67,218,255,0.18);
+background:linear-gradient(180deg,rgba(2,12,25,0.94) 0%,rgba(1,7,18,0.96) 100%);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.04),
+0 0 0 1px rgba(0,225,255,0.03),
+0 10px 26px rgba(0,0,0,0.28);
+backdrop-filter:blur(8px);
+}
+
+.brand{
+display:flex;
+align-items:center;
+justify-content:center;
+min-width:58px;
+padding:0 10px;
+text-decoration:none;
+}
+
+.brand img{
+height:28px;
+width:auto;
+display:block;
+object-fit:contain;
+}
+
+.nav-links{
+display:flex;
+align-items:center;
+gap:34px;
+}
+
+.nav-links a{
+text-decoration:none;
+color:rgba(214,227,235,0.76);
+font-size:14px;
+font-weight:500;
+transition:color .25s ease,transform .25s ease;
+}
+
+.nav-links a:hover{
+color:#59f3ff;
+transform:translateY(-1px);
+}
+
+.guides-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+height:34px;
+padding:0 18px;
+border-radius:999px;
+border:1px solid rgba(78,230,255,0.4);
+background:linear-gradient(180deg,rgba(5,54,82,0.62) 0%,rgba(3,31,50,0.56) 100%);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.06),
+0 0 16px rgba(0,210,255,0.08);
+text-decoration:none;
+color:#bff8ff;
+font-size:13px;
+font-weight:600;
+transition:transform .3s cubic-bezier(.19,1,.22,1),border-color .3s ease,box-shadow .3s ease,background .3s ease;
+}
+
+.guides-btn:hover{
+transform:translateY(-1px);
+border-color:rgba(115,239,255,0.68);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.09),
+0 0 18px rgba(0,220,255,0.14);
+background:linear-gradient(180deg,rgba(7,68,101,0.74) 0%,rgba(4,39,62,0.66) 100%);
+}
+
+.guides-icon{
+position:relative;
+width:14px;
+height:12px;
+display:inline-block;
+}
+
+.guides-icon::before,
+.guides-icon::after{
+content:"";
+position:absolute;
+top:0;
+width:6px;
+height:10px;
+border:1.5px solid #73efff;
+border-radius:2px;
+}
+
+.guides-icon::before{
+left:0;
+border-right:none;
+}
+
+.guides-icon::after{
+right:0;
+border-left:none;
+}
+
+.home-page{
+display:block;
+}
+
+.hero{
+position:relative;
+z-index:12;
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:40px 24px;
+}
+
+.hero-inner{
+width:100%;
+max-width:980px;
+display:flex;
+flex-direction:column;
+align-items:center;
+text-align:center;
+transform:translateY(-8px);
+}
+
+.title{
+max-width:800px;
+font-size:clamp(2.35rem,5vw,4rem);
+line-height:.98;
+letter-spacing:-.05em;
+font-weight:500;
+color:rgba(246,253,255,0.98);
+text-shadow:0 0 22px rgba(0,225,255,0.025);
+}
+
+.title .cyan-line{
+display:block;
+color:#8ef6ff;
+text-shadow:
+0 0 16px rgba(102,236,255,0.08),
+0 0 28px rgba(102,236,255,0.04);
+}
+
+.subtitle{
+margin-top:22px;
+max-width:630px;
+font-size:clamp(1rem,1.45vw,1.14rem);
+line-height:1.5;
+color:var(--muted);
+text-shadow:0 0 10px rgba(255,255,255,0.02);
+}
+
+.cta-wrap{
+position:relative;
+margin-top:48px;
+}
+
+.cta-wrap::before{
+content:"";
+position:absolute;
+left:50%;
+top:58%;
+width:280px;
+height:120px;
+transform:translate(-50%,-50%);
+border-radius:999px;
+background:radial-gradient(circle,rgba(0,235,255,0.20) 0%,rgba(0,235,255,0.06) 40%,rgba(0,0,0,0) 72%);
+filter:blur(30px);
+z-index:-1;
+}
+
+.cta-btn,.back-btn{
+position:relative;
+min-width:160px;
+padding:10px 26px;
+border-radius:10px;
+border:1px solid rgba(140,245,255,0.55);
+background:linear-gradient(180deg,#53e6f8 0%,#37d3e8 55%,#22bfd4 100%);
+color:#f6feff;
+font-size:13.5px;
+font-weight:600;
+letter-spacing:.02em;
+font-family:"Inter",sans-serif;
+cursor:pointer;
+outline:none;
+overflow:hidden;
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.25),
+inset -0 1px 0 rgba(0,0,0,0.15),
+0 8px 18px rgba(0,220,255,0.18),
+0 0 18px rgba(0,220,255,0.12);
+transition:transform .45s cubic-bezier(.19,1,.22,1),box-shadow .45s cubic-bezier(.19,1,.22,1),background .35s ease,filter .35s ease,border-color .35s ease;
+}
+
+.cta-btn:hover,.back-btn:hover{
+transform:translateY(-2px) scale(1.015);
+border-color:rgba(182,249,255,0.82);
+background:linear-gradient(180deg,#6bf1ff 0%,#3edff2 55%,#26c8de 100%);
+filter:brightness(1.05);
+}
+
+.cta-btn:active,.back-btn:active{
+transform:translateY(0) scale(.99);
+background:linear-gradient(180deg,#3dd7ea 0%,#28c6d9 55%,#1eafc1 100%);
+}
+
+.products-section{
+position:relative;
+z-index:12;
+padding:40px 24px 80px;
+}
+
+.products-inner{
+width:100%;
+max-width:1160px;
+margin:0 auto;
+}
+
+.products-heading{
+text-align:center;
+margin-bottom:34px;
+}
+
+.products-title{
+font-size:clamp(2rem,4vw,3rem);
+line-height:1;
+letter-spacing:-.05em;
+font-weight:500;
+color:rgba(246,253,255,0.98);
+text-shadow:0 0 22px rgba(0,225,255,0.025);
+}
+
+.products-title .cyan-line{
+color:#8ef6ff;
+}
+
+.products-subtitle{
+margin:18px auto 0;
+max-width:640px;
+font-size:1rem;
+line-height:1.5;
+color:var(--muted);
+text-shadow:0 0 10px rgba(255,255,255,0.02);
+}
+
+.products-grid{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:22px;
+}
+
+.product-card{
+position:relative;
+min-height:240px;
+border-radius:18px;
+overflow:hidden;
+text-decoration:none;
+border:1px solid rgba(85,236,255,0.14);
+background:linear-gradient(180deg,rgba(8,18,29,0.92) 0%,rgba(5,11,20,0.96) 100%);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.04),
+0 16px 34px rgba(0,0,0,0.28);
+transition:transform .35s cubic-bezier(.19,1,.22,1),border-color .35s ease,box-shadow .35s ease;
+cursor:pointer;
+}
+
+.product-card:hover{
+transform:translateY(-4px);
+border-color:rgba(99,237,255,0.28);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.05),
+0 22px 42px rgba(0,0,0,0.34),
+0 0 20px rgba(0,215,255,0.08);
+}
+
+.product-image{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+filter:saturate(1.04) contrast(1.03) brightness(.78);
+}
+
+.product-card::before{
+content:"";
+position:absolute;
+inset:0;
+z-index:1;
+background:
+linear-gradient(90deg,rgba(7,18,29,0.82) 0%,rgba(7,18,29,0.54) 38%,rgba(7,18,29,0.18) 72%,rgba(7,18,29,0.30) 100%),
+linear-gradient(180deg,rgba(0,0,0,0.04) 0%,rgba(0,0,0,0.28) 100%);
+}
+
+.product-card::after{
+content:"";
+position:absolute;
+left:0;
+right:0;
+bottom:0;
+height:58%;
+z-index:1;
+background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(5,10,17,0.86) 100%);
+}
+
+.product-key{
+position:absolute;
+top:16px;
+left:16px;
+z-index:3;
+width:42px;
+height:42px;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+border:1px solid rgba(78,230,255,0.24);
+background:linear-gradient(180deg,rgba(15,74,112,0.56) 0%,rgba(7,47,77,0.65) 100%);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.05),
+0 0 16px rgba(0,220,255,0.08);
+}
+
+.product-badge{
+position:absolute;
+top:16px;
+right:16px;
+z-index:3;
+padding:7px 11px;
+border-radius:999px;
+background:rgba(10,63,59,0.74);
+border:1px solid rgba(64,241,214,0.18);
+color:#4df2d9;
+font-size:10px;
+font-weight:800;
+letter-spacing:.04em;
+text-transform:uppercase;
+}
+
+.product-content{
+position:absolute;
+left:20px;
+right:20px;
+bottom:20px;
+z-index:3;
+}
+
+.product-title{
+font-size:24px;
+font-weight:600;
+letter-spacing:-.04em;
+color:#f7fdff;
+}
+
+.product-desc{
+margin-top:9px;
+max-width:420px;
+font-size:14px;
+line-height:1.55;
+color:rgba(212,227,235,0.72);
+}
+
+.product-meta{
+margin-top:14px;
+display:flex;
+align-items:center;
+gap:14px;
+flex-wrap:wrap;
+}
+
+.product-price{
+display:inline-flex;
+align-items:center;
+height:34px;
+padding:0 12px;
+border-radius:999px;
+background:rgba(9,23,36,0.84);
+border:1px solid rgba(76,225,255,0.12);
+color:#c9fbff;
+font-size:13px;
+font-weight:700;
+}
+
+.product-link{
+display:inline-flex;
+align-items:center;
+gap:8px;
+color:#59f3ff;
+font-size:13px;
+font-weight:600;
+}
+
+.product-page{
+display:none;
+position:relative;
+z-index:12;
+padding:110px 24px 80px;
+}
+
+.product-page.active{
+display:block;
+}
+
+.product-inner{
+width:100%;
+max-width:1160px;
+margin:0 auto;
+}
+
+.page-top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:20px;
+margin-bottom:26px;
+flex-wrap:wrap;
+}
+
+.status-row{
+display:flex;
+align-items:center;
+gap:12px;
+flex-wrap:wrap;
+}
+
+.status-pill{
+display:inline-flex;
+align-items:center;
+gap:8px;
+height:30px;
+padding:0 12px;
+border-radius:999px;
+border:1px solid rgba(74,232,196,0.18);
+background:rgba(5,54,52,0.42);
+color:#4df2d9;
+font-size:11px;
+font-weight:800;
+text-transform:uppercase;
+letter-spacing:.04em;
+}
+
+.status-pill::before{
+content:"";
+width:7px;
+height:7px;
+border-radius:50%;
+background:#22ebbe;
+box-shadow:0 0 10px rgba(34,235,190,0.45);
+}
+
+.status-meta{
+font-size:12px;
+font-weight:700;
+letter-spacing:.04em;
+text-transform:uppercase;
+color:rgba(187,211,224,0.34);
+}
+
+.product-layout{
+display:grid;
+grid-template-columns:minmax(0,1.15fr) 340px;
+gap:38px;
+align-items:start;
+}
+
+.page-title{
+font-size:clamp(2rem,4vw,3.35rem);
+line-height:1;
+letter-spacing:-.05em;
+font-weight:700;
+color:#f5fdff;
+margin-bottom:28px;
+}
+
+.page-title span{
+color:#34dcff;
+}
+
+.preview-card{
+position:relative;
+border-radius:20px;
+overflow:hidden;
+border:1px solid var(--line-strong);
+background:linear-gradient(180deg,var(--panel) 0%,var(--panel-2) 100%);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.04),
+0 18px 40px rgba(0,0,0,0.26);
+}
+
+.preview-image{
+display:block;
+width:100%;
+aspect-ratio:16/9;
+object-fit:cover;
+filter:contrast(1.03) saturate(1.08) brightness(.92);
+}
+
+.preview-play{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:58px;
+height:40px;
+border-radius:14px;
+background:#ff1040;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 14px 30px rgba(255,16,64,0.34);
+text-decoration:none;
+transition:transform .25s ease,filter .25s ease;
+}
+
+.preview-play:hover{
+transform:translate(-50%,-50%) scale(1.04);
+filter:brightness(1.05);
+}
+
+.preview-play::before{
+content:"";
+margin-left:3px;
+width:0;
+height:0;
+border-top:9px solid transparent;
+border-bottom:9px solid transparent;
+border-left:14px solid #fff;
+}
+
+.breakdown-title{
+margin-top:20px;
+display:flex;
+align-items:center;
+gap:10px;
+font-size:15px;
+font-weight:700;
+color:#eafcff;
+}
+
+.feature-list{
+margin-top:16px;
+display:grid;
+gap:14px;
+}
+
+.feature-card{
+border-radius:18px;
+border:1px solid var(--line);
+background:linear-gradient(180deg,rgba(9,18,31,0.84) 0%,rgba(7,14,24,0.92) 100%);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
+overflow:hidden;
+transition:border-color .25s ease, box-shadow .25s ease;
+}
+
+.feature-card.open{
+border-color:rgba(85,236,255,0.26);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.04),
+0 0 20px rgba(0,220,255,0.06);
+}
+
+.feature-trigger{
+width:100%;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:16px;
+padding:16px 18px;
+background:transparent;
+border:none;
+color:inherit;
+cursor:pointer;
+text-align:left;
+}
+
+.feature-left{
+display:flex;
+align-items:center;
+gap:14px;
+min-width:0;
+}
+
+.feature-icon{
+width:30px;
+height:30px;
+border-radius:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+flex:0 0 auto;
+}
+
+.feature-icon.red{
+background:rgba(255,64,112,0.12);
+color:#ff6187;
+border:1px solid rgba(255,64,112,0.18);
+}
+
+.feature-icon.blue{
+background:rgba(0,209,255,0.12);
+color:#47e7ff;
+border:1px solid rgba(0,209,255,0.18);
+}
+
+.feature-icon.purple{
+background:rgba(140,102,255,0.12);
+color:#af8dff;
+border:1px solid rgba(140,102,255,0.18);
+}
+
+.feature-icon.green{
+background:rgba(49,232,160,0.12);
+color:#51f2b4;
+border:1px solid rgba(49,232,160,0.18);
+}
+
+.feature-text{
+min-width:0;
+}
+
+.feature-name{
+font-size:14px;
+font-weight:700;
+color:#f7fcff;
+}
+
+.feature-desc{
+margin-top:4px;
+font-size:12px;
+color:rgba(206,225,234,0.46);
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+max-width:440px;
+}
+
+.chev{
+color:rgba(214,227,235,0.4);
+font-size:18px;
+line-height:1;
+transition:transform .25s ease,color .25s ease;
+}
+
+.feature-card.open .chev{
+transform:rotate(180deg);
+color:#72f3ff;
+}
+
+.feature-panel{
+display:grid;
+grid-template-rows:0fr;
+transition:grid-template-rows .32s cubic-bezier(.19,1,.22,1);
+}
+
+.feature-card.open .feature-panel{
+grid-template-rows:1fr;
+}
+
+.feature-panel-inner{
+overflow:hidden;
+}
+
+.feature-panel-content{
+padding:0 18px 18px 62px;
+color:rgba(219,232,238,0.76);
+font-size:13px;
+line-height:1.7;
+}
+
+.feature-panel-content ul{
+margin:0;
+padding-left:18px;
+}
+
+.feature-panel-content li+li{
+margin-top:6px;
+}
+
+.side-stack{
+display:grid;
+gap:18px;
+}
+
+.side-card{
+border-radius:18px;
+border:1px solid var(--line);
+background:linear-gradient(180deg,rgba(9,18,31,0.88) 0%,rgba(7,14,24,0.96) 100%);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.03),
+0 16px 34px rgba(0,0,0,0.22);
+}
+
+.license-card{
+padding:20px;
+}
+
+.license-title{
+font-size:16px;
+font-weight:700;
+color:#f5fdff;
+}
+
+.license-sub{
+margin-top:6px;
+font-size:13px;
+line-height:1.5;
+color:rgba(214,227,235,0.58);
+}
+
+.license-list{
+margin-top:18px;
+display:grid;
+gap:10px;
+}
+
+.license-option{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:16px;
+padding:14px 14px;
+border-radius:14px;
+border:1px solid rgba(85,236,255,0.10);
+background:rgba(7,13,22,0.72);
+color:#f1fbff;
+font-size:14px;
+cursor:pointer;
+transition:border-color .25s ease,background .25s ease,transform .25s ease,box-shadow .25s ease;
+}
+
+.license-option:hover{
+transform:translateY(-1px);
+border-color:rgba(85,236,255,0.22);
+}
+
+.license-option.active{
+background:rgba(10,55,76,0.48);
+border-color:rgba(85,236,255,0.42);
+box-shadow:0 0 20px rgba(0,220,255,0.08);
+}
+
+.license-left{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.license-badge{
+padding:4px 7px;
+border-radius:8px;
+background:rgba(28,220,175,0.12);
+color:#4df2d9;
+font-size:9px;
+font-weight:800;
+letter-spacing:.04em;
+text-transform:uppercase;
+border:1px solid rgba(28,220,175,0.14);
+}
+
+.license-price{
+font-weight:700;
+color:#f7fdff;
+}
+
+.purchase-btn{
+margin-top:20px;
+width:100%;
+height:50px;
+border:none;
+border-radius:14px;
+background:linear-gradient(180deg,#33dff2 0%,#22c5dc 100%);
+color:#03131a;
+font-size:15px;
+font-weight:800;
+cursor:pointer;
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.28),
+0 14px 28px rgba(0,220,255,0.18);
+transition:transform .25s ease,filter .25s ease;
+}
+
+.purchase-btn:hover{
+transform:translateY(-1px);
+filter:brightness(1.05);
+}
+
+.secure-note{
+margin-top:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+font-size:11px;
+color:rgba(203,223,232,0.42);
+}
+
+.secure-note::before{
+content:"";
+width:7px;
+height:7px;
+border-radius:50%;
+background:#1ee98c;
+box-shadow:0 0 10px rgba(30,233,140,0.45);
+}
+
+.help-card{
+overflow:hidden;
+}
+
+.help-trigger{
+width:100%;
+padding:14px 16px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:16px;
+background:transparent;
+border:none;
+cursor:pointer;
+text-align:left;
+color:inherit;
+}
+
+.help-left{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.help-icon{
+width:30px;
+height:30px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+background:rgba(255,255,255,0.04);
+border:1px solid rgba(255,255,255,0.06);
+color:#9ab2bf;
+font-size:14px;
+}
+
+.help-title{
+font-size:14px;
+font-weight:700;
+color:#f5fdff;
+}
+
+.help-sub{
+margin-top:3px;
+font-size:12px;
+color:rgba(206,225,234,0.42);
+}
+
+.help-arrow{
+color:rgba(214,227,235,0.38);
+font-size:18px;
+transition:transform .25s ease,color .25s ease;
+}
+
+.help-card.open .help-arrow{
+transform:rotate(90deg);
+color:#72f3ff;
+}
+
+.help-panel{
+display:grid;
+grid-template-rows:0fr;
+transition:grid-template-rows .32s cubic-bezier(.19,1,.22,1);
+}
+
+.help-card.open .help-panel{
+grid-template-rows:1fr;
+}
+
+.help-panel-inner{
+overflow:hidden;
+}
+
+.help-panel-content{
+padding:0 16px 16px 16px;
+border-top:1px solid rgba(85,236,255,0.08);
+}
+
+.help-actions{
+display:grid;
+gap:10px;
+margin-top:14px;
+}
+
+.help-action{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+padding:12px 14px;
+border-radius:12px;
+border:1px solid rgba(85,236,255,0.10);
+background:rgba(7,13,22,0.62);
+color:#f1fbff;
+text-decoration:none;
+transition:border-color .25s ease,transform .25s ease,background .25s ease;
+}
+
+.help-action:hover{
+transform:translateY(-1px);
+border-color:rgba(85,236,255,0.24);
+background:rgba(9,20,34,0.78);
+}
+
+.help-action-left{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.help-action-icon{
+width:26px;
+height:26px;
+border-radius:9px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:rgba(89,243,255,0.10);
+border:1px solid rgba(89,243,255,0.14);
+color:#72f3ff;
+font-size:13px;
+}
+
+.help-action-title{
+font-size:13px;
+font-weight:700;
+color:#f6fdff;
+}
+
+.help-action-sub{
+margin-top:2px;
+font-size:11px;
+color:rgba(206,225,234,0.46);
+}
+
+.help-action-arrow{
+font-size:16px;
+color:rgba(214,227,235,0.36);
+}
+
+.setup-block{
+display:grid;
+gap:12px;
+}
+
+.setup-heading{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:15px;
+font-weight:700;
+color:#dffcff;
+}
+
+.setup-heading::before{
+content:"";
+width:8px;
+height:8px;
+border-radius:50%;
+background:#35e5ff;
+box-shadow:0 0 10px rgba(53,229,255,0.45);
+}
+
+.setup-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+}
+
+.setup-step{
+min-height:78px;
+padding:14px;
+border-radius:16px;
+border:1px solid var(--line);
+background:linear-gradient(180deg,rgba(9,18,31,0.84) 0%,rgba(7,14,24,0.92) 100%);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.setup-num{
+font-size:10px;
+font-weight:800;
+color:#34dcff;
+letter-spacing:.04em;
+text-transform:uppercase;
+}
+
+.setup-text{
+margin-top:10px;
+font-size:13px;
+line-height:1.45;
+font-weight:700;
+color:#f7fcff;
+}
+
+.footer{
+position:relative;
+z-index:12;
+padding:0 24px 36px;
+}
+
+.footer-inner{
+width:100%;
+max-width:1160px;
+margin:0 auto;
+padding-top:22px;
+border-top:1px solid rgba(85,236,255,0.08);
+text-align:center;
+font-size:13px;
+color:rgba(214,227,235,0.44);
+}
+
+svg{
+display:block;
+}
+
+@keyframes pulseGlow{
+0%,100%{transform:scale(1);opacity:.92;}
+50%{transform:scale(1.04);opacity:1;}
+}
+
+@keyframes drift{
+0%,100%{transform:translateY(-1%) translateX(0) skewX(-8deg);opacity:.26;}
+50%{transform:translateY(2%) translateX(8px) skewX(-6deg);opacity:.36;}
+}
+
+@keyframes grainMove{
+0%{transform:translate(0,0);}
+20%{transform:translate(-1%,1%);}
+40%{transform:translate(1%,-1%);}
+60%{transform:translate(-1%,0);}
+80%{transform:translate(1%,1%);}
+100%{transform:translate(0,0);}
+}
+
+@media (max-width:1050px){
+.product-layout{
+grid-template-columns:1fr;
+}
+}
+
+@media (max-width:900px){
+.topbar{
+padding:0 14px;
+}
+.nav-links{
+gap:20px;
+}
+.products-grid{
+grid-template-columns:1fr;
+}
+.setup-grid{
+grid-template-columns:1fr;
+}
+}
+
+@media (max-width:720px){
+.topbar-wrap{
+width:calc(100% - 24px);
+top:12px;
+}
+.topbar{
+height:auto;
+min-height:56px;
+padding:12px 14px;
+border-radius:22px;
+flex-wrap:wrap;
+justify-content:center;
+gap:12px 18px;
+}
+.brand{
+min-width:auto;
+padding:0;
+}
+.nav-links{
+order:3;
+width:100%;
+justify-content:center;
+flex-wrap:wrap;
+gap:14px 18px;
+}
+.products-section,
+.product-page,
+.footer,
+.hero{
+padding-left:18px;
+padding-right:18px;
+}
+.product-card{
+min-height:220px;
+}
+.product-title{
+font-size:21px;
+}
+.feature-desc{
+max-width:220px;
+}
+.feature-panel-content{
+padding:0 16px 16px 16px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-depth"></div>
+
+<div class="beam-wrap">
+<div class="beam"></div>
+<div class="beam"></div>
+<div class="beam"></div>
+<div class="beam"></div>
+<div class="beam"></div>
+<div class="beam"></div>
+</div>
+
+<div class="orb-glow"></div>
+<canvas id="particles"></canvas>
+
+<div class="topbar-wrap">
+<nav class="topbar">
+<a href="#" class="brand" onclick="goHome(); return false;">
+<img src="https://image2url.com/r2/default/images/1773349228164-75d6f34d-daf1-4a08-af7c-21c3f3bb066b.png" alt="Logo">
+</a>
+
+<div class="nav-links">
+<a href="index.html" onclick="goHome(); return false;">Pricing</a>
+<a href="Status.html"goHome(); return false;">Status</a>
+<a href="downloads.html" class="active">Downloads</a>
+<a href="https://discord.gg/N5pbbGhwqu" onclick="goHome(); return false;">Support</a>
+</div>
+
+<a href="Guide.html" class="guides-btn" onclick="goHomeSoon()">
+<span>Guides</span>
+<span class="guides-icon"></span>
+</a>
+</nav>
+</div>
+
+<div class="home-page" id="home-page">
+<main class="hero">
+<div class="hero-inner">
+
+<h1 class="title">
+Premium Digital Products
+<span class="cyan-line">Delivered Instantly</span>
+</h1>
+
+<p class="subtitle">
+Get your license keys in seconds, secure checkout fulfillment, and 24/7 instant delivery
+</p>
+
+<div class="cta-wrap">
+<button class="cta-btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+<span>Get Started Now</span>
+</button>
+</div>
+
+</div>
+</main>
+
+<section class="products-section" id="products">
+<div class="products-inner">
+
+<div class="products-heading">
+<h2 class="products-title">
+Featured <span class="cyan-line">Products</span>
+</h2>
+
+<p class="products-subtitle">
+Each product below is fully secure and Ud and they are all built to last.
+</p>
+</div>
+
+<div class="products-grid">
+<div class="product-card" onclick="openPage('page-rust')">
+<img class="product-image" src="https://image2url.com/r2/default/images/1773364328198-835bc43a-403a-443e-bec9-a37ddd7e997d.jpg" alt="Rust product image">
+<div class="product-key">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+<path d="M14.5 9.5a4 4 0 1 0-8 0a4 4 0 0 0 8 0Z" stroke="#4eefff" stroke-width="1.8"/>
+<path d="M13 11l8 8m0 0v-3m0 3h-3" stroke="#4eefff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</div>
+<div class="product-badge">Undetected</div>
+<div class="product-content">
+<div class="product-title">Fortnite Private</div>
+<p class="product-desc">Our Fortnite Private was tested for over a hundred 100hrs on one account with out one single ban</p>
+<div class="product-meta">
+<span class="product-price">From $5.00</span>
+<span class="product-link">Open Product →</span>
+</div>
+</div>
+</div>
+
+<div class="product-card" onclick="openPage('page-spoofer')">
+<img class="product-image" src="https://image2url.com/r2/default/images/1773364636235-21866bd7-d1a8-497f-8e01-e9b097769fd9.webp" alt="Spoofer product image">
+<div class="product-key">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+<path d="M14.5 9.5a4 4 0 1 0-8 0a4 4 0 0 0 8 0Z" stroke="#4eefff" stroke-width="1.8"/>
+<path d="M13 11l8 8m0 0v-3m0 3h-3" stroke="#4eefff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</div>
+<div class="product-badge">Undetected</div>
+<div class="product-content">
+<div class="product-title">Perm Spoofer</div>
+<p class="product-desc"></p>
+<div class="product-meta">
+<span class="product-price">From $5.00</span>
+<span class="product-link">Open Product →</span>
+</div>
+</div>
+</div>
+
+<div class="product-card" onclick="openPage('page-loader')">
+<img class="product-image" src="https://image2url.com/r2/default/images/1773368021657-26400acc-28e8-4e61-8f63-099f580669a3.webp" alt="Loader product image">
+<div class="product-key">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+<path d="M14.5 9.5a4 4 0 1 0-8 0a4 4 0 0 0 8 0Z" stroke="#4eefff" stroke-width="1.8"/>
+<path d="M13 11l8 8m0 0v-3m0 3h-3" stroke="#4eefff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</div>
+<div class="product-badge">Comming soon</div>
+<div class="product-content">
+<div class="product-title">Cs2</div>
+<p class="product-desc"></p>
+<div class="product-meta">
+<span class="product-price">From $0.00</span>
+<span class="product-link">Open Product →</span>
+</div>
+</div>
+</div>
+
+<div class="product-card" onclick="openPage('page-private')">
+<img class="product-image" src="https://image2url.com/r2/default/images/1773367972531-4f439dad-e3a8-4abe-b2d0-d4defb8cb924.jpg" alt="Private product image">
+<div class="product-key">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+<path d="M14.5 9.5a4 4 0 1 0-8 0a4 4 0 0 0 8 0Z" stroke="#4eefff" stroke-width="1.8"/>
+<path d="M13 11l8 8m0 0v-3m0 3h-3" stroke="#4eefff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</div>
+<div class="product-badge">Comming soon</div>
+<div class="product-content">
+<div class="product-title">R6 Exsternal</div>
+<p class="product-desc"></p>
+<div class="product-meta">
+<span class="product-price">From $0.00</span>
+<span class="product-link">Open Product →</span>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+</div>
+
+<section class="product-page" id="page-rust">
+<div class="product-inner">
+<div class="page-top">
+<div class="status-row">
+<div class="status-pill">Undetected</div>
+<div class="status-meta">V2.4 Updated</div>
+</div>
+<button class="back-btn" onclick="goHome()">Back To Products</button>
+</div>
+
+<div class="product-layout">
+<div>
+<h2 class="page-title">Fortnite Private<span>Cheat</span></h2>
+
+<div class="preview-card">
+<img class="preview-image" src="https://image2url.com/r2/default/images/1773364328198-835bc43a-403a-443e-bec9-a37ddd7e997d.jpg" alt="Fort preview">
+<a class="preview-play" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" aria-label="Play preview"></a>
+</div>
+
+<div class="breakdown-title">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+<path d="M4 8.5L12 4l8 4.5M4 8.5V16l8 4 8-4V8.5M4 8.5l8 4 8-4M12 12.5V20" stroke="#3be5ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+<span>Features Breakdown</span>
+</div>
+
+<div class="feature-list">
+<div class="feature-card open">
+<button class="feature-trigger" type="button">
+<div class="feature-left">
+<div class="feature-icon red">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+</div>
+<div class="feature-text">
+<div class="feature-name">AIM</div>
+<div class="feature-desc"></div>
+</div>
+</div>
+<div class="chev">⌄</div>
+</button>
+<div class="feature-panel"><div class="feature-panel-inner"><div class="feature-panel-content">
+<ul>
+<li>Works on windows 11_25h2 Working on Windows 10_22h2</li>
+<li>Memorey Aimbot</li>
+<li>Aimbot Auto Humanization</li>
+<li>Fov control</li>
+<li>Configurable hit region</li>
+</ul>
+</div></div></div>
+</div>
+
+<div class="feature-card">
+<button class="feature-trigger" type="button">
+<div class="feature-left">
+<div class="feature-icon blue">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 12s3.5-5 9-5s9 5 9 5s-3.5 5-9 5s-9-5-9-5Z" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="12" r="2.5" stroke="currentColor" stroke-width="1.9"/></svg>
+</div>
+<div class="feature-text">
+<div class="feature-name">ESP</div>
+<div class="feature-desc"></div>
+</div>
+</div>
+<div class="chev">⌄</div>
+</button>
+<div class="feature-panel"><div class="feature-panel-inner"><div class="feature-panel-content">
+<ul>
+<li>Has display player ID instead of name for better FPS. Also has display platform. Includes square box ESP, round box ESP, and cornered box ESP Also has Skelton Esp.</li>
+<li>has snaplines an China hat Esp.</li>
+<li>Has a fully customizable radar.</li>
+</ul>
+</div></div></div>
+</div>
+
+<div class="feature-card">
+<button class="feature-trigger" type="button">
+<div class="feature-left">
+<div class="feature-icon purple">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 8h12M6 16h12M9 4v8M15 12v8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+</div>
+<div class="feature-text">
+<div class="feature-name">MISC</div>
+<div class="feature-desc"></div>
+</div>
+</div>
+<div class="chev">⌄</div>
+</button>
+<div class="feature-panel"><div class="feature-panel-inner"><div class="feature-panel-content">
+<ul>
+<li>Display Fps and Vysnc</li>
+<li>Stream Proof</li>
+<li>Can change Screen Brightness and System Volume</li>
+<li>Esp/bone Draw Distance</li>
+</ul>
+</div></div></div>
+</div>
+</div>
+</div>
+
+<div class="side-stack">
+<div class="side-card license-card">
+<div class="license-title">Select License</div>
+<div class="license-sub">Instant delivery to email. 24/7 Support.</div>
+<div class="license-list">
+<div class="license-option" data-target="rust" data-price="5.00">
+<div class="license-left"><span>1 Day</span></div>
+<div class="license-price">$5.00</div>
+</div>
+<div class="license-option active" data-target="rust" data-price="15.00">
+<div class="license-left"><span>1 Week</span><span class="license-badge">Popular</span></div>
+<div class="license-price">$15.00</div>
+</div>
+<div class="license-option" data-target="rust" data-price="25.00">
+<div class="license-left"><span>1 Month</span><span class="license-badge">Value</span></div>
+<div class="license-price">$25.00</div>
+</div>
+<div class="license-option" data-target="rust" data-price="300.00">
+<div class="license-left"><span>Lifetime</span></div>
+<div class="license-price">$300.00</div>
+</div>
+</div>
+<a href="https://cash.app/$johnyukhh" target="_blank">
+    <button class="purchase-btn" id="purchase-rust">Purchase Now</button>
+</a>
+<div class="secure-note">Secure encrypted payment</div>
+</div>
+
+<div class="side-card help-card">
+<button class="help-trigger" type="button">
+<div class="help-left">
+<div class="help-icon">◴</div>
+<div>
+<div class="help-title">Need help?</div>
+<div class="help-sub">Contact our Rust support team</div>
+</div>
+</div>
+<div class="help-arrow">›</div>
+</button>
+<div class="help-panel"><div class="help-panel-inner"><div class="help-panel-content">
+<div class="help-actions">
+<a href="#" class="help-action"><div class="help-action-left"><div class="help-action-icon">✉</div><div><div class="help-action-title">Soon</div><div class="help-action-sub">Soon</div></div></div><div class="help-action-arrow">›</div></a>
+<a href="https://discord.gg/N5pbbGhwqu" class="help-action"><div class="help-action-left"><div class="help-action-icon">💬</div><div><div class="help-action-title">Discord</div><div class="help-action-sub">Fast direct assistance</div></div></div><div class="help-action-arrow">›</div></a>
+<a href="#" class="help-action"><div class="help-action-left"><div class="help-action-icon">?</div><div><div class="help-action-title">Soon</div><div class="help-action-sub">Soon</div></div></div><div class="help-action-arrow">›</div></a>
+</div>
+</div></div></div>
+</div>
+
+<div class="setup-block">
+<div class="setup-heading">Easy Setup</div>
+<div class="setup-grid">
+<div class="setup-step"><div class="setup-num">01</div><div class="setup-text">Purchase License</div></div>
+<div class="setup-step"><div class="setup-num">02</div><div class="setup-text">Download Loader</div></div>
+<div class="setup-step"><div class="setup-num">03</div><div class="setup-text">Launch &amp; Play</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="product-page" id="page-spoofer">
+<div class="product-inner">
+<div class="page-top">
+<div class="status-row">
+<div class="status-pill">Secure</div>
+<div class="status-meta">V1.9 Updated</div>
+</div>
+<button class="back-btn" onclick="goHome()">Back To Products</button>
+</div>
+
+<div class="product-layout">
+<div>
+<h2 class="page-title">HWID<span>Perm Spoofer</span></h2>
+
+<div class="preview-card">
+<img class="preview-image" src="https://image2url.com/r2/default/images/1773364636235-21866bd7-d1a8-497f-8e01-e9b097769fd9.webp" alt="Spoofer preview">
+<a class="preview-play" href="https://www.youtube.com/watch?v=ysz5S6PUM-U" target="_blank" rel="noopener noreferrer" aria-label="Play preview"></a>
+</div>
+
+<div class="breakdown-title">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+<path d="M4 8.5L12 4l8 4.5M4 8.5V16l8 4 8-4V8.5M4 8.5l8 4 8-4M12 12.5V20" stroke="#3be5ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+<span>Features Breakdown</span>
+</div>
+
+<div class="feature-list">
+<div class="feature-card open">
+<button class="feature-trigger" type="button">
+<div class="feature-left">
+<div class="feature-icon green">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5v14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+</div>
+<div class="feature-text">
+<div class="feature-name">Clean</div>
+<div class="feature-desc">Traces, Temp Files,</div>
+</div>
+</div>
+<div class="chev">⌄</div>
+</button>
+<div class="feature-panel"><div class="feature-panel-inner"><div class="feature-panel-content">
+<ul>
+<li>C</li>
+<li>CLean All Registary and temp files</li>
+<li>Must Restart after clean</li>
+</ul>
+</div></div></div>
+</div>
+
+<div class="feature-card">
+<button class="feature-trigger" type="button">
+<div class="feature-left">
+<div class="feature-icon blue">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="4" y="6" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.9"/><path d="M8 10h8M8 14h5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+</div>
+<div class="feature-text">
+<div class="feature-name">What it spoofs</div>
+<div class="feature-desc">Profiles, Device Presets, Storage</div>
+</div>
+</div>
+<div class="chev">⌄</div>
+</button>
+<div class="feature-panel"><div class="feature-panel-inner"><div class="feature-panel-content">
+<ul>
+<li>Changes your uuid Evrey time u spoof</li>
+<li>Works on windows 11_25h2 Working on Windows 10_22h2</li>
+<li>Also ur ram serials and cpu and gpu</li>
+</ul>
+</div></div></div>
+</div>
+
+<div class="feature-card">
+<button class="feature-trigger" type="button">
+<div class="feature-left">
+<div class="feature-icon purple">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 4v10l-7 4l-7-4V7l7-4Z" stroke="currentColor" stroke-width="1.9"/><path d="M12 8v4l3 2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+</div>
+<div class="feature-text">
+<div class="feature-name">TOOLS</div>
+<div class="feature-desc">Utilities, Checks, Recovery</div>
+</div>
+</div>
+<div class="chev">⌄</div>
+</button>
+<div class="feature-panel"><div class="feature-panel-inner"><div class="feature-panel-content">
+<ul>
+<li>Shows ur beofre and after Serials when u spoof</li>
+<li>No Computer Reset Rquired</li>
+<li>Extra utility controls and quick actions</li>
+</ul>
+</div></div></div>
+</div>
+</div>
+</div>
+
+<div class="side-stack">
+<div class="side-card license-card">
+<div class="license-title">Select License</div>
+<div class="license-sub">Fast download access and ongoing support.</div>
+<div class="license-list">
+<div class="license-option" data-target="spoofer" data-price="5.00">
+<div class="license-left"><span>1 Days</span></div>
+<div class="license-price">$5.00</div>
+</div>
+<div class="license-option active" data-target="spoofer" data-price="12.00">
+<div class="license-left"><span>1 Week</span><span class="license-badge">Popular</span></div>
+<div class="license-price">$12.00</div>
+</div>
+<div class="license-option" data-target="spoofer" data-price="35.00">
+<div class="license-left"><span>1 Month</span></div>
+<div class="license-price">$35.00</div>
+</div>
+<div class="license-option" data-target="spoofer" data-price="250.00">
+<div class="license-left"><span>Lifetime</span><span class="license-badge">Best</span></div>
+<div class="license-price">$250.00</div>
+</div>
+</div>
+<button class="purchase-btn" id="purchase-spoofer">Purchase Now</button>
+
+<script>
+document.getElementById("purchase Now").onclick = function () {
+    window.open("https://cash.app/$johnyukhh", "_blank");
+};
+</script>
+<div class="secure-note">Secure encrypted payment</div>
+</div>
+
+<div class="side-card help-card">
+<button class="help-trigger" type="button">
+<div class="help-left">
+<div class="help-icon">◴</div>
+<div>
+<div class="help-title">Need help?</div>
+<div class="help-sub">Spoofer setup and reset help</div>
+</div>
+</div>
+<div class="help-arrow">›</div>
+</button>
+<div class="help-panel"><div class="help-panel-inner"><div class="help-panel-content">
+<div class="help-actions">
+<a href="#" class="help-action"><div class="help-action-left"><div class="help-action-icon">✉</div><div><div class="help-action-title">Soon</div><div class="help-action-sub">Soon</div></div></div><div class="help-action-arrow">›</div></a>
+<a href="https://discord.gg/N5pbbGhwqu" class="help-action"><div class="help-action-left"><div class="help-action-icon">💬</div><div><div class="help-action-title">Discord</div><div class="help-action-sub">Guided support from staff</div></div></div><div class="help-action-arrow">›</div></a>
+<a href="#" class="help-action"><div class="help-action-left"><div class="help-action-icon">?</div><div><div class="help-action-title">Soon</div><div class="help-action-sub">Soon</div></div></div><div class="help-action-arrow">›</div></a>
+</div>
+</div></div></div>
+</div>
+
+<div class="setup-block">
+<div class="setup-heading">Easy Setup</div>
+<div class="setup-grid">
+<div class="setup-step"><div class="setup-num">01</div><div class="setup-text">Choose Profile</div></div>
+<div class="setup-step"><div class="setup-num">02</div><div class="setup-text">Run Utility</div></div>
+<div class="setup-step"><div class="setup-num">03</div><div class="setup-text">Restart &amp; Verify</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="product-page" id="page-loader">
+<div class="product-inner">
+<div class="page-top">
+<div class="status-row">
+<div class="status-pill">Stable</div>
+<div class="status-meta">V3.1 Updated</div>
+</div>
+<button class="back-btn" onclick="goHome()">Back To Products</button>
+</div>
+
+<div class="product-layout">
+<div>
+<h2 class="page-title">SOON <span>SOOON</span></h2>
+
+<div class="preview-card">
+<img class="preview-image" src="" alt="Loader preview">
+<a class="preview-play" href="https://www.youtube.com/watch?v=jNQXAC9IVRw" target="_blank" rel="noopener noreferrer" aria-label="Play preview"></a>
+</div>
+
+<div class="breakdown-title">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+<path d="M4 8.5L12 4l8 4.5M4 8.5V16l8 4 8-4V8.5M4 8.5l8 4 8-4M12 12.5V20" stroke="#3be5ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+<span>Features Breakdown</span>
+</div>
+
+<div class="feature-list">
+<div class="feature-card open">
+<button class="feature-trigger" type="button">
+<div class="feature-left">
+<div class="feature-icon blue">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 4v10M8 10l4 4l4-4M5 19h14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div class="feature-text">
+<div class="feature-name">SOON</div>
+<div class="feature-desc">SOON</div>
+</div>
+</div>
+<div class="chev">⌄</div>
+</button>
+<div class="feature-panel"><div class="feature-panel-inner"><div class="feature-panel-content">
+<ul>
+<li>SOON</li>
+<li>SOON</li>
+<li>SOON</li>
+</ul>
+</div></div></div>
+</div>
+
+<div class="feature-card">
+<button class="feature-trigger" type="button">
+<div class="feature-left">
+<div class="feature-icon green">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M7 12l3 3l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/></svg>
+</div>
+<div class="feature-text">
+<div class="feature-name">SOON</div>
+<div class="feature-desc">SOON</div>
+</div>
+</div>
+<div class="chev">⌄</div>
+</button>
+<div class="feature-panel"><div class="feature-panel-inner"><div class="feature-panel-content">
+<ul>
+<li>SOON</li>
+<li>SOON</li>
+<li>SOON</li>
+</ul>
+</div></div></div>
+</div>
+
+<div class="feature-card">
+<button class="feature-trigger" type="button">
+<div class="feature-left">
+<div class="feature-icon purple">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M7 7l10 10" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" opacity=".55"/></svg>
+</div>
+<div class="feature-text">
+<div class="feature-name">SOON</div>
+<div class="feature-desc">SOON</div>
+</div>
+</div>
+<div class="chev">⌄</div>
+</button>
+<div class="feature-panel"><div class="feature-panel-inner"><div class="feature-panel-content">
+<ul>
+<li>SOON</li>
+<li>SOON</li>
+<li>SOON</li>
+</ul>
+</div></div></div>
+</div>
+</div>
+</div>
+
+<div class="side-stack">
+<div class="side-card license-card">
+<div class="license-title">Select License</div>
+<div class="license-sub">Download access with live updates included.</div>
+<div class="license-list">
+<div class="license-option" data-target="loader" data-price="4.99">
+<div class="license-left"><span>SOON</span></div>
+<div class="license-price">$4.99</div>
+</div>
+<div class="license-option active" data-target="loader" data-price="12.99">
+<div class="license-left"><span>SOON</span><span class="license-badge">Popular</span></div>
+<div class="license-price">$12.99</div>
+</div>
+<div class="license-option" data-target="loader" data-price="24.99">
+<div class="license-left"><span>SOON</span></div>
+<div class="license-price">$24.99</div>
+</div>
+<div class="license-option" data-target="loader" data-price="44.99">
+<div class="license-left"><span>SOON</span></div>
+<div class="license-price">$44.99</div>
+</div>
+</div>
+<button class="purchase-btn" id="purchase-loader">Purchase Now - SOON</button>
+<div class="secure-note">Secure encrypted payment</div>
+</div>
+
+<div class="side-card help-card">
+<button class="help-trigger" type="button">
+<div class="help-left">
+<div class="help-icon">◴</div>
+<div>
+<div class="help-title">Need help?</div>
+<div class="help-sub">Loader install and launch support</div>
+</div>
+</div>
+<div class="help-arrow">›</div>
+</button>
+<div class="help-panel"><div class="help-panel-inner"><div class="help-panel-content">
+<div class="help-actions">
+<a href="#" class="help-action"><div class="help-action-left"><div class="help-action-icon">✉</div><div><div class="help-action-title">SOON</div><div class="help-action-sub">SOON</div></div></div><div class="help-action-arrow">›</div></a>
+<a href="#" class="help-action"><div class="help-action-left"><div class="help-action-icon">💬</div><div><div class="help-action-title">SOON</div><div class="help-action-sub">SOON</div></div></div><div class="help-action-arrow">›</div></a>
+<a href="#" class="help-action"><div class="help-action-left"><div class="help-action-icon">?</div><div><div class="help-action-title">SOON</div><div class="help-action-sub">SOON</div></div></div><div class="help-action-arrow">›</div></a>
+</div>
+</div></div></div>
+</div>
+
+<div class="setup-block">
+<div class="setup-heading">Easy Setup</div>
+<div class="setup-grid">
+<div class="setup-step"><div class="setup-num">01</div><div class="setup-text">Choose Access</div></div>
+<div class="setup-step"><div class="setup-num">02</div><div class="setup-text">Download Package</div></div>
+<div class="setup-step"><div class="setup-num">03</div><div class="setup-text">Validate &amp; Launch</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="product-page" id="page-private">
+<div class="product-inner">
+<div class="page-top">
+<div class="status-row">
+<div class="status-pill">SOON</div>
+<div class="status-meta">V4.0 Updated</div>
+</div>
+<button class="back-btn" onclick="goHome()">Back To Products</button>
+</div>
+
+<div class="product-layout">
+<div>
+<h2 class="page-title">SOON<span>SOON</span></h2>
+
+<div class="preview-card">
+<img class="preview-image" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=80" alt="Private build preview">
+<a class="preview-play" href="https://www.youtube.com/watch?v=aqz-KE-bpKQ" target="_blank" rel="noopener noreferrer" aria-label="Play preview"></a>
+</div>
+
+<div class="breakdown-title">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+<path d="M4 8.5L12 4l8 4.5M4 8.5V16l8 4 8-4V8.5M4 8.5l8 4 8-4M12 12.5V20" stroke="#3be5ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+<span>Features Breakdown</span>
+</div>
+
+<div class="feature-list">
+<div class="feature-card open">
+<button class="feature-trigger" type="button">
+<div class="feature-left">
+<div class="feature-icon red">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4v10l-8 4l-8-4V7l8-4Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 12l2 2l4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div class="feature-text">
+<div class="feature-name">PSOON</div>
+<div class="feature-desc">SOON</div>
+</div>
+</div>
+<div class="chev">⌄</div>
+</button>
+<div class="feature-panel"><div class="feature-panel-inner"><div class="feature-panel-content">
+<ul>
+<li>SOON</li>
+<li>SOON</li>
+<li>SOON</li>
+</ul>
+</div></div></div>
+</div>
+
+<div class="feature-card">
+<button class="feature-trigger" type="button">
+<div class="feature-left">
+<div class="feature-icon blue">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 19l5-5m0 0l4-4m-4 4l-4-4m4 4l4 4m1-11h4v4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div class="feature-text">
+<div class="feature-name">SOON</div>
+<div class="feature-desc">SOON</div>
+</div>
+</div>
+<div class="chev">⌄</div>
+</button>
+<div class="feature-panel"><div class="feature-panel-inner"><div class="feature-panel-content">
+<ul>
+<li>SOON</li>
+<li>SOON</li>
+<li>SOON</li>
+</ul>
+</div></div></div>
+</div>
+
+<div class="feature-card">
+<button class="feature-trigger" type="button">
+<div class="feature-left">
+<div class="feature-icon green">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/></svg>
+</div>
+<div class="feature-text">
+<div class="feature-name">SOON</div>
+<div class="feature-desc">SOON</div>
+</div>
+</div>
+<div class="chev">⌄</div>
+</button>
+<div class="feature-panel"><div class="feature-panel-inner"><div class="feature-panel-content">
+<ul>
+<li>SOON</li>
+<li>SOON</li>
+<li>SOON</li>
+</ul>
+</div></div></div>
+</div>
+</div>
+</div>
+
+<div class="side-stack">
+<div class="side-card license-card">
+<div class="license-title">Select License</div>
+<div class="license-sub">Premium access with priority support included.</div>
+<div class="license-list">
+<div class="license-option" data-target="private" data-price="14.99">
+<div class="license-left"><span>SOON</span></div>
+<div class="license-price">$14.99</div>
+</div>
+<div class="license-option active" data-target="private" data-price="39.99">
+<div class="license-left"><span>SOON</span><span class="license-badge">Popular</span></div>
+<div class="license-price">$39.99</div>
+</div>
+<div class="license-option" data-target="private" data-price="79.99">
+<div class="license-left"><span>SOON</span><span class="license-badge">Best</span></div>
+<div class="license-price">$79.99</div>
+</div>
+<div class="license-option" data-target="private" data-price="249.99">
+<div class="license-left"><span>SOON</span></div>
+<div class="license-price">$249.99</div>
+</div>
+</div>
+<button class="purchase-btn" id="purchase-private">Purchase Now - $39.99</button>
+<div class="secure-note">Secure encrypted payment</div>
+</div>
+
+<div class="side-card help-card">
+<button class="help-trigger" type="button">
+<div class="help-left">
+<div class="help-icon">◴</div>
+<div>
+<div class="help-title">Need help?</div>
+<div class="help-sub">Priority premium support</div>
+</div>
+</div>
+<div class="help-arrow">›</div>
+</button>
+<div class="help-panel"><div class="help-panel-inner"><div class="help-panel-content">
+<div class="help-actions">
+<a href="#" class="help-action"><div class="help-action-left"><div class="help-action-icon">✉</div><div><div class="help-action-title">SOON</div><div class="help-action-sub">SOON</div></div></div><div class="help-action-arrow">›</div></a>
+<a href="#" class="help-action"><div class="help-action-left"><div class="help-action-icon">💬</div><div><div class="help-action-title">SOON</div><div class="help-action-sub">SOON</div></div></div><div class="help-action-arrow">›</div></a>
+<a href="#" class="help-action"><div class="help-action-left"><div class="help-action-icon">?</div><div><div class="help-action-title">SOON</div><div class="help-action-sub">SOON</div></div></div><div class="help-action-arrow">›</div></a>
+</div>
+</div></div></div>
+</div>
+
+<div class="setup-block">
+<div class="setup-heading">Easy Setup</div>
+<div class="setup-grid">
+<div class="setup-step"><div class="setup-num">01</div><div class="setup-text">Purchase Tier</div></div>
+<div class="setup-step"><div class="setup-num">02</div><div class="setup-text">Receive Access</div></div>
+<div class="setup-step"><div class="setup-num">03</div><div class="setup-text">Configure Build</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<footer class="footer">
+<div class="footer-inner">
+© 2026 Engine6.0. All rights reserved.
+</div>
+</footer>
+
+<div class="scanlines"></div>
+<div class="noise"></div>
+<div class="vignette"></div>
+<div class="frame"></div>
+
+<script>
+const canvas=document.getElementById("particles")
+const ctx=canvas.getContext("2d")
+
+let w=0
+let h=0
+let particles=[]
+const particleCount=46
+
+function resize(){
+w=canvas.width=window.innerWidth
+h=canvas.height=window.innerHeight
+particles=Array.from({length:particleCount},createParticle)
+}
+
+function createParticle(){
+return{
+x:Math.random()*w,
+y:h*(0.58+Math.random()*0.34),
+r:Math.random()*1.7+0.35,
+a:Math.random()*0.22+0.05,
+vx:(Math.random()-0.5)*0.12,
+vy:-(Math.random()*0.16+0.02)
+}
+}
+
+function drawParticle(p){
+ctx.beginPath()
+ctx.fillStyle=`rgba(118,244,255,${p.a})`
+ctx.shadowBlur=10
+ctx.shadowColor="rgba(65,230,255,0.34)"
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2)
+ctx.fill()
+ctx.shadowBlur=0
+}
+
+function animate(){
+ctx.clearRect(0,0,w,h)
+
+const floorGlow=ctx.createRadialGradient(
+w*0.5,h*0.95,0,
+w*0.5,h*0.95,h*0.44
+)
+
+floorGlow.addColorStop(0,"rgba(0,238,255,0.12)")
+floorGlow.addColorStop(0.24,"rgba(0,238,255,0.06)")
+floorGlow.addColorStop(1,"rgba(0,0,0,0)")
+
+ctx.fillStyle=floorGlow
+ctx.fillRect(0,0,w,h)
+
+for(const p of particles){
+p.x+=p.vx
+p.y+=p.vy
+
+if(p.y<h*0.34||p.x<-20||p.x>w+20){
+Object.assign(p,createParticle(),{
+x:Math.random()*w,
+y:h*(0.78+Math.random()*0.12)
+})
+}
+
+drawParticle(p)
+}
+
+requestAnimationFrame(animate)
+}
+
+function openPage(id){
+document.getElementById("home-page").style.display="none"
+document.querySelectorAll(".product-page").forEach(page=>page.classList.remove("active"))
+document.getElementById(id).classList.add("active")
+window.scrollTo({top:0,behavior:"smooth"})
+}
+
+function goHome(){
+document.querySelectorAll(".product-page").forEach(page=>page.classList.remove("active"))
+document.getElementById("home-page").style.display="block"
+window.scrollTo({top:0,behavior:"smooth"})
+}
+
+function goHomeSoon(){
+setTimeout(()=>{
+goHome()
+document.getElementById("products").scrollIntoView({behavior:"smooth"})
+},50)
+}
+
+document.querySelectorAll(".feature-trigger").forEach(trigger=>{
+trigger.addEventListener("click",()=>{
+const card=trigger.closest(".feature-card")
+card.classList.toggle("open")
+})
+})
+
+document.querySelectorAll(".help-trigger").forEach(trigger=>{
+trigger.addEventListener("click",()=>{
+trigger.closest(".help-card").classList.toggle("open")
+})
+})
+
+const purchaseButtons={
+rust:document.getElementById("purchase-rust"),
+spoofer:document.getElementById("purchase-spoofer"),
+loader:document.getElementById("purchase-loader"),
+private:document.getElementById("purchase-private")
+}
+
+document.querySelectorAll(".license-option").forEach(option=>{
+option.addEventListener("click",()=>{
+const target=option.dataset.target
+document.querySelectorAll(`.license-option[data-target="${target}"]`).forEach(item=>item.classList.remove("active"))
+option.classList.add("active")
+purchaseButtons[target].textContent=`Purchase Now - $${option.dataset.price}`
+})
+})
+
+window.addEventListener("resize",resize)
+resize()
+animate()
+</script>
+
+</body>
+</html>
