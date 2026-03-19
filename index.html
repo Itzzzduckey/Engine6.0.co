@@ -1543,9 +1543,7 @@ Each product below is fully secure and Ud and they are all built to last.
 <div class="license-price">$300.00</div>
 </div>
 </div>
-<a href="https://cash.app/$johnyukhh" target="_blank">
-    <button class="purchase-btn" id="purchase-rust">Purchase Now</button>
-</a>
+<button class="purchase-btn" id="purchase-rust">Purchase Now</button>
 <div class="secure-note">Secure encrypted payment</div>
 </div>
 
@@ -1700,12 +1698,6 @@ Each product below is fully secure and Ud and they are all built to last.
 </div>
 </div>
 <button class="purchase-btn" id="purchase-spoofer">Purchase Now</button>
-
-<script>
-document.getElementById("purchase Now").onclick = function () {
-    window.open("https://cash.app/$johnyukhh", "_blank");
-};
-</script>
 <div class="secure-note">Secure encrypted payment</div>
 </div>
 
@@ -2176,6 +2168,27 @@ document.querySelectorAll(`.license-option[data-target="${target}"]`).forEach(it
 option.classList.add("active")
 purchaseButtons[target].textContent=`Purchase Now - $${option.dataset.price}`
 })
+})
+
+function handlePurchase(event){
+event.preventDefault()
+const paymentChoice=prompt("Do you want to pay with PayPal or Cash App? Type paypal or cash app")
+
+if(!paymentChoice) return
+
+const choice=paymentChoice.trim().toLowerCase()
+
+if(choice==="paypal"){
+window.open("https://www.paypal.com/paypalme/itzzzduckey","_blank")
+}else if(choice==="cash app"||choice==="cashapp"){
+window.open("https://cash.app/$johnyukhh","_blank")
+}else{
+alert("Please type paypal or cash app")
+}
+}
+
+document.querySelectorAll(".purchase-btn").forEach(button=>{
+button.addEventListener("click",handlePurchase)
 })
 
 window.addEventListener("resize",resize)
