@@ -1266,6 +1266,251 @@ max-width:220px;
 padding:0 16px 16px 16px;
 }
 }
+/* =========================================
+   Showcase Slider
+========================================= */
+.showcase-section{
+position:relative;
+z-index:12;
+padding:10px 24px 28px;
+}
+
+.showcase-inner{
+width:100%;
+max-width:1160px;
+margin:0 auto;
+}
+
+.showcase-shell{
+position:relative;
+height:560px;
+display:flex;
+align-items:center;
+justify-content:center;
+perspective:1800px;
+overflow:hidden;
+}
+
+.showcase-track{
+position:relative;
+width:100%;
+height:100%;
+transform-style:preserve-3d;
+}
+
+.showcase-card{
+position:absolute;
+top:50%;
+left:50%;
+width:min(420px,34vw);
+height:500px;
+border-radius:24px;
+overflow:hidden;
+cursor:pointer;
+user-select:none;
+transform-style:preserve-3d;
+backface-visibility:hidden;
+border:1px solid rgba(89,243,255,0.14);
+background:linear-gradient(180deg,rgba(8,18,29,0.88) 0%,rgba(5,11,20,0.96) 100%);
+box-shadow:
+0 18px 50px rgba(0,0,0,0.34),
+inset 0 1px 0 rgba(255,255,255,0.04);
+transition:
+transform 1s cubic-bezier(.19,1,.22,1),
+opacity 1s cubic-bezier(.19,1,.22,1),
+filter 1s cubic-bezier(.19,1,.22,1),
+box-shadow .45s ease,
+border-color .45s ease;
+}
+
+.showcase-card:hover{
+border-color:rgba(115,239,255,0.34);
+box-shadow:
+0 26px 64px rgba(0,0,0,0.42),
+0 0 30px rgba(0,220,255,0.10),
+inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.showcase-card img{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+transition:transform 1.1s cubic-bezier(.19,1,.22,1), filter .45s ease;
+filter:saturate(1.04) contrast(1.03) brightness(.78);
+}
+
+.showcase-card:hover img{
+transform:scale(1.05);
+filter:saturate(1.08) contrast(1.05) brightness(.84);
+}
+
+.showcase-card::before{
+content:"";
+position:absolute;
+inset:0;
+z-index:1;
+background:
+linear-gradient(180deg,rgba(0,0,0,0.02) 0%,rgba(0,0,0,0.12) 38%,rgba(5,10,18,0.82) 100%),
+linear-gradient(90deg,rgba(7,18,29,0.46) 0%,rgba(7,18,29,0.08) 42%,rgba(7,18,29,0.34) 100%);
+}
+
+.showcase-card::after{
+content:"";
+position:absolute;
+inset:0;
+z-index:2;
+opacity:.75;
+background:
+radial-gradient(circle at 50% 12%, rgba(122,245,255,0.12) 0%, rgba(122,245,255,0.04) 24%, transparent 60%);
+pointer-events:none;
+}
+
+.showcase-content{
+position:absolute;
+left:22px;
+right:22px;
+bottom:22px;
+z-index:3;
+}
+
+.showcase-badge{
+display:inline-flex;
+align-items:center;
+height:30px;
+padding:0 12px;
+border-radius:999px;
+background:rgba(9,31,45,0.82);
+border:1px solid rgba(89,243,255,0.16);
+color:#8ef6ff;
+font-size:11px;
+font-weight:800;
+letter-spacing:.05em;
+text-transform:uppercase;
+box-shadow:0 0 18px rgba(0,220,255,0.06);
+}
+
+.showcase-title{
+margin-top:14px;
+font-size:30px;
+line-height:1;
+font-weight:700;
+letter-spacing:-.05em;
+color:#f7fdff;
+text-shadow:0 0 18px rgba(0,220,255,0.04);
+}
+
+.showcase-desc{
+margin-top:10px;
+font-size:14px;
+line-height:1.55;
+color:rgba(214,227,235,0.72);
+max-width:320px;
+}
+
+.showcase-meta{
+margin-top:16px;
+display:flex;
+align-items:center;
+gap:12px;
+flex-wrap:wrap;
+}
+
+.showcase-price{
+display:inline-flex;
+align-items:center;
+height:34px;
+padding:0 12px;
+border-radius:999px;
+background:rgba(9,23,36,0.84);
+border:1px solid rgba(76,225,255,0.12);
+color:#c9fbff;
+font-size:13px;
+font-weight:700;
+}
+
+.showcase-open{
+display:inline-flex;
+align-items:center;
+gap:8px;
+color:#59f3ff;
+font-size:13px;
+font-weight:700;
+}
+
+.showcase-glow{
+position:absolute;
+left:50%;
+bottom:30px;
+width:min(740px,76vw);
+height:150px;
+transform:translateX(-50%);
+border-radius:999px;
+background:radial-gradient(circle,rgba(0,235,255,0.22) 0%,rgba(0,235,255,0.06) 34%,rgba(0,0,0,0) 72%);
+filter:blur(28px);
+pointer-events:none;
+}
+
+.showcase-dots{
+margin-top:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+}
+
+.showcase-dot{
+width:9px;
+height:9px;
+border-radius:50%;
+background:rgba(180,226,234,0.24);
+border:1px solid rgba(180,226,234,0.10);
+transition:transform .35s ease, background .35s ease, box-shadow .35s ease;
+cursor:pointer;
+}
+
+.showcase-dot.active{
+background:#59f3ff;
+box-shadow:0 0 14px rgba(89,243,255,0.45);
+transform:scale(1.2);
+}
+
+@media (max-width:980px){
+.showcase-shell{
+height:500px;
+}
+.showcase-card{
+width:min(360px,58vw);
+height:430px;
+}
+.showcase-title{
+font-size:24px;
+}
+}
+
+@media (max-width:720px){
+.showcase-section{
+padding-left:18px;
+padding-right:18px;
+padding-bottom:10px;
+}
+.showcase-shell{
+height:420px;
+}
+.showcase-card{
+width:min(290px,78vw);
+height:360px;
+}
+.showcase-title{
+font-size:21px;
+}
+.showcase-desc{
+font-size:13px;
+max-width:100%;
+}
+}
+
 </style>
 </head>
 
@@ -1326,7 +1571,71 @@ Get your license keys in seconds, secure checkout fulfillment, and 24/7 instant 
 
 </div>
 </main>
+<section class="showcase-section" id="showcase">
+  <div class="showcase-inner">
+    <div class="showcase-shell">
+      <div class="showcase-track" id="showcase-track">
 
+        <div class="showcase-card" data-page="page-rust">
+          <img src="https://image2url.com/r2/default/images/1773364328198-835bc43a-403a-443e-bec9-a37ddd7e997d.jpg" alt="Fortnite Private">
+          <div class="showcase-content">
+            <span class="showcase-badge">Undetected</span>
+            <div class="showcase-title">Fortnite Private</div>
+            <p class="showcase-desc">Smooth featured product showcase styled to your blue Engine6.0 look.</p>
+            <div class="showcase-meta">
+              <span class="showcase-price">From $5.00</span>
+              <span class="showcase-open">Open Product →</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase-card" data-page="page-spoofer">
+          <img src="https://image2url.com/r2/default/images/1773364636235-21866bd7-d1a8-497f-8e01-e9b097769fd9.webp" alt="Perm Spoofer">
+          <div class="showcase-content">
+            <span class="showcase-badge">Secure</span>
+            <div class="showcase-title">Perm Spoofer</div>
+            <p class="showcase-desc">Bigger visual cards using your main site colors instead of the old white style.</p>
+            <div class="showcase-meta">
+              <span class="showcase-price">From $5.00</span>
+              <span class="showcase-open">Open Product →</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase-card" data-page="page-loader">
+          <img src="https://image2url.com/r2/default/images/1774531108680-46e802d9-fce0-4b08-a397-ca18e6dffc84.png" alt="Rust">
+          <div class="showcase-content">
+            <span class="showcase-badge">Stable</span>
+            <div class="showcase-title">Rust</div>
+            <p class="showcase-desc">Slow rotating showcase cards that sit above your normal product grid.</p>
+            <div class="showcase-meta">
+              <span class="showcase-price">From $2.30</span>
+              <span class="showcase-open">Open Product →</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase-card" data-page="page-private">
+          <img src="https://image2url.com/r2/default/images/1773367972531-4f439dad-e3a8-4abe-b2d0-d4defb8cb924.jpg" alt="R6 External">
+          <div class="showcase-content">
+            <span class="showcase-badge">Coming Soon</span>
+            <div class="showcase-title">R6 External</div>
+            <p class="showcase-desc">Same idea as the second file cards, but blended into your cyan glow theme.</p>
+            <div class="showcase-meta">
+              <span class="showcase-price">From $0.00</span>
+              <span class="showcase-open">Open Product →</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="showcase-glow"></div>
+    </div>
+
+    <div class="showcase-dots" id="showcase-dots"></div>
+  </div>
+</section>
 <section class="products-section" id="products">
 <div class="products-inner">
 
@@ -2193,6 +2502,86 @@ button.addEventListener("click",handlePurchase)
 window.addEventListener("resize",resize)
 resize()
 animate()
+
+const showcaseCards = Array.from(document.querySelectorAll(".showcase-card"));
+const showcaseDotsWrap = document.getElementById("showcase-dots");
+let showcaseIndex = 0;
+let showcaseTimer = null;
+
+function buildShowcaseDots(){
+  showcaseDotsWrap.innerHTML = "";
+  showcaseCards.forEach((_, i) => {
+    const dot = document.createElement("button");
+    dot.className = "showcase-dot" + (i === showcaseIndex ? " active" : "");
+    dot.type = "button";
+    dot.addEventListener("click", () => {
+      showcaseIndex = i;
+      updateShowcase();
+      restartShowcaseAuto();
+    });
+    showcaseDotsWrap.appendChild(dot);
+  });
+}
+
+function updateShowcase(){
+  const total = showcaseCards.length;
+  const dots = showcaseDotsWrap.querySelectorAll(".showcase-dot");
+
+  showcaseCards.forEach((card, i) => {
+    let offset = i - showcaseIndex;
+
+    if (offset < -total / 2) offset += total;
+    if (offset > total / 2) offset -= total;
+
+    const abs = Math.abs(offset);
+    const translateX = offset * 260;
+    const translateZ = -abs * 180;
+    const rotateY = offset * -18;
+    const scale = 1 - abs * 0.12;
+    const opacity = abs > 2 ? 0 : 1 - abs * 0.28;
+
+    card.style.transform =
+      `translate(-50%, -50%) translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
+
+    card.style.opacity = opacity;
+    card.style.zIndex = String(100 - abs);
+    card.style.filter = `blur(${abs * 1.4}px) saturate(${1 - abs * 0.08})`;
+    card.style.pointerEvents = abs > 2 ? "none" : "auto";
+  });
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle("active", i === showcaseIndex);
+  });
+}
+
+function nextShowcase(){
+  showcaseIndex = (showcaseIndex + 1) % showcaseCards.length;
+  updateShowcase();
+}
+
+function restartShowcaseAuto(){
+  clearInterval(showcaseTimer);
+  showcaseTimer = setInterval(nextShowcase, 3200);
+}
+
+showcaseCards.forEach((card, i) => {
+  card.addEventListener("click", () => {
+    if (i !== showcaseIndex) {
+      showcaseIndex = i;
+      updateShowcase();
+      restartShowcaseAuto();
+      return;
+    }
+
+    const pageId = card.dataset.page;
+    if (pageId) openPage(pageId);
+  });
+});
+
+buildShowcaseDots();
+updateShowcase();
+restartShowcaseAuto();
+
 </script>
 
 </body>
