@@ -6,6 +6,7 @@
 <title>Premium Digital Products</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://www.paypal.com/sdk/js?client-id=AZ29dt4sAERKJhuOb_rHH6y1Pzt9UAAYQhaihGfjXFriNXwPQj50bLjImWU-rz93J3RC_mU7icL6oTaE&currency=USD&intent=capture"></script>
 
 <style>
 *{
@@ -946,6 +947,17 @@ transform:translateY(-1px);
 filter:brightness(1.05);
 }
 
+.purchase-btn-wrap{
+margin-top:20px;
+width:100%;
+min-height:50px;
+}
+
+.purchase-btn-wrap > div{
+width:100%;
+min-height:50px;
+}
+
 .secure-note{
 margin-top:12px;
 display:flex;
@@ -1510,7 +1522,6 @@ font-size:13px;
 max-width:100%;
 }
 }
-
 </style>
 </head>
 
@@ -1852,7 +1863,9 @@ Each product below is fully secure and Ud and they are all built to last.
 <div class="license-price">$300.00</div>
 </div>
 </div>
-<button class="purchase-btn" id="purchase-rust">Purchase Now</button>
+<div class="purchase-btn-wrap">
+<div id="paypal-rust"></div>
+</div>
 <div class="secure-note">Secure encrypted payment</div>
 </div>
 
@@ -2006,7 +2019,9 @@ Each product below is fully secure and Ud and they are all built to last.
 <div class="license-price">$250.00</div>
 </div>
 </div>
-<button class="purchase-btn" id="purchase-spoofer">Purchase Now</button>
+<div class="purchase-btn-wrap">
+<div id="paypal-spoofer"></div>
+</div>
 <div class="secure-note">Secure encrypted payment</div>
 </div>
 
@@ -2160,7 +2175,9 @@ Each product below is fully secure and Ud and they are all built to last.
 <div class="license-price">$1.50</div>
 </div>
 </div>
-<button class="purchase-btn" id="purchase-loader">Purchase Now</button>
+<div class="purchase-btn-wrap">
+<div id="paypal-loader"></div>
+</div>
 <div class="secure-note">Secure encrypted payment</div>
 </div>
 
@@ -2314,7 +2331,9 @@ Each product below is fully secure and Ud and they are all built to last.
 <div class="license-price">$249.99</div>
 </div>
 </div>
-<button class="purchase-btn" id="purchase-private">Purchase Now - $39.99</button>
+<div class="purchase-btn-wrap">
+<div id="paypal-private"></div>
+</div>
 <div class="secure-note">Secure encrypted payment</div>
 </div>
 
@@ -2463,42 +2482,140 @@ trigger.closest(".help-card").classList.toggle("open")
 })
 })
 
-const purchaseButtons={
-rust:document.getElementById("purchase-rust"),
-spoofer:document.getElementById("purchase-spoofer"),
-loader:document.getElementById("purchase-loader"),
-private:document.getElementById("purchase-private")
-}
-
 document.querySelectorAll(".license-option").forEach(option=>{
 option.addEventListener("click",()=>{
 const target=option.dataset.target
 document.querySelectorAll(`.license-option[data-target="${target}"]`).forEach(item=>item.classList.remove("active"))
 option.classList.add("active")
-purchaseButtons[target].textContent=`Purchase Now - $${option.dataset.price}`
+setTimeout(() => renderPayPalButton(target), 0)
 })
 })
 
-function handlePurchase(event){
-event.preventDefault()
-const paymentChoice=prompt("Do you want to pay with PayPal or Cash App? Type paypal or cash app")
-
-if(!paymentChoice) return
-
-const choice=paymentChoice.trim().toLowerCase()
-
-if(choice==="paypal"){
-window.open("https://www.paypal.com/paypalme/itzzzduckey","_blank")
-}else if(choice==="cash app"||choice==="cashapp"){
-window.open("https://cash.app/$johnyukhh","_blank")
-}else{
-alert("Please type paypal or cash app")
+const purchaseTargets = {
+rust: {
+container: "#paypal-rust",
+name: "Fortnite Private"
+},
+spoofer: {
+container: "#paypal-spoofer",
+name: "Perm Spoofer"
+},
+loader: {
+container: "#paypal-loader",
+name: "Rust"
+},
+private: {
+container: "#paypal-private",
+name: "R6 External"
 }
 }
 
-document.querySelectorAll(".purchase-btn").forEach(button=>{
-button.addEventListener("click",handlePurchase)
+function getActiveLicense(target) {
+const active = document.querySelector(`.license-option[data-target="${target}"].active`)
+if (!active) return null
+
+const price = active.dataset.price
+const label = active.querySelector(".license-left span")?.textContent?.trim() || "License"
+
+if (!price || price === "NA" || Number.isNaN(Number(price))) return null
+
+return {
+label,
+price: Number(price).toFixed(2)
+}
+}
+
+function renderPayPalButton(targetKey) {
+const target = purchaseTargets[targetKey]
+if (!target) return
+
+const container = document.querySelector(target.container)
+if (!container) return
+
+container.innerHTML = ""
+
+const selected = getActiveLicense(targetKey)
+
+if (!selected) {
+container.innerHTML = `
+<button class="purchase-btn" type="button" disabled style="opacity:.65;cursor:not-allowed;">
+Select Valid License
+</button>
+`
+return
+}
+
+paypal.Buttons({
+style: {
+layout: "vertical",
+shape: "rect",
+label: "paypal"
+},
+
+createOrder: async () => {
+const current = getActiveLicense(targetKey)
+
+if (!current) {
+alert("Please select a valid license first.")
+throw new Error("No valid license selected")
+}
+
+const res = await fetch("/api/create-paypal-order", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify({
+product: target.name,
+license: current.label,
+price: current.price
 })
+})
+
+const data = await res.json()
+
+if (!res.ok || !data.id) {
+throw new Error(data.error || "Failed to create PayPal order")
+}
+
+return data.id
+},
+
+onApprove: async (data) => {
+const res = await fetch("/api/capture-paypal-order", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify({
+orderID: data.orderID
+})
+})
+
+const result = await res.json()
+
+if (!res.ok) {
+alert(result.error || "Payment capture failed.")
+return
+}
+
+alert("Payment completed successfully.")
+console.log("Capture result:", result)
+},
+
+onError: (err) => {
+console.error(err)
+alert("PayPal checkout failed.")
+}
+}).render(target.container)
+}
+
+function renderAllPayPalButtons() {
+renderPayPalButton("rust")
+renderPayPalButton("spoofer")
+renderPayPalButton("loader")
+renderPayPalButton("private")
+}
 
 window.addEventListener("resize",resize)
 resize()
@@ -2582,7 +2699,7 @@ showcaseCards.forEach((card, i) => {
 buildShowcaseDots();
 updateShowcase();
 restartShowcaseAuto();
-
+renderAllPayPalButtons();
 </script>
 
 </body>
