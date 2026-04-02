@@ -1510,7 +1510,34 @@ font-size:13px;
 max-width:100%;
 }
 }
+.hero{
+position:relative;
+overflow:hidden;
+}
 
+.hero-bg-image{
+position:absolute;
+inset:0;
+z-index:1;
+pointer-events:none;
+
+background-image:url("https://image2url.com/r2/default/images/1775168690601-cfe5ff41-2251-45d8-9adc-5d9020776111.webp");
+background-size:cover;
+background-position:right center;
+
+opacity:0.18;
+filter:grayscale(100%) contrast(1.1) brightness(0.9);
+mix-blend-mode:screen;
+}
+
+/* make sure text stays on top */
+.hero-inner{
+position:relative;
+z-index:2;
+}
+section + section{
+margin-top:800px;
+}
 </style>
 </head>
 
@@ -1553,6 +1580,8 @@ max-width:100%;
 
 <div class="home-page" id="home-page">
 <main class="hero">
+<div class="hero-bg-image"></div>
+
 <div class="hero-inner">
 
 <h1 class="title">
@@ -1697,9 +1726,9 @@ Each product below is fully secure and Ud and they are all built to last.
 <path d="M13 11l8 8m0 0v-3m0 3h-3" stroke="#4eefff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 </div>
-<div class="product-badge">Rust nfa</div>
+<div class="product-badge">secure</div>
 <div class="product-content">
-<div class="product-title">Rust</div>
+<div class="product-title">Rust nfa</div>
 <p class="product-desc"></p>
 <div class="product-meta">
 <span class="product-price">From $1.50</span>
