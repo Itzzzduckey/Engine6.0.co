@@ -958,6 +958,80 @@ window.addEventListener("resize",resize)
 buildHub()
 resize()
 animate()
+   // Disable right-click (context menu)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            // Optional: show a message
+            // alert("Right-click is disabled on this website.");
+        });
+
+        // Disable keyboard shortcuts for View Source, DevTools, etc.
+        document.addEventListener('keydown', function(e) {
+            // F12
+            if (e.keyCode === 123) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl + Shift + I (DevTools)
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl + Shift + J (Console)
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl + Shift + C (Inspect)
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl + U (View Source)
+            if (e.ctrlKey && e.keyCode === 85) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl + S (Save Page)
+            if (e.ctrlKey && e.keyCode === 83) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl + P (Print)
+            if (e.ctrlKey && e.keyCode === 80) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // Disable text selection and dragging
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+        });
+
+        // Extra layer: try to detect DevTools open (not 100% reliable)
+        let devtoolsOpen = false;
+        const threshold = 160; // pixel threshold for detection
+
+        function detectDevTools() {
+            if (window.outerWidth - window.innerWidth > threshold || 
+                window.outerHeight - window.innerHeight > threshold) {
+                if (!devtoolsOpen) {
+                    devtoolsOpen = true;
+                    // You can redirect, alert, or blank the page here
+                    // document.body.innerHTML = "<h1 style='text-align:center;color:red;'>Access Denied</h1>";
+                    console.log("%cDevTools detected!", "color: red; font-size: 20px;");
+                }
+            } else {
+                devtoolsOpen = false;
+            }
+        }
+
+        setInterval(detectDevTools, 500);
 </script>
 
 </body>
