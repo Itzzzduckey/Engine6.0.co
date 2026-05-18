@@ -680,7 +680,14 @@
           </span>
           <span class="mega-link-badge">External</span>
         </a>
-
+<a class="mega-link" href="https://1drv.ms/x/c/8717ae97eaad010e/IQB8qokNe39xSYn2_J7t69wVAbXSfnsLspeU5IIlfhKpd-4?e=1Nxh4N" target="_blank">
+  <span class="mega-link-icon">🛠️</span>
+  <span class="mega-link-text">
+    <span class="mega-link-name">Workspace Version</span>
+    <span class="mega-link-sub">Open workspace configuration version</span>
+  </span>
+  <span class="mega-link-badge">External</span>
+</a>
       </div>
     </div>
   </div>
@@ -761,64 +768,144 @@
 
   <!-- Ship Info Paper -->
   <div class="paper-container" id="panel-ship">
-    <div class="paper">
-      <div class="paper-label">Database Entry</div>
-      <div class="paper-title">Ship Information</div>
-      <div class="paper-rule"></div>
-      <div class="sheet-label">Muda — loadout</div>
-      <table class="sheet">
-        <thead>
-          <tr>
-            <th class="col-num">#</th>
-            <th class="col-name">Component</th>
-            <th class="col-cat">Category</th>
-            <th class="col-grade">Grade</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="num">1</td><td class="name">Cannons</td><td class="cat">Weapons</td><td><span class="badge badge-m">M grade</span></td></tr>
-          <tr><td class="num">2</td><td class="name">M2C Swarms</td><td class="cat">Missiles</td><td><span class="badge badge-m">M grade</span></td></tr>
-          <tr><td class="num">3</td><td class="name">JS500 Power Plant</td><td class="cat">Power</td><td><span class="badge badge-m">M grade</span></td></tr>
-          <tr><td class="num">4</td><td class="name">FR86S</td><td class="cat">Shield</td><td><span class="badge badge-m">M grade</span></td></tr>
-          <tr><td class="num">5</td><td class="name">Blizzard Cooler</td><td class="cat">Cooler</td><td><span class="badge badge-m">M grade</span></td></tr>
-          <tr><td class="num">6</td><td class="name">Quantum Driver PS-2</td><td class="cat">Quantum Drive</td><td><span class="badge badge-high">High grade</span></td></tr>
-          <tr><td class="num">7</td><td class="name">V801-12 Radar</td><td class="cat">Radar</td><td><span class="badge badge-high">High grade</span></td></tr>
-        </tbody>
-      </table>
-      <div style="margin-top:36px;">
-        <div class="sheet-label">Grade breakdown</div>
-        <canvas id="loadout-chart" height="160"></canvas>
-      </div>
-    </div>
-  </div>
+<div class="paper">
+  <div class="paper-label">Database Entry</div>
+  <div class="paper-title">Ship Information</div>
+  <div class="paper-rule"></div>
 
-  <!-- Ore Info Paper -->
-  <div class="paper-container" id="panel-ore">
-    <div class="paper">
-      <div class="paper-label">Database Entry</div>
-      <div class="paper-title">Ore Information</div>
-      <div class="paper-rule"></div>
-      <div class="sheet-label">Ore data — coming soon</div>
-      <table class="sheet">
-        <thead>
-          <tr>
-            <th class="col-num">#</th>
-            <th class="col-name">Ore</th>
-            <th class="col-cat">Location</th>
-            <th class="col-grade">Grade</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="num" style="opacity:.3">—</td><td class="name" style="opacity:.3">—</td><td class="cat" style="opacity:.3">—</td><td style="opacity:.3">—</td></tr>
-          <tr><td class="num" style="opacity:.3">—</td><td class="name" style="opacity:.3">—</td><td class="cat" style="opacity:.3">—</td><td style="opacity:.3">—</td></tr>
-          <tr><td class="num" style="opacity:.3">—</td><td class="name" style="opacity:.3">—</td><td class="cat" style="opacity:.3">—</td><td style="opacity:.3">—</td></tr>
-        </tbody>
-      </table>
-      <div style="margin-top:36px;">
-        <div class="sheet-label">Value breakdown — coming soon</div>
-        <canvas id="ore-chart" height="160"></canvas>
-      </div>
-    </div>
+  <!-- BIG INFO SECTION -->
+  <div class="sheet-label">Component acquisition & blueprint data</div>
+
+  <table class="sheet" style="margin-bottom:32px;">
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Blueprint</th>
+        <th>Role</th>
+        <th>Source</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <tr>
+        <td class="name">FR-86 Shield</td>
+        <td>FR-86</td>
+        <td class="cat">Military Grade A</td>
+        <td class="cat">Foxwell orange-tier missions</td>
+      </tr>
+
+      <tr>
+        <td class="name">JS-500 Power Plant</td>
+        <td>JS-500</td>
+        <td class="cat">Military Grade A</td>
+        <td class="cat">
+          Orison — Cousin Crow's — 130,000 aUEC<br>
+          [component cant be crafted]
+        </td>
+      </tr>
+
+      <tr>
+        <td class="name">Quantum Driver PS-2</td>
+        <td>Quantum Driver PS-2</td>
+        <td class="cat">Military Grade A</td>
+        <td class="cat">
+          Unlocking missions — 100% chance<br><br>
+
+          [Reputation Rank] Rank - [Cargo Grade Token] Cargo Haul ×2<br>
+          Hauling<br><br>
+
+          [Reputation Rank] Rank - Direct [Cargo Grade Token] Cargo Haul ×12<br>
+          Hauling
+        </td>
+      </tr>
+
+      <tr>
+        <td class="name">Blizzard Cooler</td>
+        <td>Blizzard</td>
+        <td class="cat">Military Grade A</td>
+        <td class="cat">Foxwell orange-tier missions</td>
+      </tr>
+
+      <tr>
+        <td class="name">V801-12 Radar</td>
+        <td>V801-12</td>
+        <td class="cat">Military Grade A</td>
+        <td class="cat">HEADHUNTERS</td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div class="sheet-label">Muda — loadout</div>
+
+  <table class="sheet">
+    <thead>
+      <tr>
+        <th class="col-num">#</th>
+        <th class="col-name">Component</th>
+        <th class="col-cat">Category</th>
+        <th class="col-grade">Grade</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td class="num">1</td>
+        <td class="name">Cannons</td>
+        <td class="cat">Weapons</td>
+        <td><span class="badge badge-m">M grade</span></td>
+      </tr>
+
+      <tr>
+        <td class="num">2</td>
+        <td class="name">M2C Swarms</td>
+        <td class="cat">Missiles</td>
+        <td><span class="badge badge-m">M grade</span></td>
+      </tr>
+
+      <tr>
+        <td class="num">3</td>
+        <td class="name">JS500 Power Plant</td>
+        <td class="cat">Power</td>
+        <td><span class="badge badge-m">M grade</span></td>
+      </tr>
+
+      <tr>
+        <td class="num">4</td>
+        <td class="name">FR86S</td>
+        <td class="cat">Shield</td>
+        <td><span class="badge badge-m">M grade</span></td>
+      </tr>
+
+      <tr>
+        <td class="num">5</td>
+        <td class="name">Blizzard Cooler</td>
+        <td class="cat">Cooler</td>
+        <td><span class="badge badge-m">M grade</span></td>
+      </tr>
+
+      <tr>
+        <td class="num">6</td>
+        <td class="name">Quantum Driver PS-2</td>
+        <td class="cat">Quantum Drive</td>
+        <td><span class="badge badge-high">High grade</span></td>
+      </tr>
+
+      <tr>
+        <td class="num">7</td>
+        <td class="name">V801-12 Radar</td>
+        <td class="cat">Radar</td>
+        <td><span class="badge badge-high">High grade</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top:36px;">
+    <div class="sheet-label">Grade breakdown</div>
+    <canvas id="loadout-chart" height="160"></canvas>
+  </div>
+</div>
   </div>
 
 </div>
