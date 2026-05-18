@@ -148,7 +148,6 @@
     width: 100%;
   }
 
-  /* ── RSI MEGA BUTTONS (real RSI style) ── */
   .mega-links {
     display: flex;
     flex-direction: column;
@@ -174,7 +173,6 @@
   }
   .mega-link:last-child { border-bottom: none; }
 
-  /* left accent bar */
   .mega-link::before {
     content: '';
     position: absolute;
@@ -187,7 +185,6 @@
   }
   .mega-link:hover::before { transform: scaleY(1); }
 
-  /* bg fill */
   .mega-link::after {
     content: '';
     position: absolute;
@@ -234,7 +231,6 @@
   }
   .mega-link:hover .mega-link-sub { color: rgba(127,216,248,0.7); }
 
-  /* INFO badge on hover */
   .mega-link-badge {
     position: relative;
     z-index: 1;
@@ -255,15 +251,6 @@
   .mega-link:hover .mega-link-badge {
     opacity: 1;
     transform: translateX(0);
-  }
-
-  /* vertical divider between cols */
-  .mega-divider {
-    width: 1px;
-    align-self: stretch;
-    background: rgba(74,158,186,0.14);
-    margin: 0 40px;
-    flex-shrink: 0;
   }
 
   /* ── RSI BUTTONS ── */
@@ -331,7 +318,7 @@
     backdrop-filter: blur(28px);
     -webkit-backdrop-filter: blur(28px);
     padding: 56px 72px 64px;
-    width: min(860px, 92vw);
+    width: min(1080px, 95vw);
     clip-path: polygon(0 0, calc(100% - 32px) 0, 100% 32px, 100% 100%, 0 100%);
     box-shadow:
       0 8px 60px rgba(0,0,0,0.45),
@@ -459,6 +446,72 @@
   .col-cat  { width: 30%; }
   .col-grade{ width: 20%; }
 
+  .badge-warn {
+    background: rgba(220,80,60,0.18);
+    color: #f09595;
+    border: 1px solid rgba(220,80,60,0.35);
+  }
+  .badge-mayday {
+    background: rgba(220,40,40,0.28);
+    color: #ff6b6b;
+    border: 1px solid rgba(220,40,40,0.55);
+    animation: mayday-pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes mayday-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(220,40,40,0); }
+    50%       { box-shadow: 0 0 8px 2px rgba(220,40,40,0.4); }
+  }
+  .cs-red    { color: #f09595 !important; }
+  .cs-blue   { color: #7fd8f8 !important; }
+  .cs-yellow { color: #f5d87a !important; }
+  .cs-black  { color: rgba(176,207,224,0.45) !important; letter-spacing: 0.12em; }
+  .cs-ice    { color: #a8eeff !important; }
+  .cs-mayday { color: #ff6b6b !important; font-style: italic; }
+  .cs-sub    { font-size: 12px !important; line-height: 1.5; }
+  .callsign-sheet td { vertical-align: top; padding-top: 14px; padding-bottom: 14px; }
+
+  /* ── Inner tab system ── */
+  .inner-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 28px;
+    border-bottom: 1px solid rgba(74,158,186,0.2);
+    flex-wrap: wrap;
+  }
+  .inner-tab {
+    padding: 10px 24px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(74,158,186,0.5);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+  .inner-tab:hover { color: #b0cfe0; }
+  .inner-tab.active {
+    color: #7fd8f8;
+    border-bottom-color: #4a9eba;
+  }
+  .inner-pane { display: none; }
+  .inner-pane.active { display: block; }
+
+  .coming-soon {
+    text-align: center;
+    padding: 48px 0 16px;
+    color: rgba(74,158,186,0.35);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .coming-soon-icon { font-size: 36px; opacity: 0.3; margin-bottom: 14px; }
+
   /* ── NAV RIGHT ── */
   .nav-right {
     margin-left: auto;
@@ -471,9 +524,39 @@
     font-weight: 700;
     color: #7fd8f8;
     letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .nav-username:hover { color: #fff; }
+
+  .nav-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid rgba(74,158,186,0.5);
+    background: #0b1e2d;
+    object-fit: cover;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .nav-avatar:hover { border-color: #7fd8f8; }
+
+  .badge-admin {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #ff6b6b;
+    background: rgba(220,40,40,0.2);
+    border: 1px solid rgba(220,40,40,0.5);
+    padding: 2px 6px;
+    border-radius: 3px;
   }
 
-  /* ── AUTH MODAL ── */
+  /* ── AUTH & PROFILE MODALS ── */
   .auth-overlay {
     display: none;
     position: fixed;
@@ -492,7 +575,9 @@
     backdrop-filter: blur(32px);
     -webkit-backdrop-filter: blur(32px);
     padding: 52px 60px 56px;
-    width: min(460px, 92vw);
+    width: min(520px, 92vw);
+    max-height: 90vh;
+    overflow-y: auto;
     clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 0 100%);
     box-shadow: 0 0 80px rgba(74,158,186,0.12), 0 20px 60px rgba(0,0,0,0.6);
     animation: paperIn 0.38s cubic-bezier(0.4,0,0.2,1) both;
@@ -548,7 +633,7 @@
     color: rgba(74,158,186,0.7);
     margin-bottom: 7px;
   }
-  .auth-field input {
+  .auth-field input, .auth-field select {
     width: 100%;
     background: rgba(74,158,186,0.07);
     border: 1px solid rgba(74,158,186,0.25);
@@ -560,8 +645,9 @@
     transition: border-color 0.2s, background 0.2s;
     clip-path: polygon(8px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 8px);
   }
+  .auth-field select option { background: #0a1a28; color: #c8e6f5; }
   .auth-field input::placeholder { color: rgba(74,158,186,0.35); }
-  .auth-field input:focus {
+  .auth-field input:focus, .auth-field select:focus {
     border-color: rgba(74,158,186,0.65);
     background: rgba(74,158,186,0.12);
   }
@@ -597,10 +683,10 @@
     border: none;
     line-height: 1;
     transition: color 0.15s;
+    z-index: 10;
   }
   .auth-close:hover { color: #7fd8f8; }
 
-  /* password strength indicator */
   .strength-bar {
     height: 3px;
     background: rgba(74,158,186,0.1);
@@ -622,7 +708,6 @@
     font-weight: 700;
   }
 
-  /* rate limit banner */
   .rate-banner {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -638,6 +723,214 @@
     display: none;
     animation: paperIn 0.2s ease both;
   }
+
+  .profile-avatar-lg {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(74,158,186,0.5);
+    object-fit: cover;
+    background: #0b1e2d;
+    margin-bottom: 16px;
+  }
+  
+  .success-msg {
+    font-size: 12px;
+    color: #5dcaa5;
+    margin-top: 8px;
+    min-height: 16px;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── CHAT SYSTEM ── */
+  .chat-layout {
+    display: flex;
+    height: 520px;
+    border: 1px solid rgba(74,158,186,0.2);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .chat-sidebar {
+    width: 220px;
+    background: rgba(6, 18, 30, 0.6);
+    border-right: 1px solid rgba(74,158,186,0.2);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chat-sidebar-header {
+    padding: 16px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(74,158,186,0.6);
+    border-bottom: 1px solid rgba(74,158,186,0.2);
+  }
+
+  .chat-online-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 0;
+  }
+
+  .chat-online-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    transition: background 0.12s;
+  }
+
+  .chat-online-user:hover { background: rgba(74,158,186,0.06); }
+
+  .online-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #5dcaa5;
+    box-shadow: 0 0 6px rgba(93,202,165,0.5);
+    flex-shrink: 0;
+  }
+
+  .chat-username {
+    font-size: 13px;
+    font-weight: 700;
+    color: #b0cfe0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .chat-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: rgba(8, 22, 35, 0.4);
+  }
+
+  .chat-header {
+    padding: 16px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #7fd8f8;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(74,158,186,0.2);
+    background: rgba(6, 18, 30, 0.6);
+  }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .chat-message {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .chat-msg-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid rgba(74,158,186,0.4);
+    background: #0b1e2d;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .chat-msg-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .chat-msg-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .chat-msg-username {
+    font-size: 13px;
+    font-weight: 700;
+    color: #7fd8f8;
+  }
+
+  .chat-msg-username.admin-name { color: #ff6b6b; }
+
+  .chat-msg-time {
+    font-size: 10px;
+    color: rgba(74,158,186,0.4);
+    letter-spacing: 0.05em;
+  }
+
+  .chat-msg-text {
+    font-size: 14px;
+    color: rgba(185,220,238,0.9);
+    line-height: 1.5;
+    word-break: break-word;
+  }
+
+  .chat-input-area {
+    padding: 16px 24px;
+    background: rgba(6, 18, 30, 0.6);
+    border-top: 1px solid rgba(74,158,186,0.2);
+    display: flex;
+    gap: 12px;
+  }
+
+  .chat-input-field {
+    flex: 1;
+    background: rgba(74,158,186,0.07);
+    border: 1px solid rgba(74,158,186,0.25);
+    color: #c8e6f5;
+    font-size: 14px;
+    font-family: 'Arial', 'Helvetica Neue', sans-serif;
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    border-radius: 4px;
+  }
+  .chat-input-field::placeholder { color: rgba(74,158,186,0.35); }
+  .chat-input-field:focus {
+    border-color: rgba(74,158,186,0.65);
+    background: rgba(74,158,186,0.12);
+  }
+
+  .rsi-btn-chat {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 24px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #0d1a20;
+    background: #4a9eba;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: color 0.2s ease, background 0.2s;
+    user-select: none;
+    outline: none;
+    white-space: nowrap;
+  }
+  .rsi-btn-chat:hover { background: #5fbdd6; color: #fff; }
 </style>
 </head>
 <body>
@@ -650,8 +943,10 @@
 
 <nav id="main-nav">
   <div class="nav-links">
-    <div class="nav-item" data-menu="ship" onclick="gateNav(event, this)">Ship Info <span class="arr">▼</span></div>
-    <div class="nav-item" data-menu="ore" onclick="gateNav(event, this)">Ore Info <span class="arr">▼</span></div>
+    <div class="nav-item" data-menu="ship" onclick="gateNav(event, this)"><span data-i18n="nav_ship">Ship Info</span> <span class="arr">▼</span></div>
+    <div class="nav-item" data-menu="ore" onclick="gateNav(event, this)"><span data-i18n="nav_ore">Ore Info</span> <span class="arr">▼</span></div>
+    <div class="nav-item" data-menu="crew" onclick="gateNav(event, this)"><span data-i18n="nav_crew">Crew Info</span> <span class="arr">▼</span></div>
+    <div class="nav-item" data-menu="community" onclick="gateNav(event, this)"><span data-i18n="nav_community">Community</span> <span class="arr">▼</span></div>
   </div>
   <div class="nav-right" id="nav-right"></div>
 </nav>
@@ -660,34 +955,32 @@
 <div class="mega" id="menu-ship">
   <div class="mega-inner">
     <div class="mega-col">
-      <div class="mega-heading">Ship Info</div>
+      <div class="mega-heading" data-i18n="nav_ship">Ship Info</div>
       <div class="mega-links">
-
         <button class="mega-link" data-panel="ship">
           <span class="mega-link-icon">🚀</span>
           <span class="mega-link-text">
-            <span class="mega-link-name">View Ship Info</span>
-            <span class="mega-link-sub">Loadout, components &amp; grade breakdown</span>
+            <span class="mega-link-name" data-i18n="mega_ship_view">View Ship Info</span>
+            <span class="mega-link-sub" data-i18n="mega_ship_view_sub">Loadout, components & grade breakdown</span>
           </span>
-          <span class="mega-link-badge">Info</span>
+          <span class="mega-link-badge" data-i18n="badge_info">Info</span>
         </button>
-
         <a class="mega-link" href="https://www.erkul.games/loadout/BPC6J9k7" target="_blank">
           <span class="mega-link-icon">🔧</span>
           <span class="mega-link-text">
-            <span class="mega-link-name">Ship Gun Loadout</span>
-            <span class="mega-link-sub">View full loadout on Erkul.games</span>
+            <span class="mega-link-name" data-i18n="mega_ship_guns">Ship Gun Loadout</span>
+            <span class="mega-link-sub" data-i18n="mega_ship_guns_sub">View full loadout on Erkul.games</span>
           </span>
-          <span class="mega-link-badge">External</span>
+          <span class="mega-link-badge" data-i18n="badge_external">External</span>
         </a>
-<a class="mega-link" href="https://1drv.ms/x/c/8717ae97eaad010e/IQB8qokNe39xSYn2_J7t69wVAbXSfnsLspeU5IIlfhKpd-4?e=1Nxh4N" target="_blank">
-  <span class="mega-link-icon">🛠️</span>
-  <span class="mega-link-text">
-    <span class="mega-link-name">Workspace Version</span>
-    <span class="mega-link-sub">Open workspace configuration version</span>
-  </span>
-  <span class="mega-link-badge">External</span>
-</a>
+        <a class="mega-link" href="https://1drv.ms/x/c/8717ae97eaad010e/IQB8qokNe39xSYn2_J7t69wVAbXSfnsLspeU5IIlfhKpd-4?e=1Nxh4N" target="_blank">
+          <span class="mega-link-icon">🛠️</span>
+          <span class="mega-link-text">
+            <span class="mega-link-name" data-i18n="mega_ship_workspace">Workspace Version</span>
+            <span class="mega-link-sub" data-i18n="mega_ship_workspace_sub">Open workspace configuration version</span>
+          </span>
+          <span class="mega-link-badge" data-i18n="badge_external">External</span>
+        </a>
       </div>
     </div>
   </div>
@@ -697,18 +990,70 @@
 <div class="mega" id="menu-ore">
   <div class="mega-inner">
     <div class="mega-col">
-      <div class="mega-heading">Ore Info</div>
+      <div class="mega-heading" data-i18n="nav_ore">Ore Info</div>
       <div class="mega-links">
-
         <button class="mega-link" data-panel="ore">
           <span class="mega-link-icon">⛏️</span>
           <span class="mega-link-text">
-            <span class="mega-link-name">View Ore Info</span>
-            <span class="mega-link-sub">Mining data, locations &amp; values</span>
+            <span class="mega-link-name" data-i18n="mega_ore_view">View Ore Info</span>
+            <span class="mega-link-sub" data-i18n="mega_ore_view_sub">Mining data, locations & values</span>
           </span>
-          <span class="mega-link-badge">Info</span>
+          <span class="mega-link-badge" data-i18n="badge_info">Info</span>
         </button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- Crew Info mega dropdown -->
+<div class="mega" id="menu-crew">
+  <div class="mega-inner">
+    <div class="mega-col">
+      <div class="mega-heading" data-i18n="nav_crew">Crew Info</div>
+      <div class="mega-links">
+        <button class="mega-link" data-panel="crew" data-subtab="task-force">
+          <span class="mega-link-icon">⚔️</span>
+          <span class="mega-link-text">
+            <span class="mega-link-name" data-i18n="mega_crew_roster">Task Force Knights</span>
+            <span class="mega-link-sub" data-i18n="mega_crew_roster_sub">Active roster & squad assignments</span>
+          </span>
+          <span class="mega-link-badge" data-i18n="badge_roster">Roster</span>
+        </button>
+        <button class="mega-link" data-panel="crew" data-subtab="call-signs">
+          <span class="mega-link-icon">📡</span>
+          <span class="mega-link-text">
+            <span class="mega-link-name" data-i18n="mega_crew_callsigns">Internal Call Signs</span>
+            <span class="mega-link-sub" data-i18n="mega_crew_callsigns_sub">Comms identifiers & designations</span>
+          </span>
+          <span class="mega-link-badge" data-i18n="badge_comms">Comms</span>
+        </button>
+        <button class="mega-link" data-panel="crew" data-subtab="ops-schedule">
+          <span class="mega-link-icon">🗓️</span>
+          <span class="mega-link-text">
+            <span class="mega-link-name" data-i18n="mega_crew_ops">Operations Schedule</span>
+            <span class="mega-link-sub" data-i18n="mega_crew_ops_sub">Ops nights & mission schedule</span>
+          </span>
+          <span class="mega-link-badge" data-i18n="badge_schedule">Schedule</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Community mega dropdown -->
+<div class="mega" id="menu-community">
+  <div class="mega-inner">
+    <div class="mega-col">
+      <div class="mega-heading" data-i18n="nav_community">Community</div>
+      <div class="mega-links">
+        <button class="mega-link" data-panel="chat">
+          <span class="mega-link-icon">💬</span>
+          <span class="mega-link-text">
+            <span class="mega-link-name" data-i18n="mega_community_chat">General Chat</span>
+            <span class="mega-link-sub" data-i18n="mega_community_chat_sub">Live comms & crew coordination</span>
+          </span>
+          <span class="mega-link-badge" data-i18n="badge_live">Live</span>
+        </button>
       </div>
     </div>
   </div>
@@ -718,47 +1063,94 @@
 <div class="auth-overlay" id="auth-overlay">
   <div class="auth-box" id="auth-box">
     <button class="auth-close" onclick="closeAuth()">&#10005;</button>
-
-    <!-- Login view -->
+    
     <div id="view-login">
-      <div class="auth-label">Access Portal</div>
-      <div class="auth-title">Sign In</div>
+      <div class="auth-label" data-i18n="auth_label">Access Portal</div>
+      <div class="auth-title" data-i18n="auth_login_title">Sign In</div>
       <div class="auth-rule"></div>
       <div class="auth-field">
-        <label>Username</label>
-        <input type="text" id="login-user" placeholder="Enter username" autocomplete="username" maxlength="32">
+        <label data-i18n="label_username">Username</label>
+        <input type="text" id="login-user" data-i18n-attr="placeholder=ph_username" placeholder="Enter username" autocomplete="username" maxlength="32">
       </div>
       <div class="auth-field">
-        <label>Password</label>
-        <input type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password" maxlength="128">
+        <label data-i18n="label_password">Password</label>
+        <input type="password" id="login-pass" data-i18n-attr="placeholder=ph_password" placeholder="Enter password" autocomplete="current-password" maxlength="128">
       </div>
       <div class="auth-error" id="login-error"></div>
-      <button class="rsi-btn" style="width:100%" onclick="doLogin()"><span>Sign In</span></button>
-      <div class="auth-switch">No account? <span onclick="switchView('signup')">Register here</span></div>
+      <button class="rsi-btn" style="width:100%" onclick="doLogin()"><span data-i18n="btn_signin">Sign In</span></button>
+      <div class="auth-switch"><span data-i18n="auth_no_account">No account?</span> <span onclick="switchView('signup')" data-i18n="auth_register_here" style="cursor:pointer">Register here</span></div>
     </div>
 
-    <!-- Signup view -->
     <div id="view-signup" style="display:none">
-      <div class="auth-label">Access Portal</div>
-      <div class="auth-title">Create Account</div>
+      <div class="auth-label" data-i18n="auth_label">Access Portal</div>
+      <div class="auth-title" data-i18n="auth_signup_title">Create Account</div>
       <div class="auth-rule"></div>
       <div class="auth-field">
-        <label>Username</label>
-        <input type="text" id="signup-user" placeholder="Choose a username" autocomplete="username" maxlength="32">
+        <label data-i18n="label_username">Username</label>
+        <input type="text" id="signup-user" data-i18n-attr="placeholder=ph_choose_user" placeholder="Choose a username" autocomplete="username" maxlength="32">
       </div>
       <div class="auth-field">
-        <label>Password</label>
-        <input type="password" id="signup-pass" placeholder="Choose a password (min 8 chars)" autocomplete="new-password" maxlength="128" oninput="updateStrength()">
+        <label data-i18n="label_password">Password</label>
+        <input type="password" id="signup-pass" data-i18n-attr="placeholder=ph_choose_pass" placeholder="Choose a password (min 8 chars)" autocomplete="new-password" maxlength="128" oninput="updateStrength()">
         <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
         <div class="strength-label" id="strength-label" style="color:rgba(74,158,186,0.4)"></div>
       </div>
       <div class="auth-field">
-        <label>Confirm Password</label>
-        <input type="password" id="signup-confirm" placeholder="Repeat password" autocomplete="new-password" maxlength="128">
+        <label data-i18n="label_confirm_pass">Confirm Password</label>
+        <input type="password" id="signup-confirm" data-i18n-attr="placeholder=ph_repeat_pass" placeholder="Repeat password" autocomplete="new-password" maxlength="128">
       </div>
       <div class="auth-error" id="signup-error"></div>
-      <button class="rsi-btn" style="width:100%" onclick="doSignup()"><span>Create Account</span></button>
-      <div class="auth-switch">Already have an account? <span onclick="switchView('login')">Sign in</span></div>
+      <button class="rsi-btn" style="width:100%" onclick="doSignup()"><span data-i18n="btn_create_account">Create Account</span></button>
+      <div class="auth-switch"><span data-i18n="auth_have_account">Already have an account?</span> <span onclick="switchView('login')" data-i18n="btn_signin" style="cursor:pointer">Sign In</span></div>
+    </div>
+
+    <div id="view-profile" style="display:none">
+      <div class="auth-label" data-i18n="auth_label">Access Portal</div>
+      <div class="auth-title" data-i18n="profile_title">My Profile</div>
+      <div class="auth-rule"></div>
+      
+      <div style="text-align:center; margin-bottom: 24px;">
+        <img class="profile-avatar-lg" id="profile-avatar-preview" src="" alt="Avatar">
+      </div>
+
+      <div class="auth-field">
+        <label data-i18n="label_avatar_url">Profile Picture URL</label>
+        <input type="text" id="profile-avatar" data-i18n-attr="placeholder=ph_avatar" placeholder="Paste image URL for avatar" oninput="previewAvatar()">
+      </div>
+      <div class="auth-field">
+        <label>Discord</label>
+        <input type="text" id="profile-discord" placeholder="username#0000" maxlength="40">
+      </div>
+
+      <div class="auth-rule" style="margin-top: 8px;"></div>
+      <div class="sheet-label" style="margin-bottom: 16px;" data-i18n="settings_title">Settings</div>
+
+      <div class="auth-field">
+        <label data-i18n="label_language">Language / Idioma / Langue</label>
+        <select id="profile-lang" onchange="switchLanguage(this.value)">
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+        </select>
+      </div>
+
+      <div class="auth-rule" style="margin-top: 8px;"></div>
+      <div class="sheet-label" style="margin-bottom: 16px;" data-i18n="label_change_pass">Change Password</div>
+
+      <div class="auth-field">
+        <label data-i18n="label_current_pass">Current Password</label>
+        <input type="password" id="profile-current-pass" placeholder="Verify current password" autocomplete="current-password" maxlength="128">
+      </div>
+      <div class="auth-field">
+        <label data-i18n="label_new_pass">New Password</label>
+        <input type="password" id="profile-new-pass" placeholder="Enter new password" autocomplete="new-password" maxlength="128">
+      </div>
+
+      <div class="auth-error" id="profile-error"></div>
+      <div class="success-msg" id="profile-success"></div>
+
+      <button class="rsi-btn" style="width:100%; margin-top: 8px;" onclick="saveProfile()"><span data-i18n="btn_save_changes">Save Changes</span></button>
     </div>
 
   </div>
@@ -766,146 +1158,296 @@
 
 <div class="page">
 
-  <!-- Ship Info Paper -->
+  <!-- Ship Info Panel -->
   <div class="paper-container" id="panel-ship">
-<div class="paper">
-  <div class="paper-label">Database Entry</div>
-  <div class="paper-title">Ship Information</div>
-  <div class="paper-rule"></div>
+    <div class="paper">
+      <div class="paper-label" data-i18n="label_db_entry">Database Entry</div>
+      <div class="paper-title" data-i18n="title_ship_info">Ship Information</div>
+      <div class="paper-rule"></div>
 
-  <!-- BIG INFO SECTION -->
-  <div class="sheet-label">Component acquisition & blueprint data</div>
+      <div class="sheet-label" data-i18n="ship_table1_title">Component acquisition & blueprint data</div>
+      <table class="sheet" style="margin-bottom:32px;">
+        <thead>
+          <tr>
+            <th data-i18n="th_component">Component</th>
+            <th data-i18n="th_blueprint">Blueprint</th>
+            <th data-i18n="th_role">Role</th>
+            <th data-i18n="th_source">Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">FR-86 Shield</td>
+            <td>FR-86</td>
+            <td class="cat" data-i18n="role_mil_a">Military Grade A</td>
+            <td class="cat" data-i18n="src_foxwell">Foxwell orange-tier missions</td>
+          </tr>
+          <tr>
+            <td class="name">JS-500 Power Plant</td>
+            <td>JS-500</td>
+            <td class="cat" data-i18n="role_mil_a">Military Grade A</td>
+            <td class="cat" data-i18n="src_js500">Orison — Cousin Crow's — 130,000 aUEC<br>[component cant be crafted]</td>
+          </tr>
+          <tr>
+            <td class="name">Quantum Driver PS-2</td>
+            <td>Quantum Driver PS-2</td>
+            <td class="cat" data-i18n="role_mil_a">Military Grade A</td>
+            <td class="cat" data-i18n="src_qd">Unlocking missions — 100% chance<br><br>[Reputation Rank] Rank - [Cargo Grade Token] Cargo Haul ×2<br>Hauling<br><br>[Reputation Rank] Rank - Direct [Cargo Grade Token] Cargo Haul ×12<br>Hauling</td>
+          </tr>
+          <tr>
+            <td class="name">Blizzard Cooler</td>
+            <td>Blizzard</td>
+            <td class="cat" data-i18n="role_mil_a">Military Grade A</td>
+            <td class="cat" data-i18n="src_foxwell">Foxwell orange-tier missions</td>
+          </tr>
+          <tr>
+            <td class="name">V801-12 Radar</td>
+            <td>V801-12</td>
+            <td class="cat" data-i18n="role_mil_a">Military Grade A</td>
+            <td class="cat">HEADHUNTERS</td>
+          </tr>
+        </tbody>
+      </table>
 
-  <table class="sheet" style="margin-bottom:32px;">
-    <thead>
-      <tr>
-        <th>Component</th>
-        <th>Blueprint</th>
-        <th>Role</th>
-        <th>Source</th>
-      </tr>
-    </thead>
+      <div class="sheet-label" data-i18n="ship_table2_title">Muda — loadout</div>
+      <table class="sheet">
+        <thead>
+          <tr>
+            <th class="col-num">#</th>
+            <th class="col-name" data-i18n="th_component">Component</th>
+            <th class="col-cat" data-i18n="th_category">Category</th>
+            <th class="col-grade" data-i18n="th_grade">Grade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td class="name">Cannons</td><td class="cat" data-i18n="cat_weapons">Weapons</td><td><span class="badge badge-m" data-i18n="grade_m">M grade</span></td></tr>
+          <tr><td class="num">2</td><td class="name">M2C Swarms</td><td class="cat" data-i18n="cat_missiles">Missiles</td><td><span class="badge badge-m" data-i18n="grade_m">M grade</span></td></tr>
+          <tr><td class="num">3</td><td class="name">JS500 Power Plant</td><td class="cat" data-i18n="cat_power">Power</td><td><span class="badge badge-m" data-i18n="grade_m">M grade</span></td></tr>
+          <tr><td class="num">4</td><td class="name">FR86S</td><td class="cat" data-i18n="cat_shield">Shield</td><td><span class="badge badge-m" data-i18n="grade_m">M grade</span></td></tr>
+          <tr><td class="num">5</td><td class="name">Blizzard Cooler</td><td class="cat" data-i18n="cat_cooler">Cooler</td><td><span class="badge badge-m" data-i18n="grade_m">M grade</span></td></tr>
+          <tr><td class="num">6</td><td class="name">Quantum Driver PS-2</td><td class="cat" data-i18n="cat_qdrive">Quantum Drive</td><td><span class="badge badge-high" data-i18n="grade_high">High grade</span></td></tr>
+          <tr><td class="num">7</td><td class="name">V801-12 Radar</td><td class="cat" data-i18n="cat_radar">Radar</td><td><span class="badge badge-high" data-i18n="grade_high">High grade</span></td></tr>
+        </tbody>
+      </table>
 
-    <tbody>
-
-      <tr>
-        <td class="name">FR-86 Shield</td>
-        <td>FR-86</td>
-        <td class="cat">Military Grade A</td>
-        <td class="cat">Foxwell orange-tier missions</td>
-      </tr>
-
-      <tr>
-        <td class="name">JS-500 Power Plant</td>
-        <td>JS-500</td>
-        <td class="cat">Military Grade A</td>
-        <td class="cat">
-          Orison — Cousin Crow's — 130,000 aUEC<br>
-          [component cant be crafted]
-        </td>
-      </tr>
-
-      <tr>
-        <td class="name">Quantum Driver PS-2</td>
-        <td>Quantum Driver PS-2</td>
-        <td class="cat">Military Grade A</td>
-        <td class="cat">
-          Unlocking missions — 100% chance<br><br>
-
-          [Reputation Rank] Rank - [Cargo Grade Token] Cargo Haul ×2<br>
-          Hauling<br><br>
-
-          [Reputation Rank] Rank - Direct [Cargo Grade Token] Cargo Haul ×12<br>
-          Hauling
-        </td>
-      </tr>
-
-      <tr>
-        <td class="name">Blizzard Cooler</td>
-        <td>Blizzard</td>
-        <td class="cat">Military Grade A</td>
-        <td class="cat">Foxwell orange-tier missions</td>
-      </tr>
-
-      <tr>
-        <td class="name">V801-12 Radar</td>
-        <td>V801-12</td>
-        <td class="cat">Military Grade A</td>
-        <td class="cat">HEADHUNTERS</td>
-      </tr>
-
-    </tbody>
-  </table>
-
-  <div class="sheet-label">Muda — loadout</div>
-
-  <table class="sheet">
-    <thead>
-      <tr>
-        <th class="col-num">#</th>
-        <th class="col-name">Component</th>
-        <th class="col-cat">Category</th>
-        <th class="col-grade">Grade</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr>
-        <td class="num">1</td>
-        <td class="name">Cannons</td>
-        <td class="cat">Weapons</td>
-        <td><span class="badge badge-m">M grade</span></td>
-      </tr>
-
-      <tr>
-        <td class="num">2</td>
-        <td class="name">M2C Swarms</td>
-        <td class="cat">Missiles</td>
-        <td><span class="badge badge-m">M grade</span></td>
-      </tr>
-
-      <tr>
-        <td class="num">3</td>
-        <td class="name">JS500 Power Plant</td>
-        <td class="cat">Power</td>
-        <td><span class="badge badge-m">M grade</span></td>
-      </tr>
-
-      <tr>
-        <td class="num">4</td>
-        <td class="name">FR86S</td>
-        <td class="cat">Shield</td>
-        <td><span class="badge badge-m">M grade</span></td>
-      </tr>
-
-      <tr>
-        <td class="num">5</td>
-        <td class="name">Blizzard Cooler</td>
-        <td class="cat">Cooler</td>
-        <td><span class="badge badge-m">M grade</span></td>
-      </tr>
-
-      <tr>
-        <td class="num">6</td>
-        <td class="name">Quantum Driver PS-2</td>
-        <td class="cat">Quantum Drive</td>
-        <td><span class="badge badge-high">High grade</span></td>
-      </tr>
-
-      <tr>
-        <td class="num">7</td>
-        <td class="name">V801-12 Radar</td>
-        <td class="cat">Radar</td>
-        <td><span class="badge badge-high">High grade</span></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div style="margin-top:36px;">
-    <div class="sheet-label">Grade breakdown</div>
-    <canvas id="loadout-chart" height="160"></canvas>
+      <div style="margin-top:36px;">
+        <div class="sheet-label" data-i18n="ship_chart_title">Grade breakdown</div>
+        <canvas id="loadout-chart" height="160"></canvas>
+      </div>
+    </div>
   </div>
-</div>
+
+  <!-- Ore Info Panel -->
+  <div class="paper-container" id="panel-ore">
+    <div class="paper">
+      <div class="paper-label" data-i18n="label_db_entry">Database Entry</div>
+      <div class="paper-title" data-i18n="title_ore_info">Ore Information</div>
+      <div class="paper-rule"></div>
+      <div class="coming-soon">
+        <div class="coming-soon-icon">⛏️</div>
+        <span data-i18n="msg_coming_soon">Mining data, locations & values coming soon</span>
+      </div>
+      <canvas id="ore-chart" height="160" style="margin-top:24px;"></canvas>
+    </div>
+  </div>
+
+  <!-- Crew Info Panel -->
+  <div class="paper-container" id="panel-crew">
+    <div class="paper">
+      <div class="paper-label" data-i18n="label_db_entry">Database Entry</div>
+      <div class="paper-title" data-i18n="title_crew_info">Crew Information</div>
+      <div class="paper-rule"></div>
+
+      <div class="inner-tabs">
+        <button class="inner-tab active" data-crew-tab="task-force" onclick="switchCrewTab('task-force')">⚔️ &nbsp;<span data-i18n="tab_roster">Task Force Knights</span></button>
+        <button class="inner-tab" data-crew-tab="call-signs" onclick="switchCrewTab('call-signs')">📡 &nbsp;<span data-i18n="tab_callsigns">Internal Call Signs</span></button>
+        <button class="inner-tab" data-crew-tab="ops-schedule" onclick="switchCrewTab('ops-schedule')">🗓️ &nbsp;<span data-i18n="tab_ops">Ops Schedule</span></button>
+      </div>
+
+      <!-- Task Force Knights pane -->
+      <div class="inner-pane active" id="crew-pane-task-force">
+        <div class="sheet-label" data-i18n="roster_title">Task Force Knights — Active Roster</div>
+        <table class="sheet">
+          <thead>
+            <tr>
+              <th class="col-num">#</th>
+              <th class="col-name" data-i18n="th_handle">Handle</th>
+              <th class="col-cat" data-i18n="th_role">Role</th>
+              <th class="col-grade" data-i18n="th_status">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="num">1</td>
+              <td class="name">—</td>
+              <td class="cat">—</td>
+              <td><span class="badge badge-m" data-i18n="status_active">Active</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="coming-soon" style="padding:28px 0 0; font-size:10px; opacity:0.5;" data-i18n="msg_roster_soon">Roster data to be added</div>
+      </div>
+
+      <!-- Internal Call Signs pane -->
+      <div class="inner-pane" id="crew-pane-call-signs">
+        <div class="sheet-label" data-i18n="callsign_title">Internal Call Signs — Comms Designations</div>
+        <table class="sheet callsign-sheet">
+          <thead>
+            <tr>
+              <th style="width:36px">#</th>
+              <th style="width:18%" data-i18n="th_callsign">Call Sign</th>
+              <th style="width:30%" data-i18n="th_primary">Primary Meaning</th>
+              <th data-i18n="th_sub">Sub-Meaning / Action Required</th>
+              <th style="width:90px" data-i18n="th_priority">Priority</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="num">1</td>
+              <td class="name cs-yellow">DeadStick</td>
+              <td class="cat" data-i18n="cs_deadstick_p">Power plant is DEAD</td>
+              <td class="cat cs-sub" data-i18n="cs_deadstick_s">Everyone checks everything that is specifically close to <em>them</em> immediately</td>
+              <td><span class="badge badge-warn" data-i18n="prio_critical">Critical</span></td>
+            </tr>
+            <tr>
+              <td class="num">2</td>
+              <td class="name cs-blue">Blue</td>
+              <td class="cat" data-i18n="cs_blue_p">Shields are DOWN</td>
+              <td class="cat cs-sub" data-i18n="cs_blue_s">Hull exposed — minimize exposure, re-route power to shields</td>
+              <td><span class="badge badge-high" data-i18n="prio_urgent">Urgent</span></td>
+            </tr>
+            <tr>
+              <td class="num">3</td>
+              <td class="name cs-red">Red</td>
+              <td class="cat" data-i18n="cs_red_p">Fire in the ship</td>
+              <td class="cat cs-sub" data-i18n="cs_red_s">Locate and suppress immediately — call location after signal</td>
+              <td><span class="badge badge-warn" data-i18n="prio_critical">Critical</span></td>
+            </tr>
+            <tr>
+              <td class="num">4</td>
+              <td class="name cs-ice">ICE</td>
+              <td class="cat" data-i18n="cs_ice_p">Coolers are DOWN</td>
+              <td class="cat cs-sub" data-i18n="cs_ice_s">Reduce power draw — components will overheat without action</td>
+              <td><span class="badge badge-high" data-i18n="prio_urgent">Urgent</span></td>
+            </tr>
+            <tr>
+              <td class="num">5</td>
+              <td class="name cs-black">BLACK</td>
+              <td class="cat" data-i18n="cs_black_p">Turret out of ammo</td>
+              <td class="cat cs-sub" data-i18n="cs_black_s">Specific turret is dry — call turret ID after signal</td>
+              <td><span class="badge badge-m" data-i18n="prio_alert">Alert</span></td>
+            </tr>
+            <tr>
+              <td class="num">6</td>
+              <td class="name cs-black">All BLACK</td>
+              <td class="cat" data-i18n="cs_allblack_p">ALL turrets out of ammo</td>
+              <td class="cat cs-sub" data-i18n="cs_allblack_s">All gun positions Winchester — disengage or evade immediately</td>
+              <td><span class="badge badge-warn" data-i18n="prio_critical">Critical</span></td>
+            </tr>
+            <tr>
+              <td class="num">7</td>
+              <td class="name cs-mayday">MAYDAY</td>
+              <td class="cat" data-i18n="cs_mayday_p">Ship is completely lost</td>
+              <td class="cat cs-sub" data-i18n="cs_mayday_s">Nothing left we can do — <strong style="color:#f09595;">all crew meet on bridge, full heavy guns ready</strong></td>
+              <td><span class="badge badge-mayday">MAYDAY</span></td>
+            </tr>
+            <tr>
+              <td class="num">8</td>
+              <td class="name cs-yellow">Breakdown</td>
+              <td class="cat" data-i18n="cs_breakdown_p">All engines are DOWN</td>
+              <td class="cat cs-sub" data-i18n="cs_breakdown_s">No thrust — engineering responds, everyone else holds position</td>
+              <td><span class="badge badge-warn" data-i18n="prio_critical">Critical</span></td>
+            </tr>
+            <tr>
+              <td class="num">9</td>
+              <td class="name cs-red">Critters</td>
+              <td class="cat" data-i18n="cs_critters_p">We are getting BOARDED</td>
+              <td class="cat cs-sub" data-i18n="cs_critters_s">Hostile boarding in progress — arm up, seal compartments, repel intruders</td>
+              <td><span class="badge badge-warn" data-i18n="prio_critical">Critical</span></td>
+            </tr>
+            <tr>
+              <td class="num">10</td>
+              <td class="name cs-blue">Scuba</td>
+              <td class="cat" data-i18n="cs_scuba_p">Turn life support ON</td>
+              <td class="cat cs-sub" data-i18n="cs_scuba_s">Atmosphere compromised — activate life support systems now</td>
+              <td><span class="badge badge-high" data-i18n="prio_urgent">Urgent</span></td>
+            </tr>
+            <tr>
+              <td class="num">11</td>
+              <td class="name cs-yellow">Spark</td>
+              <td class="cat" data-i18n="cs_spark_p">Replace a fuse</td>
+              <td class="cat cs-sub" data-i18n="cs_spark_s">Electrical fault — call location after signal, fuse replacement needed</td>
+              <td><span class="badge badge-m" data-i18n="prio_alert">Alert</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Ops Schedule pane -->
+      <div class="inner-pane" id="crew-pane-ops-schedule">
+        <div class="sheet-label" data-i18n="ops_title">Task Force Knights — Operations Schedule</div>
+        <table class="sheet">
+          <thead>
+            <tr>
+              <th data-i18n="th_day">Day</th>
+              <th data-i18n="th_time">Time (EST/UTC-5)</th>
+              <th data-i18n="th_operation">Operation</th>
+              <th data-i18n="th_lead">Lead</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="name" data-i18n="day_monday">Monday</td>
+              <td class="cat">20:00 - 22:00</td>
+              <td class="cat" data-i18n="ops_mining">Mining & Cargo Ops</td>
+              <td class="cat">KNIGHT-CMDR</td>
+            </tr>
+            <tr>
+              <td class="name" data-i18n="day_wednesday">Wednesday</td>
+              <td class="cat">21:00 - 23:00</td>
+              <td class="cat" data-i18n="ops_combat">Combat Patrol & Bounties</td>
+              <td class="cat">KNIGHT-SEC</td>
+            </tr>
+            <tr>
+              <td class="name" data-i18n="day_friday">Friday</td>
+              <td class="cat">20:00 - 00:00</td>
+              <td class="cat" data-i18n="ops_main">Main Ops Night (Full Crew)</td>
+              <td class="cat">KNIGHT-CMDR</td>
+            </tr>
+            <tr>
+              <td class="name" data-i18n="day_saturday">Saturday</td>
+              <td class="cat">18:00 - 20:00</td>
+              <td class="cat" data-i18n="ops_training">Training & Simulations</td>
+              <td class="cat">KNIGHT-SEC</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 24px; color: rgba(176,207,224,0.55); font-size: 13px; line-height: 1.6;">
+          <em data-i18n="ops_note">Note: All times are subject to change based on crew availability. Check comms before op start times.</em>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Community Chat Panel -->
+  <div class="paper-container" id="panel-chat">
+    <div class="paper" style="padding: 0; clip-path: polygon(0 0, calc(100% - 32px) 0, 100% 32px, 100% 100%, 0 100%);">
+      <div class="chat-layout">
+        <div class="chat-sidebar">
+          <div class="chat-sidebar-header"><span data-i18n="chat_online_title">Online Crew</span> — <span id="online-count">0</span></div>
+          <div class="chat-online-list" id="online-list"></div>
+        </div>
+        <div class="chat-main">
+          <div class="chat-header">💬 &nbsp;<span data-i18n="chat_header">General Comms</span></div>
+          <div class="chat-messages" id="chat-messages"></div>
+          <div class="chat-input-area">
+            <input type="text" class="chat-input-field" id="chat-input-field" data-i18n-attr="placeholder=ph_type_msg" placeholder="Type a message..." maxlength="500" autocomplete="off">
+            <button class="rsi-btn-chat" onclick="sendChatMessage()" data-i18n="btn_send">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -914,25 +1456,136 @@
 
 <script>
 // ═══════════════════════════════════════════════════════
-//  SECURITY LAYER
-//  - SHA-256 password hashing via Web Crypto API
-//  - Per-user random salt (16 bytes, stored alongside hash)
-//  - Rate limiting: 5 login attempts per 15 min window
-//  - Username sanitisation (alphanumeric + _ -)
-//  - Password policy: min 8 chars, mixed requirements
-//  - Session token stored in sessionStorage (clears on tab close)
-//  - Passwords NEVER stored or logged in plaintext
+//  INTERNATIONALIZATION (i18n)
+// ═══════════════════════════════════════════════════════
+const translations = {
+  en: {
+    nav_ship: "Ship Info", nav_ore: "Ore Info", nav_crew: "Crew Info", nav_community: "Community",
+    mega_ship_view: "View Ship Info", mega_ship_view_sub: "Loadout, components & grade breakdown", mega_ship_guns: "Ship Gun Loadout", mega_ship_guns_sub: "View full loadout on Erkul.games", mega_ship_workspace: "Workspace Version", mega_ship_workspace_sub: "Open workspace configuration version",
+    mega_ore_view: "View Ore Info", mega_ore_view_sub: "Mining data, locations & values",
+    mega_crew_roster: "Task Force Knights", mega_crew_roster_sub: "Active roster & squad assignments", mega_crew_callsigns: "Internal Call Signs", mega_crew_callsigns_sub: "Comms identifiers & designations", mega_crew_ops: "Operations Schedule", mega_crew_ops_sub: "Ops nights & mission schedule",
+    mega_community_chat: "General Chat", mega_community_chat_sub: "Live comms & crew coordination",
+    badge_info: "Info", badge_external: "External", badge_roster: "Roster", badge_comms: "Comms", badge_schedule: "Schedule", badge_live: "Live",
+    label_db_entry: "Database Entry", title_ship_info: "Ship Information", title_ore_info: "Ore Information", title_crew_info: "Crew Information",
+    ship_table1_title: "Component acquisition & blueprint data", th_component: "Component", th_blueprint: "Blueprint", th_role: "Role", th_source: "Source", role_mil_a: "Military Grade A", src_foxwell: "Foxwell orange-tier missions", src_js500: "Orison — Cousin Crow's — 130,000 aUEC<br>[component cant be crafted]", src_qd: "Unlocking missions — 100% chance<br><br>[Reputation Rank] Rank - [Cargo Grade Token] Cargo Haul ×2<br>Hauling<br><br>[Reputation Rank] Rank - Direct [Cargo Grade Token] Cargo Haul ×12<br>Hauling",
+    ship_table2_title: "Muda — loadout", th_category: "Category", th_grade: "Grade", cat_weapons: "Weapons", cat_missiles: "Missiles", cat_power: "Power", cat_shield: "Shield", cat_cooler: "Cooler", cat_qdrive: "Quantum Drive", cat_radar: "Radar", grade_m: "M grade", grade_high: "High grade", ship_chart_title: "Grade breakdown",
+    msg_coming_soon: "Mining data, locations & values coming soon",
+    tab_roster: "Task Force Knights", tab_callsigns: "Internal Call Signs", tab_ops: "Ops Schedule",
+    roster_title: "Task Force Knights — Active Roster", th_handle: "Handle", th_status: "Status", status_active: "Active", msg_roster_soon: "Roster data to be added",
+    callsign_title: "Internal Call Signs — Comms Designations", th_callsign: "Call Sign", th_primary: "Primary Meaning", th_sub: "Sub-Meaning / Action Required", th_priority: "Priority", prio_critical: "Critical", prio_urgent: "Urgent", prio_alert: "Alert",
+    cs_deadstick_p: "Power plant is DEAD", cs_deadstick_s: "Everyone checks everything that is specifically close to <em>them</em> immediately", cs_blue_p: "Shields are DOWN", cs_blue_s: "Hull exposed — minimize exposure, re-route power to shields", cs_red_p: "Fire in the ship", cs_red_s: "Locate and suppress immediately — call location after signal", cs_ice_p: "Coolers are DOWN", cs_ice_s: "Reduce power draw — components will overheat without action", cs_black_p: "Turret out of ammo", cs_black_s: "Specific turret is dry — call turret ID after signal", cs_allblack_p: "ALL turrets out of ammo", cs_allblack_s: "All gun positions Winchester — disengage or evade immediately", cs_mayday_p: "Ship is completely lost", cs_mayday_s: "Nothing left we can do — <strong style='color:#f09595;'>all crew meet on bridge, full heavy guns ready</strong>", cs_breakdown_p: "All engines are DOWN", cs_breakdown_s: "No thrust — engineering responds, everyone else holds position", cs_critters_p: "We are getting BOARDED", cs_critters_s: "Hostile boarding in progress — arm up, seal compartments, repel intruders", cs_scuba_p: "Turn life support ON", cs_scuba_s: "Atmosphere compromised — activate life support systems now", cs_spark_p: "Replace a fuse", cs_spark_s: "Electrical fault — call location after signal, fuse replacement needed",
+    ops_title: "Task Force Knights — Operations Schedule", th_day: "Day", th_time: "Time (EST/UTC-5)", th_operation: "Operation", th_lead: "Lead", day_monday: "Monday", day_wednesday: "Wednesday", day_friday: "Friday", day_saturday: "Saturday", ops_mining: "Mining & Cargo Ops", ops_combat: "Combat Patrol & Bounties", ops_main: "Main Ops Night (Full Crew)", ops_training: "Training & Simulations", ops_note: "Note: All times are subject to change based on crew availability. Check comms before op start times.",
+    chat_online_title: "Online Crew", chat_header: "General Comms", ph_type_msg: "Type a message...", btn_send: "Send",
+    auth_label: "Access Portal", auth_login_title: "Sign In", auth_signup_title: "Create Account", profile_title: "My Profile", label_username: "Username", label_password: "Password", ph_username: "Enter username", ph_password: "Enter password", ph_choose_user: "Choose a username", ph_choose_pass: "Choose a password (min 8 chars)", label_confirm_pass: "Confirm Password", ph_repeat_pass: "Repeat password", btn_signin: "Sign In", btn_create_account: "Create Account", auth_no_account: "No account?", auth_register_here: "Register here", auth_have_account: "Already have an account?",
+    label_avatar_url: "Profile Picture URL", ph_avatar: "Paste image URL for avatar", settings_title: "Settings", label_language: "Language / Idioma / Langue", label_change_pass: "Change Password", label_current_pass: "Current Password", label_new_pass: "New Password", btn_save_changes: "Save Changes", btn_logout: "Log Out"
+  },
+  es: {
+    nav_ship: "Info Nave", nav_ore: "Info Minerales", nav_crew: "Info Tripulación", nav_community: "Comunidad",
+    mega_ship_view: "Ver Info Nave", mega_ship_view_sub: "Equipamiento, componentes y grados", mega_ship_guns: "Armamento de Nave", mega_ship_guns_sub: "Ver equipamiento completo en Erkul.games", mega_ship_workspace: "Versión Workspace", mega_ship_workspace_sub: "Abrir versión de configuración del espacio",
+    mega_ore_view: "Ver Info Minerales", mega_ore_view_sub: "Datos de minería, ubicaciones y valores",
+    mega_crew_roster: "Task Force Knights", mega_crew_roster_sub: "Lista activa y asignaciones", mega_crew_callsigns: "Claves Internas", mega_crew_callsigns_sub: "Identificadores de comunicaciones", mega_crew_ops: "Horario de Operaciones", mega_crew_ops_sub: "Noches de operaciones y horarios",
+    mega_community_chat: "Chat General", mega_community_chat_sub: "Comunicaciones en vivo y coordinación",
+    badge_info: "Info", badge_external: "Externo", badge_roster: "Lista", badge_comms: "Comms", badge_schedule: "Horario", badge_live: "En Vivo",
+    label_db_entry: "Entrada de Base de Datos", title_ship_info: "Información de Nave", title_ore_info: "Información de Minerales", title_crew_info: "Información de Tripulación",
+    ship_table1_title: "Adquisición de componentes y datos de planos", th_component: "Componente", th_blueprint: "Plano", th_role: "Rol", th_source: "Fuente", role_mil_a: "Grado Militar A", src_foxwell: "Misiones naranjas de Foxwell", src_js500: "Orison — Cousin Crow's — 130,000 aUEC<br>[el componente no puede fabricarse]", src_qd: "Misiones de desbloqueo — 100% de probabilidad<br><br>[Rango de Reputación] Rango - [Token de Grado de Carga] Transporte de Carga ×2<br>Transporte<br><br>[Rango de Reputación] Rango - Directo [Token de Grado de Carga] Transporte de Carga ×12<br>Transporte",
+    ship_table2_title: "Muda — equipamiento", th_category: "Categoría", th_grade: "Grado", cat_weapons: "Armas", cat_missiles: "Misiles", cat_power: "Energía", cat_shield: "Escudo", cat_cooler: "Refrigerador", cat_qdrive: "Motor Cuántico", cat_radar: "Radar", grade_m: "Grado M", grade_high: "Grado Alto", ship_chart_title: "Desglose de grados",
+    msg_coming_soon: "Datos de minería, ubicaciones y valores próximamente",
+    tab_roster: "Task Force Knights", tab_callsigns: "Claves Internas", tab_ops: "Horario Ops",
+    roster_title: "Task Force Knights — Lista Activa", th_handle: "Alias", th_status: "Estado", status_active: "Activo", msg_roster_soon: "Datos de la lista por añadir",
+    callsign_title: "Claves Internas — Designaciones de Comms", th_callsign: "Clave", th_primary: "Significado Primario", th_sub: "Sub-Significado / Acción Requerida", th_priority: "Prioridad", prio_critical: "Crítico", prio_urgent: "Urgente", prio_alert: "Alerta",
+    cs_deadstick_p: "La planta de energía está MUERTA", cs_deadstick_s: "Todos revisan todo lo que esté específicamente cerca de <em>ellos</em> inmediatamente", cs_blue_p: "Los escudos están CAÍDOS", cs_blue_s: "Casco expuesto — minimizar exposición, redirigir energía a escudos", cs_red_p: "Fuego en la nave", cs_red_s: "Localizar y suprimir inmediatamente — llamar ubicación después de la señal", cs_ice_p: "Los refrigeradores están CAÍDOS", cs_ice_s: "Reducir consumo de energía — los componentes se sobrecalentarán sin acción", cs_black_p: "Torreta sin munición", cs_black_s: "Torreta específica vacía — llamar ID de torreta después de la señal", cs_allblack_p: "TODAS las torretas sin munición", cs_allblack_s: "Todas las posiciones de armas vacías — desenganchar o evadir inmediatamente", cs_mayday_p: "La nave está completamente perdida", cs_mayday_s: "No queda nada que podamos hacer — <strong style='color:#f09595;'>toda la tripulación se reúne en el puente, armas pesadas listas</strong>", cs_breakdown_p: "Todos los motores están CAÍDOS", cs_breakdown_s: "Sin empuje — ingeniería responde, todos los demás mantienen posición", cs_critters_p: "Estamos siendo ABORDADOS", cs_critters_s: "Abordaje hostil en progreso — armarse, sellar compartimentos, repeler intrusos", cs_scuba_p: "Encender soporte vital", cs_scuba_s: "Atmósfera comprometida — activar sistemas de soporte vital ahora", cs_spark_p: "Reemplazar un fusible", cs_spark_s: "Fallo eléctrico — llamar ubicación después de la señal, se necesita reemplazo de fusible",
+    ops_title: "Task Force Knights — Horario de Operaciones", th_day: "Día", th_time: "Hora (EST/UTC-5)", th_operation: "Operación", th_lead: "Líder", day_monday: "Lunes", day_wednesday: "Miércoles", day_friday: "Viernes", day_saturday: "Sábado", ops_mining: "Operaciones de Minería y Carga", ops_combat: "Patrulla de Combate y Recompensas", ops_main: "Noche de Ops Principal (Tripulación Completa)", ops_training: "Entrenamiento y Simulaciones", ops_note: "Nota: Todos los horarios están sujetos a cambios según la disponibilidad de la tripulación. Verificar comunicaciones antes de la hora de inicio.",
+    chat_online_title: "Tripulación En Línea", chat_header: "Comunicaciones Generales", ph_type_msg: "Escribe un mensaje...", btn_send: "Enviar",
+    auth_label: "Portal de Acceso", auth_login_title: "Iniciar Sesión", auth_signup_title: "Crear Cuenta", profile_title: "Mi Perfil", label_username: "Usuario", label_password: "Contraseña", ph_username: "Ingresa usuario", ph_password: "Ingresa contraseña", ph_choose_user: "Elige un usuario", ph_choose_pass: "Elige una contraseña (mín 8 car)", label_confirm_pass: "Confirmar Contraseña", ph_repeat_pass: "Repetir contraseña", btn_signin: "Iniciar Sesión", btn_create_account: "Crear Cuenta", auth_no_account: "¿Sin cuenta?", auth_register_here: "Regístrate aquí", auth_have_account: "¿Ya tienes cuenta?",
+    label_avatar_url: "URL de Foto de Perfil", ph_avatar: "Pega la URL de la imagen", settings_title: "Configuración", label_language: "Language / Idioma / Langue", label_change_pass: "Cambiar Contraseña", label_current_pass: "Contraseña Actual", label_new_pass: "Nueva Contraseña", btn_save_changes: "Guardar Cambios", btn_logout: "Cerrar Sesión"
+  },
+  fr: {
+    nav_ship: "Info Vaisseau", nav_ore: "Info Minerais", nav_crew: "Info Équipage", nav_community: "Communauté",
+    mega_ship_view: "Voir Info Vaisseau", mega_ship_view_sub: "Équipement, composants et grades", mega_ship_guns: "Armement du Vaisseau", mega_ship_guns_sub: "Voir l'équipement complet sur Erkul.games", mega_ship_workspace: "Version Espace de Travail", mega_ship_workspace_sub: "Ouvrir la version de configuration",
+    mega_ore_view: "Voir Info Minerais", mega_ore_view_sub: "Données minières, emplacements et valeurs",
+    mega_crew_roster: "Task Force Knights", mega_crew_roster_sub: "Liste active et affectations", mega_crew_callsigns: "Signaux d'Appel Internes", mega_crew_callsigns_sub: "Identifiants et désignations comms", mega_crew_ops: "Calendrier des Opérations", mega_crew_ops_sub: "Soirées ops et calendrier des missions",
+    mega_community_chat: "Chat Général", mega_community_chat_sub: "Comms en direct et coordination",
+    badge_info: "Info", badge_external: "Externe", badge_roster: "Liste", badge_comms: "Comms", badge_schedule: "Calendrier", badge_live: "En Direct",
+    label_db_entry: "Entrée de Base de Données", title_ship_info: "Informations du Vaisseau", title_ore_info: "Informations des Minerais", title_crew_info: "Informations de l'Équipage",
+    ship_table1_title: "Acquisition des composants et données du plan", th_component: "Composant", th_blueprint: "Plan", th_role: "Rôle", th_source: "Source", role_mil_a: "Grade Militaire A", src_foxwell: "Missions orange de Foxwell", src_js500: "Orison — Cousin Crow's — 130 000 aUEC<br>[le composant ne peut pas être fabriqué]", src_qd: "Missions de déverrouillage — 100% de chance<br><br>[Rang de Réputation] Rang - [Jeton de Grade de Cargaison] Transport de Cargaison ×2<br>Transport<br><br>[Rang de Réputation] Rang - Direct [Jeton de Grade de Cargaison] Transport de Cargaison ×12<br>Transport",
+    ship_table2_title: "Muda — équipement", th_category: "Catégorie", th_grade: "Grade", cat_weapons: "Armes", cat_missiles: "Missiles", cat_power: "Énergie", cat_shield: "Bouclier", cat_cooler: "Refroidisseur", cat_qdrive: "Propulsion Quantique", cat_radar: "Radar", grade_m: "Grade M", grade_high: "Grade Élevé", ship_chart_title: "Répartition des grades",
+    msg_coming_soon: "Données minières, emplacements et valeurs bientôt disponibles",
+    tab_roster: "Task Force Knights", tab_callsigns: "Signaux d'Appel", tab_ops: "Calendrier Ops",
+    roster_title: "Task Force Knights — Liste Active", th_handle: "Pseudo", th_status: "Statut", status_active: "Actif", msg_roster_soon: "Données de la liste à ajouter",
+    callsign_title: "Signaux d'Appel Internes — Désignations Comms", th_callsign: "Signal d'Appel", th_primary: "Signification Primaire", th_sub: "Sous-Signification / Action Requise", th_priority: "Priorité", prio_critical: "Critique", prio_urgent: "Urgent", prio_alert: "Alerte",
+    cs_deadstick_p: "La centrale électrique est MORTE", cs_deadstick_s: "Tout le monde vérifie tout ce qui est spécifiquement proche de <em>eux</em> immédiatement", cs_blue_p: "Les boucliers sont TOMBÉS", cs_blue_s: "Coque exposée — minimiser l'exposition, rediriger l'énergie vers les boucliers", cs_red_p: "Incendie dans le vaisseau", cs_red_s: "Localiser et supprimer immédiatement — appeler l'emplacement après le signal", cs_ice_p: "Les refroidisseurs sont TOMBÉS", cs_ice_s: "Réduire la consommation d'énergie — les composants surchaufferont sans action", cs_black_p: "Tourelle à court de munitions", cs_black_s: "Tourelle spécifique vide — appeler l'ID de la tourelle après le signal", cs_allblack_p: "TOUTES les tourelles à court de munitions", cs_allblack_s: "Toutes les positions d'armes vides — désengager ou esquiver immédiatement", cs_mayday_p: "Le vaisseau est complètement perdu", cs_mayday_s: "Plus rien à faire — <strong style='color:#f09595;'>tout l'équipage se réunit sur la passerelle, armes lourdes prêtes</strong>", cs_breakdown_p: "Tous les moteurs sont TOMBÉS", cs_breakdown_s: "Pas de poussée — l'ingénierie répond, tous les autres maintiennent la position", cs_critters_p: "Nous sommes BOUCLUS", cs_critters_s: "Abordage hostile en cours — armez-vous, scellez les compartiments, repoussez les intrus", cs_scuba_p: "Allumer le support de vie", cs_scuba_s: "Atmosphère compromise — activer les systèmes de support de vie maintenant", cs_spark_p: "Remplacer un fusible", cs_spark_s: "Défaillance électrique — appeler l'emplacement après le signal, remplacement de fusible nécessaire",
+    ops_title: "Task Force Knights — Calendrier des Opérations", th_day: "Jour", th_time: "Heure (EST/UTC-5)", th_operation: "Opération", th_lead: "Chef", day_monday: "Lundi", day_wednesday: "Mercredi", day_friday: "Vendredi", day_saturday: "Samedi", ops_mining: "Ops Minières et Cargaison", ops_combat: "Patrouille de Combat et Primes", ops_main: "Soirée Ops Principale (Équipage Complet)", ops_training: "Entraînement et Simulations", ops_note: "Note : Tous les horaires sont susceptibles d'être modifiés en fonction de la disponibilité de l'équipage. Vérifiez les comms avant l'heure de début.",
+    chat_online_title: "Équipage En Ligne", chat_header: "Comms Générales", ph_type_msg: "Écrire un message...", btn_send: "Envoyer",
+    auth_label: "Portail d'Accès", auth_login_title: "Se Connecter", auth_signup_title: "Créer un Compte", profile_title: "Mon Profil", label_username: "Nom d'utilisateur", label_password: "Mot de passe", ph_username: "Entrez nom d'utilisateur", ph_password: "Entrez mot de passe", ph_choose_user: "Choisissez un nom", ph_choose_pass: "Choisissez un mot de passe (min 8 car)", label_confirm_pass: "Confirmer le Mot de passe", ph_repeat_pass: "Répéter le mot de passe", btn_signin: "Se Connecter", btn_create_account: "Créer un Compte", auth_no_account: "Pas de compte?", auth_register_here: "Inscrivez-vous ici", auth_have_account: "Vous avez déjà un compte?",
+    label_avatar_url: "URL de la Photo de Profil", ph_avatar: "Collez l'URL de l'image", settings_title: "Paramètres", label_language: "Language / Idioma / Langue", label_change_pass: "Changer le Mot de passe", label_current_pass: "Mot de passe Actuel", label_new_pass: "Nouveau Mot de passe", btn_save_changes: "Sauvegarder", btn_logout: "Déconnexion"
+  },
+  de: {
+    nav_ship: "Schiff Info", nav_ore: "Erz Info", nav_crew: "Crew Info", nav_community: "Gemeinschaft",
+    mega_ship_view: "Schiff Info Anzeigen", mega_ship_view_sub: "Ausrüstung, Komponenten & Grade", mega_ship_guns: "Schiffsbewaffnung", mega_ship_guns_sub: "Vollständige Ausrüstung auf Erkul.games ansehen", mega_ship_workspace: "Workspace-Version", mega_ship_workspace_sub: "Arbeitsbereich-Konfigurationsversion öffnen",
+    mega_ore_view: "Erz Info Anzeigen", mega_ore_view_sub: "Bergbaudaten, Standorte & Werte",
+    mega_crew_roster: "Task Force Knights", mega_crew_roster_sub: "Aktive Liste & Squad-Zuweisungen", mega_crew_callsigns: "Interne Rufnamen", mega_crew_callsigns_sub: "Funkkennungen & Bezeichnungen", mega_crew_ops: "Zeitplan der Operationen", mega_crew_ops_sub: "Ops-Nächte und Missionsplan",
+    mega_community_chat: "Allgemeiner Chat", mega_community_chat_sub: "Live-Funk & Crew-Koordination",
+    badge_info: "Info", badge_external: "Extern", badge_roster: "Liste", badge_comms: "Funk", badge_schedule: "Plan", badge_live: "Live",
+    label_db_entry: "Datenbankeintrag", title_ship_info: "Schiffsinformationen", title_ore_info: "Erzinformationen", title_crew_info: "Crewinformationen",
+    ship_table1_title: "Komponentenbeschaffung & Blaupausendaten", th_component: "Komponente", th_blueprint: "Blaupause", th_role: "Rolle", th_source: "Quelle", role_mil_a: "Militärischer Grad A", src_foxwell: "Foxwell Orange-Tier-Missionen", src_js500: "Orison — Cousin Crow's — 130.000 aUEC<br>[Komponente kann nicht hergestellt werden]", src_qd: "Freischaltungsmissionen — 100% Chance<br><br>[Reputationsrang] Rang - [Frachgrad-Token] Frachtransport ×2<br>Transport<br><br>[Reputationsrang] Rang - Direkt [Frachgrad-Token] Frachtransport ×12<br>Transport",
+    ship_table2_title: "Muda — Ausrüstung", th_category: "Kategorie", th_grade: "Grad", cat_weapons: "Waffen", cat_missiles: "Raketen", cat_power: "Energie", cat_shield: "Schild", cat_cooler: "Kühler", cat_qdrive: "Quantumantrieb", cat_radar: "Radar", grade_m: "M-Grad", grade_high: "Hoher Grad", ship_chart_title: "Grade-Aufschlüsselung",
+    msg_coming_soon: "Bergbaudaten, Standorte & Werte kommen bald",
+    tab_roster: "Task Force Knights", tab_callsigns: "Interne Rufnamen", tab_ops: "Ops Zeitplan",
+    roster_title: "Task Force Knights — Aktive Liste", th_handle: "Handle", th_status: "Status", status_active: "Aktiv", msg_roster_soon: "Listendaten werden hinzugefügt",
+    callsign_title: "Interne Rufnamen — Funkbezeichnungen", th_callsign: "Rufname", th_primary: "Primäre Bedeutung", th_sub: "Sekundärbedeutung / Erforderliche Aktion", th_priority: "Priorität", prio_critical: "Kritisch", prio_urgent: "Dringend", prio_alert: "Alarm",
+    cs_deadstick_p: "Kraftwerk ist TOT", cs_deadstick_s: "Jeder überprüft sofort alles, was sich speziell in seiner <em>Nähe</em> befindet", cs_blue_p: "Schilde sind UNTEN", cs_blue_s: "Hülle freiliegend — Exposition minimieren, Energie zu Schilden umleiten", cs_red_p: "Feuer im Schiff", cs_red_s: "Sofort lokalisieren und löschen — Standort nach Signal melden", cs_ice_p: "Kühler sind AUSGEFALLEN", cs_ice_s: "Energieverbrauch reduzieren — Komponenten überhitzen ohne Maßnahme", cs_black_p: "Geschütz hat keine Munition mehr", cs_black_s: "Bestimmtes Geschütz ist leer — Geschütz-ID nach Signal melden", cs_allblack_p: "ALLE Geschütze ohne Munition", cs_allblack_s: "Alle Waffenpositionen leer — sofort abkoppeln oder ausweichen", cs_mayday_p: "Schiff ist komplett verloren", cs_mayday_s: "Nichts mehr, was wir tun können — <strong style='color:#f09595;'>gesamte Crew trifft sich auf der Brücke, schwere Waffen bereit</strong>", cs_breakdown_p: "Alle Triebwerke sind AUSGEFALLEN", cs_breakdown_s: "Kein Schub — Ingenieurwesen antwortet, alle anderen halten Position", cs_critters_p: "Wir werden GEKAPERT", cs_critters_s: "Feindliches Entern im Gange — bewaffnen, Abteile abdichten, Eindringlinge abwehren", cs_scuba_p: "Lebenserhaltung EINSCHALTEN", cs_scuba_s: "Atmosphäre beeinträchtigt — Lebenserhaltungssysteme jetzt aktivieren", cs_spark_p: "Sicherung ersetzen", cs_spark_s: "Elektrischer Fehler — Standort nach Signal melden, Sicherungswechsel erforderlich",
+    ops_title: "Task Force Knights — Ops Zeitplan", th_day: "Tag", th_time: "Zeit (EST/UTC-5)", th_operation: "Operation", th_lead: "Leitung", day_monday: "Montag", day_wednesday: "Mittwoch", day_friday: "Freitag", day_saturday: "Samstag", ops_mining: "Bergbau & Fracht Ops", ops_combat: "Kampfpatrouille & Kopfgelder", ops_main: "Haupt-Ops-Nacht (Volle Crew)", ops_training: "Training & Simulationen", ops_note: "Hinweis: Alle Zeiten können sich je nach Crew-Verfügbarkeit ändern. Vor Ops-Beginn Comms überprüfen.",
+    chat_online_title: "Crew Online", chat_header: "Allgemeiner Funk", ph_type_msg: "Nachricht schreiben...", btn_send: "Senden",
+    auth_label: "Zugangsportal", auth_login_title: "Anmelden", auth_signup_title: "Konto Erstellen", profile_title: "Mein Profil", label_username: "Benutzername", label_password: "Passwort", ph_username: "Benutzername eingeben", ph_password: "Passwort eingeben", ph_choose_user: "Benutzername wählen", ph_choose_pass: "Passwort wählen (min 8 Zeichen)", label_confirm_pass: "Passwort Bestätigen", ph_repeat_pass: "Passwort wiederholen", btn_signin: "Anmelden", btn_create_account: "Konto Erstellen", auth_no_account: "Kein Konto?", auth_register_here: "Hier registrieren", auth_have_account: "Bereits ein Konto?",
+    label_avatar_url: "Profilbild URL", ph_avatar: "Bild-URL einfügen", settings_title: "Einstellungen", label_language: "Language / Idioma / Langue", label_change_pass: "Passwort Ändern", label_current_pass: "Aktuelles Passwort", label_new_pass: "Neues Passwort", btn_save_changes: "Änderungen Speichern", btn_logout: "Abmelden"
+  }
+};
+
+let currentLang = 'en';
+
+function applyLanguage(lang) {
+  currentLang = lang;
+  const dict = translations[lang];
+  if (!dict) return;
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key]) el.innerHTML = dict[key];
+  });
+
+  document.querySelectorAll('[data-i18n-attr]').forEach(el => {
+    const attrStr = el.getAttribute('data-i18n-attr');
+    const [attr, key] = attrStr.split('=');
+    if (dict[key]) el.setAttribute(attr, dict[key]);
+  });
+
+  updateNav(); // Re-render nav buttons with correct language
+}
+
+function switchLanguage(lang) {
+  applyLanguage(lang);
+  if (currentUser) {
+    const db = loadUsers();
+    if (db[currentUser.toLowerCase()]) {
+      db[currentUser.toLowerCase()].lang = lang;
+      saveUsers(db);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  SECURITY LAYER & ADMIN SEEDING
 // ═══════════════════════════════════════════════════════
 
 const RATE_LIMIT_MAX    = 5;
-const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 min ms
-const DB_KEY            = 'rsi_users_v2';   // new key, old plaintext data ignored
+const RATE_LIMIT_WINDOW = 15 * 60 * 1000;
+const DB_KEY            = 'rsi_users_v4';
 const SESSION_KEY       = 'rsi_session';
-
-// ── Crypto helpers ──
+const CHAT_KEY          = 'rsi_chat_general';
+const ONLINE_KEY        = 'rsi_online';
 
 async function sha256hex(str) {
-  const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
@@ -942,7 +1595,6 @@ function randomSalt() {
 }
 
 async function hashPassword(password, salt) {
-  // PBKDF2-style: hash(salt + password) iterated 10k times (lightweight PBKDF2 via SubtleCrypto)
   const keyMaterial = await crypto.subtle.importKey(
     'raw', new TextEncoder().encode(password),
     { name: 'PBKDF2' }, false, ['deriveBits']
@@ -954,24 +1606,18 @@ async function hashPassword(password, salt) {
   return Array.from(new Uint8Array(bits)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
-// ── User DB (localStorage) ──
-
 function loadUsers() {
   try { return JSON.parse(localStorage.getItem(DB_KEY) || '{}'); }
   catch { return {}; }
 }
-function saveUsers(db) {
-  localStorage.setItem(DB_KEY, JSON.stringify(db));
-}
-
-// ── Rate limiting ──
+function saveUsers(db) { localStorage.setItem(DB_KEY, JSON.stringify(db)); }
 
 function rateLimitKey(username) { return 'rsi_rl_' + username.toLowerCase(); }
 
 function checkRateLimit(username) {
   const key = rateLimitKey(username);
   try {
-    const data = JSON.parse(sessionStorage.getItem(key) || '{"attempts":[],"locked":false}');
+    const data = JSON.parse(sessionStorage.getItem(key) || '{"attempts":[]}');
     const now  = Date.now();
     data.attempts = (data.attempts || []).filter(t => now - t < RATE_LIMIT_WINDOW);
     if (data.attempts.length >= RATE_LIMIT_MAX) {
@@ -992,31 +1638,26 @@ function recordAttempt(username) {
   } catch {}
 }
 
-function clearAttempts(username) {
-  try { sessionStorage.removeItem(rateLimitKey(username)); } catch {}
-}
-
-// ── Session ──
+function clearAttempts(username) { try { sessionStorage.removeItem(rateLimitKey(username)); } catch {} }
 
 function createSession(username) {
   const token = Array.from(crypto.getRandomValues(new Uint8Array(20)))
     .map(b => b.toString(16).padStart(2,'0')).join('');
-  sessionStorage.setItem(SESSION_KEY, JSON.stringify({ username, token, ts: Date.now() }));
+  const db = loadUsers();
+  const isAdmin = db[username.toLowerCase()]?.role === 'admin';
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify({ username, token, ts: Date.now(), isAdmin }));
 }
 
 function getSession() {
   try {
     const s = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null');
     if (!s) return null;
-    // session expires after 8 hours
     if (Date.now() - s.ts > 8 * 60 * 60 * 1000) { sessionStorage.removeItem(SESSION_KEY); return null; }
     return s;
   } catch { return null; }
 }
 
 function destroySession() { sessionStorage.removeItem(SESSION_KEY); }
-
-// ── Input validation ──
 
 function sanitiseUsername(u) { return u.trim().replace(/[^a-zA-Z0-9_\-]/g, ''); }
 
@@ -1027,7 +1668,7 @@ function passwordStrength(p) {
   if (/[A-Z]/.test(p)) score++;
   if (/[0-9]/.test(p)) score++;
   if (/[^a-zA-Z0-9]/.test(p)) score++;
-  return score; // 0-5
+  return score;
 }
 
 function updateStrength() {
@@ -1044,8 +1685,6 @@ function updateStrength() {
   label.style.color     = cols[score] || 'rgba(74,158,186,0.4)';
 }
 
-// ── Show rate-limit banner ──
-
 function showBanner(msg, ms = 5000) {
   const b = document.getElementById('rate-banner');
   b.textContent = msg;
@@ -1054,21 +1693,43 @@ function showBanner(msg, ms = 5000) {
   b._t = setTimeout(() => { b.style.display = 'none'; }, ms);
 }
 
+// ADMIN 1: Username: KNIGHT-CMDR | Password: X7#kQ9!zLp$2mNvW
+// ADMIN 2: Username: KNIGHT-SEC  | Password: R4@wJ8&bYx*6cFhTq
+async function seedAdminAccounts() {
+  const db = loadUsers();
+  let changed = false;
+
+  if (!db['knight-cmdr']) {
+    const salt1 = 'a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6';
+    const hash1 = await hashPassword('X7#kQ9!zLp$2mNvW', salt1);
+    db['knight-cmdr'] = { display: 'KNIGHT-CMDR', hash: hash1, salt: salt1, role: 'admin', avatar: 'https://upload.wikimedia.org/wikipedia/commons/3/33/FKT_Coat_of_Arms.png', discord: 'CMDR#0001', lang: 'en', created: Date.now() };
+    changed = true;
+  }
+
+  if (!db['knight-sec']) {
+    const salt2 = 'f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1';
+    const hash2 = await hashPassword('R4@wJ8&bYx*6cFhTq', salt2);
+    db['knight-sec'] = { display: 'KNIGHT-SEC', hash: hash2, salt: salt2, role: 'admin', avatar: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Symbol_of_the_Knights_of_Columbus.svg/1200px-Symbol_of_the_Knights_of_Columbus.svg.png', discord: 'SEC#0002', lang: 'en', created: Date.now() };
+    changed = true;
+  }
+
+  if (changed) saveUsers(db);
+}
+
 // ═══════════════════════════════════════════════════════
 //  AUTH ACTIONS
 // ═══════════════════════════════════════════════════════
 
 let currentUser = null;
+let isAdmin = false;
 
 async function doLogin() {
   const rawUser = document.getElementById('login-user').value;
   const pass    = document.getElementById('login-pass').value;
   const err     = document.getElementById('login-error');
-
   const username = sanitiseUsername(rawUser);
   if (!username || !pass) { err.textContent = 'Please fill in all fields.'; return; }
 
-  // rate limit
   const rl = checkRateLimit(username);
   if (rl.blocked) {
     err.textContent = `Too many attempts. Try again in ${rl.wait} min.`;
@@ -1078,15 +1739,9 @@ async function doLogin() {
 
   const db   = loadUsers();
   const user = db[username.toLowerCase()];
-
-  if (!user) {
-    recordAttempt(username);
-    err.textContent = 'Account not found.';
-    return;
-  }
+  if (!user) { recordAttempt(username); err.textContent = 'Account not found.'; return; }
 
   const hash = await hashPassword(pass, user.salt);
-
   if (hash !== user.hash) {
     recordAttempt(username);
     const remaining = RATE_LIMIT_MAX - checkRateLimit(username).data?.attempts?.length;
@@ -1096,9 +1751,12 @@ async function doLogin() {
 
   clearAttempts(username);
   currentUser = user.display;
+  isAdmin = user.role === 'admin';
   createSession(currentUser);
   closeAuth();
+  if (user.lang) applyLanguage(user.lang);
   updateNav();
+  setOnlinePresence();
 }
 
 async function doSignup() {
@@ -1106,7 +1764,6 @@ async function doSignup() {
   const pass    = document.getElementById('signup-pass').value;
   const confirm = document.getElementById('signup-confirm').value;
   const err     = document.getElementById('signup-error');
-
   const username = sanitiseUsername(rawUser);
   if (!username || !pass || !confirm) { err.textContent = 'Please fill in all fields.'; return; }
   if (username.length < 3) { err.textContent = 'Username must be 3+ characters (letters, numbers, _ -)'; return; }
@@ -1119,33 +1776,102 @@ async function doSignup() {
 
   const salt = randomSalt();
   const hash = await hashPassword(pass, salt);
-
-  db[username.toLowerCase()] = { display: username, hash, salt, created: Date.now() };
+  db[username.toLowerCase()] = { display: username, hash, salt, role: 'user', avatar: '', discord: '', lang: currentLang, created: Date.now() };
   saveUsers(db);
 
   currentUser = username;
+  isAdmin = false;
   createSession(currentUser);
   closeAuth();
   updateNav();
+  setOnlinePresence();
 }
 
 function doLogout() {
+  clearOnlinePresence();
   currentUser = null;
+  isAdmin = false;
   destroySession();
-  // close any open panels
   if (activeDocPanel) { activeDocPanel.classList.remove('visible'); activeDocPanel = null; }
   closeAll();
+  applyLanguage('en'); // Reset to default on logout
   updateNav();
 }
 
-// ── Restore session on load ──
+// ── Profile Logic ──
+function openProfile() {
+  if (!currentUser) return;
+  const db = loadUsers();
+  const user = db[currentUser.toLowerCase()];
+  
+  document.getElementById('profile-avatar').value = user.avatar || '';
+  document.getElementById('profile-discord').value = user.discord || '';
+  document.getElementById('profile-current-pass').value = '';
+  document.getElementById('profile-new-pass').value = '';
+  document.getElementById('profile-error').textContent = '';
+  document.getElementById('profile-success').textContent = '';
+  document.getElementById('profile-lang').value = user.lang || currentLang;
+  
+  previewAvatar();
+  switchView('profile');
+  openAuth();
+}
+
+function previewAvatar() {
+  const url = document.getElementById('profile-avatar').value;
+  const preview = document.getElementById('profile-avatar-preview');
+  preview.src = url || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiMwYjFlMmQiLz48dGV4dCB4PSI1MCIgeT0iNTUiIGZvbnQtc2l6ZT0iNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM0YTllYmEiPuKchrPCmjwvdGV4dD48L3N2Zz4=';
+}
+
+async function saveProfile() {
+  const err = document.getElementById('profile-error');
+  const success = document.getElementById('profile-success');
+  err.textContent = '';
+  success.textContent = '';
+
+  const db = loadUsers();
+  const user = db[currentUser.toLowerCase()];
+  
+  const newAvatar = document.getElementById('profile-avatar').value.trim();
+  const newDiscord = document.getElementById('profile-discord').value.trim();
+  const newLang = document.getElementById('profile-lang').value;
+  const currentPass = document.getElementById('profile-current-pass').value;
+  const newPass = document.getElementById('profile-new-pass').value;
+
+  if (currentPass || newPass) {
+    if (!currentPass || !newPass) { err.textContent = 'To change password, fill both current and new password.'; return; }
+    const verifyHash = await hashPassword(currentPass, user.salt);
+    if (verifyHash !== user.hash) { err.textContent = 'Current password is incorrect.'; return; }
+    if (newPass.length < 8) { err.textContent = 'New password must be at least 8 characters.'; return; }
+    const newSalt = randomSalt();
+    const newHash = await hashPassword(newPass, newSalt);
+    user.salt = newSalt;
+    user.hash = newHash;
+  }
+
+  user.avatar = newAvatar;
+  user.discord = newDiscord;
+  user.lang = newLang;
+  
+  db[currentUser.toLowerCase()] = user;
+  saveUsers(db);
+  applyLanguage(newLang);
+  updateNav();
+  success.textContent = 'Profile updated successfully!';
+  document.getElementById('profile-current-pass').value = '';
+  document.getElementById('profile-new-pass').value = '';
+}
+
 (function() {
   const s = getSession();
-  if (s) currentUser = s.username;
+  if (s) {
+    currentUser = s.username;
+    isAdmin = s.isAdmin || false;
+  }
 })();
 
 // ═══════════════════════════════════════════════════════
-//  MEGA MENU
+//  MEGA MENU & PANELS
 // ═══════════════════════════════════════════════════════
 
 const navItems = document.querySelectorAll('.nav-item[data-menu]');
@@ -1181,8 +1907,6 @@ function gateNav(e, item) {
 document.addEventListener('click', () => closeAll());
 document.querySelectorAll('.mega').forEach(p => p.addEventListener('click', e => e.stopPropagation()));
 
-// ── Panel buttons ──
-
 let activeDocPanel = null;
 
 document.querySelectorAll('.mega-link[data-panel]').forEach(btn => {
@@ -1190,20 +1914,37 @@ document.querySelectorAll('.mega-link[data-panel]').forEach(btn => {
     if (!currentUser) { openAuth('login'); closeAll(); return; }
     const panel = document.getElementById('panel-' + btn.dataset.panel);
     if (!panel) return;
+
+    const subtab = btn.dataset.subtab;
+    if (subtab) switchCrewTab(subtab);
+
     if (activeDocPanel === panel) {
       panel.classList.remove('visible');
       activeDocPanel = null;
       closeAll();
       return;
     }
+
     if (activeDocPanel) activeDocPanel.classList.remove('visible');
+    
     const paper = panel.querySelector('.paper');
     paper.style.animation = 'none';
-    requestAnimationFrame(() => { paper.style.animation = ''; panel.classList.add('visible'); });
+    requestAnimationFrame(() => { 
+      paper.style.animation = ''; 
+      panel.classList.add('visible'); 
+    });
+    
     activeDocPanel = panel;
     closeAll();
+
+    if (btn.dataset.panel === 'chat') setTimeout(() => scrollChatToBottom(), 100);
   });
 });
+
+function switchCrewTab(tabId) {
+  document.querySelectorAll('.inner-tab').forEach(t => t.classList.toggle('active', t.dataset.crewTab === tabId));
+  document.querySelectorAll('.inner-pane').forEach(p => p.classList.toggle('active', p.id === 'crew-pane-' + tabId));
+}
 
 // ═══════════════════════════════════════════════════════
 //  AUTH UI
@@ -1211,14 +1952,24 @@ document.querySelectorAll('.mega-link[data-panel]').forEach(btn => {
 
 function updateNav() {
   const right = document.getElementById('nav-right');
+  const dict = translations[currentLang];
   if (currentUser) {
+    const db = loadUsers();
+    const user = db[currentUser.toLowerCase()];
+    const avatarSrc = user?.avatar || '';
+    const adminBadge = isAdmin ? '<span class="badge-admin">ADMIN</span>' : '';
+    const avatarHtml = avatarSrc 
+      ? `<img class="nav-avatar" src="${escHtml(avatarSrc)}" alt="Avatar" onclick="openProfile()">`
+      : `<div class="nav-avatar" style="display:flex;align-items:center;justify-content:center;font-size:16px;color:#4a9eba;cursor:pointer;" onclick="openProfile()">👤</div>`;
+
     right.innerHTML =
-      `<span class="nav-username">${escHtml(currentUser)}</span>
-       <button class="rsi-btn" onclick="doLogout()"><span>Log Out</span></button>`;
+      `${avatarHtml}
+       <span class="nav-username" onclick="openProfile()">${escHtml(currentUser)} ${adminBadge}</span>
+       <button class="rsi-btn" onclick="doLogout()"><span>${dict.btn_logout}</span></button>`;
   } else {
     right.innerHTML =
-      `<button class="rsi-btn" onclick="openAuth('login')"><span>Sign In</span></button>
-       <button class="rsi-btn" onclick="openAuth('signup')"><span>Register</span></button>`;
+      `<button class="rsi-btn" onclick="openAuth('login')"><span>${dict.btn_signin}</span></button>
+       <button class="rsi-btn" onclick="openAuth('signup')"><span>${dict.btn_create_account}</span></button>`;
   }
 }
 
@@ -1228,10 +1979,9 @@ function escHtml(s) {
 
 function openAuth(view) {
   document.getElementById('auth-overlay').classList.add('visible');
-  switchView(view);
+  if (view) switchView(view);
   document.getElementById('login-error').textContent = '';
   document.getElementById('signup-error').textContent = '';
-  // reset strength
   const fill = document.getElementById('strength-fill');
   if (fill) { fill.style.width = '0%'; document.getElementById('strength-label').textContent = ''; }
 }
@@ -1241,6 +1991,7 @@ function closeAuth() { document.getElementById('auth-overlay').classList.remove(
 function switchView(view) {
   document.getElementById('view-login').style.display  = view === 'login'  ? '' : 'none';
   document.getElementById('view-signup').style.display = view === 'signup' ? '' : 'none';
+  document.getElementById('view-profile').style.display = view === 'profile' ? '' : 'none';
   const box = document.getElementById('auth-box');
   box.style.animation = 'none';
   requestAnimationFrame(() => { box.style.animation = ''; });
@@ -1254,14 +2005,150 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeAuth();
   if (e.key === 'Enter') {
     const overlay = document.getElementById('auth-overlay');
-    if (!overlay.classList.contains('visible')) return;
+    if (!overlay.classList.contains('visible')) {
+      if (document.activeElement === document.getElementById('chat-input-field')) sendChatMessage();
+      return;
+    }
     const loginView = document.getElementById('view-login');
+    const signupView = document.getElementById('view-signup');
+    const profileView = document.getElementById('view-profile');
     if (loginView.style.display !== 'none') doLogin();
-    else doSignup();
+    else if (signupView.style.display !== 'none') doSignup();
+    else if (profileView.style.display !== 'none') saveProfile();
   }
 });
 
-updateNav();
+// ═══════════════════════════════════════════════════════
+//  CHAT & ONLINE SYSTEM
+// ═══════════════════════════════════════════════════════
+
+function setOnlinePresence() {
+  if (!currentUser) return;
+  let online = JSON.parse(localStorage.getItem(ONLINE_KEY) || '{}');
+  online[currentUser] = Date.now();
+  localStorage.setItem(ONLINE_KEY, JSON.stringify(online));
+}
+
+function clearOnlinePresence() {
+  if (!currentUser) return;
+  let online = JSON.parse(localStorage.getItem(ONLINE_KEY) || '{}');
+  delete online[currentUser];
+  localStorage.setItem(ONLINE_KEY, JSON.stringify(online));
+}
+
+function getOnlineUsers() {
+  let online = JSON.parse(localStorage.getItem(ONLINE_KEY) || '{}');
+  let now = Date.now();
+  let activeUsers = {};
+  for (let user in online) {
+    if (now - online[user] < 45000) activeUsers[user] = online[user];
+    else delete online[user];
+  }
+  localStorage.setItem(ONLINE_KEY, JSON.stringify(online));
+  return Object.keys(activeUsers);
+}
+
+function renderOnlineUsers() {
+  const list = document.getElementById('online-list');
+  const count = document.getElementById('online-count');
+  if (!list || !count) return;
+  const users = getOnlineUsers();
+  const db = loadUsers();
+  count.textContent = users.length;
+  list.innerHTML = '';
+  users.forEach(username => {
+    const user = db[username.toLowerCase()];
+    const isAdminUser = user?.role === 'admin';
+    const avatar = user?.avatar || '';
+    const div = document.createElement('div');
+    div.className = 'chat-online-user';
+    div.innerHTML = `
+      <div class="online-dot"></div>
+      <div class="chat-username">
+        ${avatar ? `<img src="${escHtml(avatar)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;">` : ''}
+        ${escHtml(username)}
+        ${isAdminUser ? '<span class="badge-admin" style="font-size:7px;padding:1px 4px;">ADMIN</span>' : ''}
+      </div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function loadChatMessages() { try { return JSON.parse(localStorage.getItem(CHAT_KEY) || '[]'); } catch { return []; } }
+function saveChatMessages(messages) { localStorage.setItem(CHAT_KEY, JSON.stringify(messages)); }
+function escChat(text) { let s = escHtml(text); s = s.replace(/\n/g, '<br>'); return s; }
+
+function renderChat() {
+  const container = document.getElementById('chat-messages');
+  if (!container) return;
+  const messages = loadChatMessages();
+  const db = loadUsers();
+  container.innerHTML = '';
+  messages.forEach(msg => {
+    const user = db[msg.user.toLowerCase()];
+    const avatar = user?.avatar || '';
+    const isAdminUser = user?.role === 'admin';
+    const time = new Date(msg.ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const div = document.createElement('div');
+    div.className = 'chat-message';
+    div.innerHTML = `
+      <img class="chat-msg-avatar" src="${avatar ? escHtml(avatar) : 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiMwYjFlMmQiLz48dGV4dCB4PSI1MCIgeT0iNTUiIGZvbnQtc2l6ZT0iNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM0YTllYmEiPuKchrPCmjwvdGV4dD48L3N2Zz4='}" alt="Avatar">
+      <div class="chat-msg-content">
+        <div class="chat-msg-header">
+          <span class="chat-msg-username ${isAdminUser ? 'admin-name' : ''}">${escHtml(msg.user)} ${isAdminUser ? '<span class="badge-admin" style="font-size:7px;padding:1px 4px;">ADMIN</span>' : ''}</span>
+          <span class="chat-msg-time">${time}</span>
+        </div>
+        <div class="chat-msg-text">${escChat(msg.text)}</div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+  scrollChatToBottom();
+}
+
+function scrollChatToBottom() {
+  const container = document.getElementById('chat-messages');
+  if (container) container.scrollTop = container.scrollHeight;
+}
+
+function sendChatMessage() {
+  if (!currentUser) return;
+  const input = document.getElementById('chat-input-field');
+  const text = input.value.trim();
+  if (!text) return;
+  const messages = loadChatMessages();
+  messages.push({ user: currentUser, text: text, ts: Date.now() });
+  if (messages.length > 150) messages.splice(0, messages.length - 150);
+  saveChatMessages(messages);
+  input.value = '';
+  renderChat();
+}
+
+window.addEventListener('storage', (e) => {
+  if (e.key === CHAT_KEY) renderChat();
+  if (e.key === ONLINE_KEY) renderOnlineUsers();
+});
+
+setInterval(() => {
+  if (currentUser) { setOnlinePresence(); renderOnlineUsers(); }
+}, 20000);
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+
+seedAdminAccounts().then(() => {
+  // Check if logged in user has a saved language preference
+  if (currentUser) {
+    const db = loadUsers();
+    const user = db[currentUser.toLowerCase()];
+    if (user && user.lang) applyLanguage(user.lang);
+  }
+  updateNav();
+  if (currentUser) setOnlinePresence();
+  renderOnlineUsers();
+  renderChat();
+});
 </script>
 
 <script>
