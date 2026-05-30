@@ -3,175 +3,807 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERRARIA • Professional Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Terraria Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap');
-        
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: linear-gradient(135deg, #0a001f 0%, #1a0033 100%);
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #06030f;
+            --surface: #0d0820;
+            --surface2: #120f28;
+            --border: rgba(120, 80, 220, 0.18);
+            --border-hover: rgba(180, 120, 255, 0.45);
+            --accent: #9d6fff;
+            --accent2: #c084fc;
+            --gold: #d4a853;
+            --gold2: #f0c97a;
+            --text: #e8e0f5;
+            --muted: #8b7daa;
+            --dim: #4a4060;
         }
-        
-        .title-font {
-            font-family: 'Press Start 2P', sans-serif;
+
+        body {
+            font-family: 'Crimson Pro', Georgia, serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Subtle animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 50% at 20% 10%, rgba(80,30,150,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(50,20,120,0.10) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Pixel grid texture */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(120,80,220,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(120,80,220,0.025) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 48px 32px 80px;
+        }
+
+        /* ─── HEADER ─── */
+        header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 52px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-icon {
+            width: 58px;
+            height: 58px;
+            background: linear-gradient(135deg, #1e1240 0%, #2a1a55 100%);
+            border: 1px solid rgba(157,111,255,0.35);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-title {
+            font-family: 'Cinzel', serif;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            line-height: 1;
+            color: var(--gold2);
+        }
+
+        .logo-sub {
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            color: var(--muted);
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        .header-link {
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            color: var(--muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: color 0.2s;
+        }
+
+        .header-link:hover { color: var(--accent2); }
+
+        /* ─── SEARCH BAR ─── */
+        .search-section {
+            margin-bottom: 44px;
+        }
+
+        .search-label {
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 0.28em;
+            color: var(--dim);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 60px 14px 20px;
+            color: var(--text);
+            font-family: 'Crimson Pro', serif;
+            font-size: 17px;
+            outline: none;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .search-input::placeholder { color: var(--dim); }
+
+        .search-input:focus {
+            border-color: rgba(157,111,255,0.5);
+            box-shadow: 0 0 0 3px rgba(157,111,255,0.08);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 6px;
+            background: linear-gradient(135deg, #5b3db8, #7c4fd4);
+            border: none;
+            border-radius: 7px;
+            width: 40px;
+            height: 36px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e0d0ff;
+            font-size: 14px;
+            transition: opacity 0.2s;
+        }
+
+        .search-btn:hover { opacity: 0.85; }
+
+        .search-tabs {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .search-tab {
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            padding: 5px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .search-tab.active, .search-tab:hover {
+            background: var(--surface2);
+            border-color: rgba(157,111,255,0.4);
+            color: var(--accent2);
+        }
+
+        /* Google search results panel */
+        #google-panel {
+            display: none;
+            margin-bottom: 36px;
+        }
+
+        #google-panel.visible {
+            display: block;
+        }
+
+        #google-panel iframe {
+            width: 100%;
+            min-height: 600px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fff;
+        }
+
+        .gresult-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .gresult-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 18px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .gresult-item:hover {
+            border-color: var(--border-hover);
+            background: var(--surface2);
+        }
+
+        .gresult-item a {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            color: var(--accent2);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .gresult-item a:hover { text-decoration: underline; }
+
+        .gresult-item .gurl {
+            font-size: 12px;
+            color: #5a9e5a;
+            margin-bottom: 5px;
+        }
+
+        .gresult-item .gsnip {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        .gsearch-status {
+            font-size: 14px;
+            color: var(--muted);
+            font-style: italic;
+            padding: 10px 0;
+        }
+
+        .gopen-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            color: var(--dim);
+            text-decoration: none;
+            margin-top: 6px;
+            transition: color 0.2s;
+        }
+
+        .gopen-link:hover { color: var(--accent); }
+
+        /* ─── SECTION DIVIDERS ─── */
+        .section-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            letter-spacing: 0.3em;
+            color: var(--dim);
+            white-space: nowrap;
+        }
+
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ─── CARDS ─── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 14px;
+            margin-bottom: 36px;
         }
 
         .card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            background: rgba(30, 20, 50, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-        }
-        
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px -12px rgb(168 85 247 / 0.4);
-            border-color: #c026d3;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.25s, background 0.25s, transform 0.25s;
+            position: relative;
+            overflow: hidden;
         }
 
-        .neon-glow {
-            text-shadow: 0 0 15px #c026d3,
-                        0 0 30px #a855f7;
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(157,111,255,0.04) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--border-hover);
+            background: var(--surface2);
+            transform: translateY(-2px);
+        }
+
+        .card:hover::before { opacity: 1; }
+
+        .card-icon {
+            font-size: 26px;
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(157,111,255,0.07);
+            border-radius: 10px;
+            flex-shrink: 0;
+            border: 1px solid rgba(157,111,255,0.12);
+        }
+
+        .card-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-title {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        .card-arrow {
+            color: var(--dim);
+            font-size: 12px;
+            flex-shrink: 0;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .card:hover .card-arrow {
+            color: var(--accent);
+            transform: translateX(3px);
+        }
+
+        /* Featured card */
+        .card-featured {
+            background: linear-gradient(135deg, #120e2a 0%, #1a1035 100%);
+            border-color: rgba(212, 168, 83, 0.25);
+        }
+
+        .card-featured:hover {
+            border-color: rgba(212, 168, 83, 0.55);
+        }
+
+        .card-featured .card-title { color: var(--gold2); }
+        .card-featured .card-icon { background: rgba(212,168,83,0.08); border-color: rgba(212,168,83,0.15); }
+
+        /* Badge */
+        .badge {
+            font-family: 'Cinzel', serif;
+            font-size: 9px;
+            letter-spacing: 0.15em;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(157,111,255,0.12);
+            color: var(--accent);
+            border: 1px solid rgba(157,111,255,0.2);
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .badge-gold {
+            background: rgba(212,168,83,0.1);
+            color: var(--gold);
+            border-color: rgba(212,168,83,0.2);
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding-top: 24px;
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            color: var(--dim);
+            text-align: center;
+        }
+
+        /* ─── SEARCH RESULTS ─── */
+        #wiki-results {
+            margin-bottom: 36px;
+        }
+
+        #result-cards {
+            display: none;
+        }
+
+        #result-cards.visible {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 14px;
+        }
+
+        .result-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .result-card:hover {
+            border-color: var(--border-hover);
+            background: var(--surface2);
+        }
+
+        .result-card a {
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            color: var(--accent2);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .result-card a:hover { text-decoration: underline; }
+
+        .result-card .url {
+            font-size: 11px;
+            color: var(--dim);
+            margin-bottom: 6px;
+            font-style: normal;
+        }
+
+        .result-card .snippet {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        #no-results {
+            display: none;
+            font-size: 15px;
+            color: var(--muted);
+            font-style: italic;
+            padding: 12px 0;
+        }
+
+        #filter-msg {
+            display: none;
+            font-size: 14px;
+            color: var(--muted);
+            font-style: italic;
+            padding: 8px 0;
+            margin-bottom: 8px;
         }
     </style>
 </head>
-<body class="min-h-screen text-white">
-    <div class="max-w-7xl mx-auto px-8 py-10">
-        <!-- HEADER -->
-        <div class="flex justify-between items-center mb-12">
-            <div class="flex items-center gap-5">
-                <div class="w-16 h-16 bg-gradient-to-br from-purple-600 to-violet-600 flex items-center justify-center text-4xl rounded-2xl shadow-xl">
-                    🗡️
-                </div>
-                <div>
-                    <h1 class="text-5xl font-bold tracking-tight title-font neon-glow">TERRARIA</h1>
-                    <p class="text-purple-400 text-lg -mt-1">PROFESSIONAL GUIDE HUB</p>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-8 text-sm">
-                <a href="https://terraria.wiki.gg/" target="_blank" class="hover:text-purple-400 transition-colors flex items-center gap-2">
-                    <i class="fa-solid fa-globe"></i> OFFICIAL WIKI
-                </a>
-                <div class="h-6 w-px bg-purple-800"></div>
-                <input type="text" id="searchInput" 
-                       placeholder="Search guides..." 
-                       class="bg-zinc-900 border border-purple-700 focus:border-purple-400 rounded-xl px-5 py-3 w-80 outline-none text-sm">
+<body>
+<div class="wrap">
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo-area">
+            <div class="logo-icon">🗡️</div>
+            <div class="logo-text">
+                <span class="logo-title">Terraria</span>
+                <span class="logo-sub">Professional Guide Hub</span>
             </div>
         </div>
+        <a href="https://terraria.wiki.gg/" target="_blank" class="header-link">
+            <i class="fa-solid fa-globe" style="font-size:12px;"></i> Official Wiki
+        </a>
+    </header>
 
-        <!-- MAIN GRID -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <!-- Home -->
-            <a href="https://terraria.wiki.gg/" target="_blank" class="card rounded-3xl p-8 group">
-                <div class="flex justify-between items-start mb-8">
-                    <div class="text-5xl">🏠</div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-purple-400 group-hover:text-purple-300 transition-colors"></i>
-                </div>
-                <h3 class="text-2xl font-semibold mb-2">Main Hub</h3>
-                <p class="text-purple-300">Official Terraria Wiki.gg homepage</p>
-            </a>
-
-            <!-- Class Setups -->
-            <a href="https://terraria.wiki.gg/wiki/Guide:Class_setups" target="_blank" class="card rounded-3xl p-8 group">
-                <div class="flex justify-between items-start mb-8">
-                    <div class="text-5xl">⚔️</div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-purple-400 group-hover:text-purple-300 transition-colors"></i>
-                </div>
-                <h3 class="text-2xl font-semibold mb-2">Class Setups</h3>
-                <p class="text-purple-300">Best equipment and strategies for each class</p>
-            </a>
-
-            <!-- Bosses -->
-            <a href="https://terraria.wiki.gg/wiki/Bosses" target="_blank" class="card rounded-3xl p-8 group">
-                <div class="flex justify-between items-start mb-8">
-                    <div class="text-5xl">💀</div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-purple-400 group-hover:text-purple-300 transition-colors"></i>
-                </div>
-                <h3 class="text-2xl font-semibold mb-2">Boss Guide</h3>
-                <p class="text-purple-300">All bosses, drops, and strategies</p>
-            </a>
-
-            <!-- Walkthrough -->
-            <a href="https://terraria.wiki.gg/wiki/Guide:Walkthrough" target="_blank" class="card rounded-3xl p-8 group">
-                <div class="flex justify-between items-start mb-8">
-                    <div class="text-5xl">🗺️</div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-purple-400 group-hover:text-purple-300 transition-colors"></i>
-                </div>
-                <h3 class="text-2xl font-semibold mb-2">Full Walkthrough</h3>
-                <p class="text-purple-300">Complete progression guide</p>
-            </a>
-
-            <!-- Fandom Wiki -->
-            <a href="https://terraria.fandom.com/wiki/Terraria_Wiki" target="_blank" class="card rounded-3xl p-8 group">
-                <div class="flex justify-between items-start mb-8">
-                    <div class="text-5xl">📖</div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-purple-400 group-hover:text-purple-300 transition-colors"></i>
-                </div>
-                <h3 class="text-2xl font-semibold mb-2">Fandom Wiki</h3>
-                <p class="text-purple-300">Alternative community Terraria wiki</p>
-            </a>
-
-            <!-- Calamity -->
-            <a href="https://calamitymod.wiki.gg/" target="_blank" class="card rounded-3xl p-8 group">
-                <div class="flex justify-between items-start mb-8">
-                    <div class="text-5xl">🐉</div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-purple-400 group-hover:text-purple-300 transition-colors"></i>
-                </div>
-                <h3 class="text-2xl font-semibold mb-2">Calamity Wiki</h3>
-                <p class="text-purple-300">wiki.gg • Major content mod</p>
-            </a>
-
-            <!-- Calamity Fandom -->
-            <a href="https://calamitymod.fandom.com/wiki/Calamity_Mod_Wiki" target="_blank" class="card rounded-3xl p-8 group">
-                <div class="flex justify-between items-start mb-8">
-                    <div class="text-5xl">🐉</div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-purple-400 group-hover:text-purple-300 transition-colors"></i>
-                </div>
-                <h3 class="text-2xl font-semibold mb-2">Calamity Fandom</h3>
-                <p class="text-purple-300">Fandom version of Calamity</p>
-            </a>
-
-            <!-- Thorium -->
-            <a href="https://thoriummod.wiki.gg/" target="_blank" class="card rounded-3xl p-8 group">
-                <div class="flex justify-between items-start mb-8">
-                    <div class="text-5xl">🔨</div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-purple-400 group-hover:text-purple-300 transition-colors"></i>
-                </div>
-                <h3 class="text-2xl font-semibold mb-2">Thorium Wiki</h3>
-                <p class="text-purple-300">wiki.gg • Popular expansion mod</p>
-            </a>
-
-            <!-- Thorium Fandom -->
-            <a href="https://thoriummod.fandom.com/wiki/Thorium_Mod_Wiki" target="_blank" class="card rounded-3xl p-8 group">
-                <div class="flex justify-between items-start mb-8">
-                    <div class="text-5xl">🔨</div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-purple-400 group-hover:text-purple-300 transition-colors"></i>
-                </div>
-                <h3 class="text-2xl font-semibold mb-2">Thorium Fandom</h3>
-                <p class="text-purple-300">Fandom version of Thorium</p>
-            </a>
+    <!-- SEARCH -->
+    <div class="search-section">
+        <span class="search-label">Search</span>
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search wiki guides or the web…" autocomplete="off">
+            <button class="search-btn" id="searchBtn" title="Search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
         </div>
-
-        <div class="text-center mt-16 text-purple-400/70 text-sm">
-            All links open in new tabs • Professional Terraria Resource Center
+        <div class="search-tabs">
+            <button class="search-tab active" data-mode="filter">Filter Cards</button>
+            <button class="search-tab" data-mode="google">Google Search</button>
         </div>
     </div>
 
-    <script>
-        // Simple search filter
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const term = e.target.value.toLowerCase();
-            const cards = document.querySelectorAll('.card');
-            
-            cards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                card.style.display = text.includes(term) ? 'block' : 'none';
-            });
+    <!-- FILTER MESSAGES -->
+    <div id="filter-msg" style="display:none; font-size:14px; color:var(--muted); font-style:italic; padding:8px 0; margin-bottom:8px;"></div>
+    <div id="no-results" style="display:none; font-size:15px; color:var(--muted); font-style:italic; padding:12px 0; margin-bottom:8px;">No cards match. Try Google Search above.</div>
+
+    <!-- GOOGLE RESULTS PANEL -->
+    <div id="google-panel" style="display:none; margin-bottom:36px;">
+        <div class="section-head" style="margin-bottom:16px;">
+            <span class="section-title">Search Results</span>
+            <div class="section-line"></div>
+            <span id="gsearch-query" style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:.15em;color:var(--dim);white-space:nowrap;"></span>
+        </div>
+        <div id="gsearch-status" style="font-size:14px;color:var(--muted);font-style:italic;padding:10px 0;"></div>
+        <div id="gresult-grid" style="display:grid;gap:10px;"></div>
+    </div>
+
+    <!-- MAIN GUIDES -->
+    <div class="section-head">
+        <span class="section-title">Core Guides</span>
+        <div class="section-line"></div>
+    </div>
+
+    <div class="grid" id="cardGrid">
+
+        <a href="https://terraria.wiki.gg/wiki/Guide:Walkthrough" target="_blank" class="card card-featured" data-tags="walkthrough progression beginner guide">
+            <div class="card-icon">🗺️</div>
+            <div class="card-body">
+                <span class="card-title">Full Walkthrough <span class="badge badge-gold">Start Here</span></span>
+                <span class="card-desc">Complete progression guide from start to finish</span>
+            </div>
+            <i class="fa-solid fa-arrow-right card-arrow"></i>
+        </a>
+
+        <a href="https://terraria.wiki.gg/wiki/Guide:Class_setups" target="_blank" class="card" data-tags="class melee ranged mage summoner equipment armor weapons builds">
+            <div class="card-icon">⚔️</div>
+            <div class="card-body">
+                <span class="card-title">Class Setups</span>
+                <span class="card-desc">Best gear for melee, ranged, mage & summoner</span>
+            </div>
+            <i class="fa-solid fa-arrow-right card-arrow"></i>
+        </a>
+
+        <a href="https://terraria.wiki.gg/wiki/Bosses" target="_blank" class="card" data-tags="bosses boss drops strategies eye of cthulhu wall of flesh moon lord">
+            <div class="card-icon">💀</div>
+            <div class="card-body">
+                <span class="card-title">Boss Guide</span>
+                <span class="card-desc">All bosses, their drops, and how to defeat them</span>
+            </div>
+            <i class="fa-solid fa-arrow-right card-arrow"></i>
+        </a>
+
+        <a href="https://terraria.wiki.gg/" target="_blank" class="card" data-tags="wiki home main hub terraria">
+            <div class="card-icon">🏠</div>
+            <div class="card-body">
+                <span class="card-title">Terraria Wiki</span>
+                <span class="card-desc">Official wiki.gg homepage — everything Terraria</span>
+            </div>
+            <i class="fa-solid fa-arrow-right card-arrow"></i>
+        </a>
+
+        <a href="https://terraria.fandom.com/wiki/Terraria_Wiki" target="_blank" class="card" data-tags="wiki fandom community alternative terraria">
+            <div class="card-icon">📖</div>
+            <div class="card-body">
+                <span class="card-title">Fandom Wiki <span class="badge">Alt</span></span>
+                <span class="card-desc">Community-run alternative Terraria reference</span>
+            </div>
+            <i class="fa-solid fa-arrow-right card-arrow"></i>
+        </a>
+
+    </div>
+
+    <!-- MODS -->
+    <div class="section-head" style="margin-top: 12px;">
+        <span class="section-title">Mods</span>
+        <div class="section-line"></div>
+    </div>
+
+    <div class="grid">
+
+        <a href="https://calamitymod.wiki.gg/" target="_blank" class="card" data-tags="calamity mod wiki bosses items weapons">
+            <div class="card-icon">🐉</div>
+            <div class="card-body">
+                <span class="card-title">Calamity Wiki <span class="badge">wiki.gg</span></span>
+                <span class="card-desc">The biggest content mod — new bosses & biomes</span>
+            </div>
+            <i class="fa-solid fa-arrow-right card-arrow"></i>
+        </a>
+
+        <a href="https://calamitymod.fandom.com/wiki/Calamity_Mod_Wiki" target="_blank" class="card" data-tags="calamity mod fandom wiki bosses items">
+            <div class="card-icon">🐉</div>
+            <div class="card-body">
+                <span class="card-title">Calamity Fandom <span class="badge">Alt</span></span>
+                <span class="card-desc">Fandom mirror of the Calamity wiki</span>
+            </div>
+            <i class="fa-solid fa-arrow-right card-arrow"></i>
+        </a>
+
+        <a href="https://thoriummod.wiki.gg/" target="_blank" class="card" data-tags="thorium mod wiki healer bard classes">
+            <div class="card-icon">🔨</div>
+            <div class="card-body">
+                <span class="card-title">Thorium Wiki <span class="badge">wiki.gg</span></span>
+                <span class="card-desc">Popular expansion with healer & bard classes</span>
+            </div>
+            <i class="fa-solid fa-arrow-right card-arrow"></i>
+        </a>
+
+        <a href="https://thoriummod.fandom.com/wiki/Thorium_Mod_Wiki" target="_blank" class="card" data-tags="thorium mod fandom wiki healer bard">
+            <div class="card-icon">🔨</div>
+            <div class="card-body">
+                <span class="card-title">Thorium Fandom <span class="badge">Alt</span></span>
+                <span class="card-desc">Fandom mirror of the Thorium wiki</span>
+            </div>
+            <i class="fa-solid fa-arrow-right card-arrow"></i>
+        </a>
+
+    </div>
+
+    <footer>All links open in new tabs &nbsp;·&nbsp; Terraria Professional Guide Hub</footer>
+</div>
+
+<script>
+    const input = document.getElementById('searchInput');
+    const btn = document.getElementById('searchBtn');
+    const tabs = document.querySelectorAll('.search-tab');
+    const allCards = document.querySelectorAll('#cardGrid .card');
+    const noResults = document.getElementById('no-results');
+    const filterMsg = document.getElementById('filter-msg');
+    const googlePanel = document.getElementById('google-panel');
+    const gsearchQuery = document.getElementById('gsearch-query');
+    const gsearchStatus = document.getElementById('gsearch-status');
+    const gresultGrid = document.getElementById('gresult-grid');
+
+    let mode = 'filter';
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            mode = tab.dataset.mode;
+            clearAll();
+            input.placeholder = mode === 'filter' ? 'Filter wiki cards…' : 'Search Terraria, mods, or anything…';
         });
-    </script>
+    });
+
+    input.addEventListener('input', () => {
+        if (mode === 'filter') doFilter(input.value);
+    });
+
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') doSearch();
+    });
+
+    btn.addEventListener('click', doSearch);
+
+    function doSearch() {
+        const q = input.value.trim();
+        if (!q) return;
+        if (mode === 'filter') {
+            doFilter(q);
+        } else {
+            doGoogleSearch(q);
+        }
+    }
+
+    function doFilter(term) {
+        clearAll();
+        const t = term.toLowerCase().trim();
+        if (!t) { showAllCards(); return; }
+        let visible = 0;
+        allCards.forEach(c => {
+            const text = (c.textContent + ' ' + (c.dataset.tags || '')).toLowerCase();
+            if (text.includes(t)) { c.style.display = ''; visible++; }
+            else c.style.display = 'none';
+        });
+        if (visible === 0) {
+            noResults.style.display = 'block';
+        }
+    }
+
+    async function doGoogleSearch(q) {
+        clearAll();
+        hideAllCards();
+        googlePanel.style.display = 'block';
+        gsearchQuery.textContent = '"' + q + '"';
+        gsearchStatus.textContent = 'Searching…';
+        gresultGrid.innerHTML = '';
+
+        try {
+            // Wikipedia opensearch — works cross-origin, no key needed
+            const searchUrl = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(q)}&limit=5&format=json&origin=*`;
+            const res = await fetch(searchUrl);
+            const [term, titles, snippets, urls] = await res.json();
+
+            // Also grab extracts for richer snippets
+            const extractUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(titles.slice(0,5).join('|'))}&prop=extracts&exintro=1&exchars=300&format=json&origin=*`;
+            const extRes = await fetch(extractUrl);
+            const extData = await extRes.json();
+            const pages = extData.query ? Object.values(extData.query.pages) : [];
+            const extractMap = {};
+            pages.forEach(p => { extractMap[p.title] = p.extract ? p.extract.replace(/<[^>]+>/g,'').trim() : ''; });
+
+            gsearchStatus.textContent = '';
+
+            if (titles.length === 0) {
+                gresultGrid.innerHTML = `<div style="font-size:14px;color:var(--muted);font-style:italic;">No results found for "<em>${escHtml(q)}</em>".</div>`;
+            } else {
+                titles.forEach((title, i) => {
+                    const url = urls[i];
+                    const extract = extractMap[title] || snippets[i] || '';
+                    const card = document.createElement('div');
+                    card.style.cssText = 'background:var(--surface);border:1px solid rgba(120,80,220,0.18);border-radius:10px;padding:14px 18px;transition:border-color .2s,background .2s;';
+                    card.onmouseenter = () => { card.style.borderColor='rgba(180,120,255,0.45)'; card.style.background='var(--surface2)'; };
+                    card.onmouseleave = () => { card.style.borderColor=''; card.style.background=''; };
+                    card.innerHTML = `
+                        <a href="${escHtml(url)}" target="_blank" style="font-family:'Cinzel',serif;font-size:14px;color:var(--accent2);text-decoration:none;display:block;margin-bottom:3px;">${escHtml(title)}</a>
+                        <div style="font-size:12px;color:#5a9e5a;margin-bottom:6px;">en.wikipedia.org</div>
+                        <div style="font-size:14px;color:var(--muted);line-height:1.55;">${escHtml(extract.substring(0,260))}${extract.length>260?'…':''}</div>
+                    `;
+                    gresultGrid.appendChild(card);
+                });
+            }
+
+            // Bottom links row
+            const row = document.createElement('div');
+            row.style.cssText = 'display:flex;gap:16px;margin-top:6px;flex-wrap:wrap;';
+            row.innerHTML = `
+                <a href="https://www.google.com/search?q=${encodeURIComponent(q)}" target="_blank" style="font-family:Cinzel,serif;font-size:10px;letter-spacing:.15em;color:var(--dim);text-decoration:none;display:inline-flex;align-items:center;gap:5px;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--dim)'"><i class="fa-brands fa-google" style="font-size:11px;"></i> Full Google results</a>
+                <a href="https://terraria.wiki.gg/index.php?search=${encodeURIComponent(q)}" target="_blank" style="font-family:Cinzel,serif;font-size:10px;letter-spacing:.15em;color:var(--dim);text-decoration:none;display:inline-flex;align-items:center;gap:5px;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--dim)'"><i class="fa-solid fa-book" style="font-size:11px;"></i> Search Terraria Wiki</a>
+            `;
+            gresultGrid.appendChild(row);
+
+        } catch(e) {
+            gresultGrid.innerHTML = `<div style="font-size:14px;color:var(--muted);font-style:italic;">Search unavailable. <a href="https://www.google.com/search?q=${encodeURIComponent(q)}" target="_blank" style="color:var(--accent2);">Open Google ↗</a></div>`;
+        }
+    }
+
+    function escHtml(s) {
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function clearAll() {
+        googlePanel.style.display = 'none';
+        gresultGrid.innerHTML = '';
+        gsearchStatus.textContent = '';
+        gsearchQuery.textContent = '';
+        noResults.style.display = 'none';
+        filterMsg.style.display = 'none';
+        showAllCards();
+    }
+
+    function showAllCards() { allCards.forEach(c => c.style.display = ''); }
+    function hideAllCards() { allCards.forEach(c => c.style.display = 'none'); }
+</script>
 </body>
 </html>
