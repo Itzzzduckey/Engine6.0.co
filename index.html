@@ -316,7 +316,7 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 
 <script>
 const files = [
-  { id: 1, name: "Bloodstrike", sub: "Internal", cat: "internal", desc: "Full-featured internal cheat for Bloodstrike. Runs inside the game process for maximum performance and feature depth.", ver: "2.4.1", size: "4.8 MB", updated: "2h ago", status: "Undetected", features: ["ESP","Distance Tags"], icon: "fa-crosshairs", iconBg: "var(--red-dim)", iconColor: "var(--red)", dlUrl: "https://example.com/bloodstrike-download" },
+  { id: 1, name: "Bloodstrike", sub: "Internal", cat: "internal", desc: "Full-featured internal cheat for Bloodstrike. Runs inside the game process for maximum performance and feature depth.", ver: "2.4.1", size: "4.8 MB", updated: "2h ago", status: "Undetected", features: ["ESP","Distance Tags"], icon: "fa-crosshairs", iconBg: "var(--red-dim)", iconColor: "var(--red)", dlUrl: "https://files.catbox.moe/56hhez.rar" },
   { id: 2, name: "Lotdk", sub: "External Driver", cat: "driver", desc: "Kernel-level external driver for Lotdk. Operates from ring-0, completely invisible to user-mode anti-cheat. Highest security.", ver: "1.8.3", size: "1.7 MB", updated: "1d ago", status: "Undetected", features: ["Auto-Update",], icon: "fa-microchip", iconBg: "var(--purple-dim)", iconColor: "var(--purple)", dlUrl: "https://example.com/lotdk-download" }
 ];
 
@@ -548,6 +548,84 @@ document.addEventListener('DOMContentLoaded', () => {
   ['lUser', 'lPass'].forEach(id => document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') doLogin() }));
   ['sConf'].forEach(id => document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') doSignup() }));
 });
+
+// Disable right click
+document.addEventListener('contextmenu', e => {
+    e.preventDefault();
+});
+
+// Disable common DevTools shortcuts
+document.addEventListener('keydown', e => {
+    // F12
+    if (e.key === 'F12') {
+        e.preventDefault();
+        return false;
+    }
+
+    // Ctrl+Shift+I
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') {
+        e.preventDefault();
+        return false;
+    }
+
+    // Ctrl+Shift+J
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') {
+        e.preventDefault();
+        return false;
+    }
+
+    // Ctrl+Shift+C
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') {
+        e.preventDefault();
+        return false;
+    }
+
+    // Ctrl+U (View Source)
+    if (e.ctrlKey && e.key.toLowerCase() === 'u') {
+        e.preventDefault();
+        return false;
+    }
+
+    // Ctrl+S
+    if (e.ctrlKey && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// Disable text selection
+document.addEventListener('selectstart', e => {
+    e.preventDefault();
+});
+
+// Disable drag
+document.addEventListener('dragstart', e => {
+    e.preventDefault();
+});
+
+// Detect DevTools (not reliable)
+setInterval(() => {
+    if (
+        window.outerWidth - window.innerWidth > 160 ||
+        window.outerHeight - window.innerHeight > 160
+    ) {
+        document.body.innerHTML = `
+            <div style="
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                height:100vh;
+                background:#0c0c0e;
+                color:#fff;
+                font-family:sans-serif;
+                font-size:24px;
+            ">
+                Developer tools detected
+            </div>
+        `;
+    }
+}, 1000);
+
 </script>
 </body>
 </html>
