@@ -18,6 +18,7 @@
   --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.08);
   --orange:#f59e0b;--orange-dim:rgba(245,158,11,0.08);
   --yellow:#fde047;--yellow-dim:rgba(253,224,71,0.08);
+  --cyan:#22d3ee;--cyan-dim:rgba(34,211,238,0.08);
   --font:'IBM Plex Sans',sans-serif;--mono:'JetBrains Mono',monospace;
 }
 body{font-family:var(--font);background:var(--bg);color:var(--fg);min-height:100vh;font-size:14px;line-height:1.5;overflow-x:hidden}
@@ -75,7 +76,7 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .dumps-header{margin-bottom:20px}
 .dumps-header h2{font-size:18px;font-weight:700;color:var(--fg2);margin-bottom:4px}
 .dumps-header p{font-size:13px;color:var(--muted)}
-.dump-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px}
+.dump-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px;flex-wrap:wrap}
 .dump-tab{padding:8px 18px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border:none;background:none;font-family:var(--font);transition:color .15s;position:relative}
 .dump-tab:hover{color:var(--fg)}.dump-tab.active{color:var(--accent)}
 .dump-tab.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--accent)}
@@ -86,7 +87,6 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .dump-info-text span{font-size:11px;color:var(--muted);font-family:var(--mono)}
 .coming-soon-box{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:60px 20px;text-align:center;color:var(--muted);font-size:14px}
 .coming-soon-box i{font-size:36px;color:var(--accent);margin-bottom:16px;display:block}
-/* ---- Generic raw file viewer ---- */
 .raw-dump-info{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .raw-dump-info-left{display:flex;align-items:center;gap:10px}
 .raw-game-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:var(--mono)}
@@ -124,7 +124,6 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .raw-ln{width:1%;white-space:nowrap;padding:1px 10px 1px 8px;font-family:var(--mono);font-size:10px;color:var(--muted);text-align:right;user-select:none;border-right:1px solid var(--border);background:var(--bg3);vertical-align:top}
 .raw-lc{padding:1px 12px;font-family:var(--mono);font-size:11px;color:var(--fg);white-space:pre;word-break:break-all;vertical-align:top}
 .raw-lc.t-comment{color:var(--muted)}.raw-lc.t-section{color:var(--orange);font-weight:600}.raw-lc.t-hex{color:var(--purple)}.raw-lc.t-key{color:var(--accent)}
-/* Community */
 .comm-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px}
 .comm-tab{padding:8px 18px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border:none;background:none;font-family:var(--font);transition:color .15s;position:relative}
 .comm-tab:hover{color:var(--fg)}.comm-tab.active{color:var(--accent)}
@@ -134,7 +133,6 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .news-card h3{font-size:16px;font-weight:600;color:var(--fg2);margin-bottom:6px}
 .news-meta{font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:10px;display:flex;gap:12px}
 .news-card p{font-size:13px;color:var(--fg);line-height:1.6}
-/* Profile */
 .profile-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden}
 .profile-head{padding:24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px}
 .profile-pic{width:60px;height:60px;border-radius:50%;background:var(--bg4);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--accent);overflow:hidden;position:relative;flex-shrink:0;cursor:pointer;transition:border-color .15s}
@@ -163,7 +161,6 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .activity-item .act-icon{width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
 .act-login{background:var(--accent-dim);color:var(--accent)}.act-download{background:var(--blue-dim);color:var(--blue)}.act-update{background:var(--red-dim);color:var(--red)}
 .act-text{color:var(--fg)}.act-time{color:var(--muted);font-family:var(--mono);font-size:10px}
-/* Modals */
 .modal-bg{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center}
 .modal-bg.show{display:flex}
 .modal{background:var(--bg2);border:1px solid var(--border);border-radius:8px;width:100%;max-width:390px;padding:28px;animation:modalIn .2s ease}
@@ -201,7 +198,6 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .status-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;margin-right:4px;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .mobile-btn{display:none;background:none;border:none;color:var(--fg);font-size:16px;cursor:pointer}
-/* Avatar upload */
 .avatar-drop-zone{border:2px dashed var(--border2);border-radius:8px;padding:24px 20px;text-align:center;cursor:pointer;transition:all .15s;margin-bottom:16px}
 .avatar-drop-zone:hover,.avatar-drop-zone.drag{border-color:var(--accent);background:var(--accent-dim)}
 .avatar-drop-zone i{font-size:28px;color:var(--muted);display:block;margin-bottom:10px;transition:color .15s}
@@ -209,7 +205,6 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .avatar-drop-zone p{font-size:12px;color:var(--muted)}
 .avatar-preview-wrap{display:flex;justify-content:center;margin-bottom:14px}
 .avatar-preview-img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);display:none}
-/* Reset code box */
 .reset-code-box{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:14px;margin-bottom:16px;font-family:var(--mono);font-size:18px;font-weight:700;color:var(--accent);text-align:center;letter-spacing:4px}
 .demo-notice{background:var(--yellow-dim);border:1px solid rgba(253,224,71,0.2);border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:var(--yellow);line-height:1.5}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -252,27 +247,18 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
   </video>
 </div>
 
-<!-- ===== AUTH MODAL ===== -->
+<!-- AUTH MODAL -->
 <div class="modal-bg" id="authModal">
   <div class="modal">
     <button class="modal-close" onclick="closeAuth()"><i class="fas fa-times"></i></button>
-
-    <!-- LOGIN -->
     <div id="loginView">
       <h2>Log in</h2><p class="sub">Access your Engine6 account</p>
       <div class="field"><label>Username or email</label><input id="lUser" placeholder="Enter username or email" autocomplete="username"></div>
-      <div class="field">
-        <label>Password</label>
-        <div class="pw-wrap"><input type="password" id="lPass" placeholder="Password" autocomplete="current-password"><button class="pw-toggle" onclick="togPw('lPass',this)"><i class="fas fa-eye"></i></button></div>
-      </div>
-      <div style="text-align:right;margin-top:-8px;margin-bottom:16px">
-        <a style="font-size:11px;color:var(--muted);cursor:pointer" onclick="openAuth('forgot')">Forgot password?</a>
-      </div>
+      <div class="field"><label>Password</label><div class="pw-wrap"><input type="password" id="lPass" placeholder="Password" autocomplete="current-password"><button class="pw-toggle" onclick="togPw('lPass',this)"><i class="fas fa-eye"></i></button></div></div>
+      <div style="text-align:right;margin-top:-8px;margin-bottom:16px"><a style="font-size:11px;color:var(--muted);cursor:pointer" onclick="openAuth('forgot')">Forgot password?</a></div>
       <button class="btn btn-accent modal-btn" onclick="doLogin()">Log in</button>
       <div class="modal-switch">No account? <a onclick="openAuth('signup')">Sign up</a></div>
     </div>
-
-    <!-- SIGNUP -->
     <div id="signupView" style="display:none">
       <h2>Create account</h2><p class="sub">Join Engine6</p>
       <div class="field"><label>Username</label><input id="sUser" placeholder="3-20 chars, alphanumeric" autocomplete="username"><div class="err-msg" id="sUserErr">3-20 characters, letters/numbers/underscore</div></div>
@@ -283,58 +269,38 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
       <button class="btn btn-accent modal-btn" onclick="doSignup()">Create account</button>
       <div class="modal-switch">Have an account? <a onclick="openAuth('login')">Log in</a></div>
     </div>
-
-    <!-- FORGOT PASSWORD — 3 steps -->
     <div id="forgotView" style="display:none">
-
-      <!-- Step 1: enter email -->
       <div id="fStep1">
         <h2>Forgot password</h2><p class="sub">Enter your account email to get a reset code</p>
         <div class="field"><label>Email address</label><input id="fEmail" placeholder="you@email.com"><div class="err-msg" id="fEmailErr">No account found with that email</div></div>
         <button class="btn btn-accent modal-btn" onclick="doForgot1()">Send reset code</button>
         <div class="modal-switch"><a onclick="openAuth('login')">Back to login</a></div>
       </div>
-
-      <!-- Step 2: verify code -->
       <div id="fStep2" style="display:none">
         <h2>Enter code</h2><p class="sub">Check your email for the reset code</p>
-        <!--
-          PRODUCTION NOTE: Hook real email sending here.
-          When doForgot1() runs, call your backend:
-            fetch('/api/send-reset', { method:'POST', body: JSON.stringify({ to: email, code: _resetCode }) })
-          Use SendGrid / Resend / Nodemailer on the server to email the code.
-          Remove the demo notice + resetCodeDisplay div below in production.
-        -->
         <div class="demo-notice"><i class="fas fa-info-circle" style="margin-right:6px"></i>Demo mode — in production this code is emailed to you. Your code:</div>
         <div class="reset-code-box" id="resetCodeDisplay"></div>
         <div class="field"><label>Paste your code</label><input id="fCode" placeholder="6-character code"><div class="err-msg" id="fCodeErr">Incorrect code — try again</div></div>
         <button class="btn btn-accent modal-btn" onclick="doForgot2()">Verify code</button>
         <div class="modal-switch"><a onclick="openAuth('login')">Back to login</a></div>
       </div>
-
-      <!-- Step 3: new password -->
       <div id="fStep3" style="display:none">
         <h2>New password</h2><p class="sub">Almost done — set your new password</p>
         <div class="field"><label>New password</label><div class="pw-wrap"><input type="password" id="fNew" placeholder="Min 8 characters" oninput="chkStr('fNew','fFill','fStr')"><button class="pw-toggle" onclick="togPw('fNew',this)"><i class="fas fa-eye"></i></button></div><div class="str-bar"><div class="str-fill" id="fFill"></div></div><div class="str-text" id="fStr"></div></div>
         <div class="field"><label>Confirm password</label><div class="pw-wrap"><input type="password" id="fConf" placeholder="Repeat password"><button class="pw-toggle" onclick="togPw('fConf',this)"><i class="fas fa-eye"></i></button></div><div class="err-msg" id="fConfErr">Passwords don't match</div></div>
         <button class="btn btn-accent modal-btn" onclick="doForgot3()">Reset password</button>
       </div>
-
     </div>
   </div>
 </div>
 
-<!-- ===== AVATAR UPLOAD MODAL ===== -->
+<!-- AVATAR MODAL -->
 <div class="modal-bg" id="avatarModal">
   <div class="modal">
     <button class="modal-close" onclick="closeEl('avatarModal')"><i class="fas fa-times"></i></button>
     <h2>Profile picture</h2><p class="sub">Upload a photo from your device</p>
-    <div class="avatar-preview-wrap">
-      <img class="avatar-preview-img" id="avatarPreview">
-    </div>
-    <div class="avatar-drop-zone" id="avatarDrop"
-      onclick="document.getElementById('avatarInput').click()"
-      ondragover="avDrag(event,true)" ondragleave="avDrag(event,false)" ondrop="avDrop(event)">
+    <div class="avatar-preview-wrap"><img class="avatar-preview-img" id="avatarPreview"></div>
+    <div class="avatar-drop-zone" id="avatarDrop" onclick="document.getElementById('avatarInput').click()" ondragover="avDrag(event,true)" ondragleave="avDrag(event,false)" ondrop="avDrop(event)">
       <i class="fas fa-cloud-upload-alt"></i>
       <p>Click to browse or drag &amp; drop an image<br><span style="font-size:10px;opacity:.6">JPG · PNG · GIF · WEBP &nbsp;·&nbsp; max 5 MB</span></p>
     </div>
@@ -346,7 +312,7 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
   </div>
 </div>
 
-<!-- ===== EDIT PROFILE MODAL ===== -->
+<!-- EDIT PROFILE MODAL -->
 <div class="modal-bg" id="editModal">
   <div class="modal">
     <button class="modal-close" onclick="closeEdit()"><i class="fas fa-times"></i></button>
@@ -359,7 +325,7 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
   </div>
 </div>
 
-<!-- ===== CHANGE PASSWORD MODAL ===== -->
+<!-- CHANGE PASSWORD MODAL -->
 <div class="modal-bg" id="pwModal">
   <div class="modal">
     <button class="modal-close" onclick="closeEl('pwModal')"><i class="fas fa-times"></i></button>
@@ -422,23 +388,14 @@ const newsData = [
 ];
 
 // ================================================================
-//  RAW FILE VIEWER — generic, shared by all dump tabs
-//  Each dump gets its own namespace: { files, cache, open, search }
+//  DUMP FILE DEFINITIONS
 // ================================================================
-const NS = {};
 
-function mkNS(key, fileList) {
-  NS[key] = { files: fileList, cache: {}, open: {}, search: '' };
-}
-
-// Bloodstrike — single raw link
-// Replace the URL with your actual Bloodstrike offsets raw file
 const bsFiles = [
   { name:"bloodstrike_offsets.hpp", desc:"All Bloodstrike / Messiah engine offsets",
     url:"https://raw.githubusercontent.com/Itzzzduckey/Always-Updated-Lego-batman-the-vid-game-offsets/refs/heads/main/blood%20strike%20offset%20for%20steam" }
 ];
 
-// CS2 — 20 files
 const cs2Files = [
   {name:"offsets.hpp",               desc:"Core engine offsets",              url:"https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/offsets.hpp"},
   {name:"buttons.hpp",               desc:"Input button bindings",            url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/buttons.hpp"},
@@ -462,25 +419,45 @@ const cs2Files = [
   {name:"client.dll.json",           desc:"JSON — client.dll offsets",        url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/client_dll.json"}
 ];
 
-// LEGO Batman — 20 files
-// Replace URLs below with your actual raw links for LOTDK
-// LEGO Batman — Single file only
 const lbFiles = [
-  {
-    name: "Lego Batman", 
-    desc: "Lego Batman Aob Sigs and lua scripts", 
-    url: "https://raw.githubusercontent.com/Itzzzduckey/Always-Updated-Lego-batman-the-vid-game-offsets/refs/heads/main/All%20Aob%20sigs%20for%20batman%20lego%20vid%20game"
+  { name:"Lego Batman", desc:"Lego Batman Aob Sigs and lua scripts",
+    url:"https://raw.githubusercontent.com/Itzzzduckey/Always-Updated-Lego-batman-the-vid-game-offsets/refs/heads/main/All%20Aob%20sigs%20for%20batman%20lego%20vid%20game" }
+];
+
+// Lego Skywalker Saga — single file
+const lswFiles = [
+  { name:"skywalker_saga_offsets", desc:"LEGO Skywalker Saga offsets and AOB signatures",
+    url:"https://raw.githubusercontent.com/Itzzzduckey/Always-Updated-Lego-batman-the-vid-game-offsets/refs/heads/main/legoskywalker%20Aob%20sigs%20and%20patterns" }
+];
+
+// Roblox — 20 files
+// Roblox — single file
+const rbxFiles = [
+  { 
+    name: "offsets.hpp", 
+    desc: "Roblox offsets (version 76173e47a79145c7)", 
+    url: "https://raw.githubusercontent.com/Itzzzduckey/Always-Updated-Lego-batman-the-vid-game-offsets/refs/heads/main/offsetss.hpp" 
   }
 ];
+
+// ================================================================
+//  NAMESPACES
+// ================================================================
+const NS = {};
+function mkNS(key, fileList) { NS[key] = { files: fileList, cache: {}, open: {}, search: '' }; }
 
 mkNS('bs',  bsFiles);
 mkNS('cs2', cs2Files);
 mkNS('lb',  lbFiles);
+mkNS('lsw', lswFiles);
+mkNS('rbx', rbxFiles);
 
 const dumpTheme = {
   bs:  { bg:'var(--red-dim)',    fg:'var(--red)',    icon:'BS'  },
   cs2: { bg:'var(--orange-dim)', fg:'var(--orange)', icon:'CS2' },
-  lb:  { bg:'var(--yellow-dim)', fg:'var(--yellow)', icon:'LB'  }
+  lb:  { bg:'var(--yellow-dim)', fg:'var(--yellow)', icon:'LB'  },
+  lsw: { bg:'var(--blue-dim)',   fg:'var(--blue)',   icon:'LSW' },
+  rbx: { bg:'var(--cyan-dim)',   fg:'var(--cyan)',   icon:'RBX' }
 };
 
 // ================================================================
@@ -493,7 +470,7 @@ function renderRawDump(el, nsKey, title, subtitle) {
     <div class="raw-dump-info">
       <div class="raw-dump-info-left">
         <div class="raw-game-icon" style="background:${th.bg};color:${th.fg}">${th.icon}</div>
-        <div class="dump-info-text"><h3>${title}</h3><span>${subtitle} &middot; ${ns.files.length} files</span></div>
+        <div class="dump-info-text"><h3>${title}</h3><span>${subtitle} &middot; ${ns.files.length} file${ns.files.length!==1?'s':''}</span></div>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
         <span class="raw-stats-label" id="${nsKey}Stats">${loaded}/${ns.files.length} loaded</span>
@@ -569,7 +546,6 @@ async function rawFetchOne(k, idx) {
     ns.cache[f.url] = await r.text();
   } catch(e) { ns.cache[f.url] = 'error'; }
   rawUpdStats(k);
-  // patch badge + content without full re-render
   const th = dumpTheme[k];
   const state = ns.cache[f.url] === 'error' ? 'error' : 'loaded';
   const lines = state === 'loaded' ? ns.cache[f.url].split('\n').length : null;
@@ -688,7 +664,6 @@ function doSignup(){
 
 function doLogout(){localStorage.removeItem('e6c');updNav();go('home');toast('Logged out','info')}
 
-// ---- Forgot password ----
 function doForgot1(){
   clearErrs();
   const em=document.getElementById('fEmail').value.trim();
@@ -697,14 +672,6 @@ function doForgot1(){
   if(!found){showErr('fEmailErr','fEmail');return}
   _resetKey=found;
   _resetCode=Math.random().toString(36).substring(2,8).toUpperCase();
-  // -------------------------------------------------------
-  // PRODUCTION HOOK — email the code here instead of showing it.
-  // Example:
-  //   fetch('/api/send-reset', { method:'POST',
-  //     headers:{'Content-Type':'application/json'},
-  //     body: JSON.stringify({ to: users[found].email, code: _resetCode }) });
-  // Remove the demo-notice div and resetCodeDisplay in production.
-  // -------------------------------------------------------
   document.getElementById('resetCodeDisplay').textContent = _resetCode;
   document.getElementById('fStep1').style.display='none';
   document.getElementById('fStep2').style.display='block';
@@ -728,9 +695,7 @@ function doForgot3(){
   users[_resetKey].pw=hashPw(np);
   if(!users[_resetKey].act)users[_resetKey].act=[];
   users[_resetKey].act.unshift({t:'update',txt:'Password reset',time:new Date().toISOString()});
-  saveUsers(users);
-  closeAuth();
-  toast('Password reset! Log in with your new password.','ok');
+  saveUsers(users);closeAuth();toast('Password reset! Log in with your new password.','ok');
   setTimeout(()=>openAuth('login'),400);
   _resetKey=null;_resetCode=null;
 }
@@ -788,10 +753,12 @@ function handleDl(id){
 // ================================================================
 let curDump = 'bloodstrike';
 const dumpList = [
-  {k:'bloodstrike', l:'Bloodstrike'},
-  {k:'lotdk',       l:'Lotdk'},
-  {k:'cs2',         l:'CS2'},
-  {k:'legobatman',  l:'Lego Batman'}
+  {k:'bloodstrike',    l:'Bloodstrike'},
+  {k:'lotdk',          l:'Lotdk'},
+  {k:'cs2',            l:'CS2'},
+  {k:'legobatman',     l:'Lego Batman'},
+  {k:'skywalker',      l:'Skywalker Saga'},
+  {k:'roblox',         l:'Roblox'}
 ];
 
 function renderDumps(){
@@ -803,6 +770,8 @@ function renderDumps(){
   else if (curDump==='lotdk')       renderLotdkDumps(el);
   else if (curDump==='cs2')         renderRawDump(el,'cs2','Counter-Strike 2 Offsets','Source 2 Engine');
   else if (curDump==='legobatman')  renderRawDump(el,'lb','LEGO Batman the video game Aob sigs and lua Scripts','Custom engine');
+  else if (curDump==='skywalker')   renderRawDump(el,'lsw','LEGO Star Wars: The Skywalker Saga Offsets','Hedgehog Engine 2');
+  else if (curDump==='roblox')      renderRawDump(el,'rbx','Roblox / Luau Engine Offsets','Luau VM');
 }
 function setDump(k){curDump=k;renderDumps()}
 
@@ -876,13 +845,10 @@ function renderProfile(){
 function maskEmail(e){const p=e.split('@');if(p[0].length<=2)return e;return p[0][0]+'*'.repeat(p[0].length-2)+p[0][p[0].length-1]+'@'+p[1]}
 function timeAgo(d){const s=Math.floor((Date.now()-d)/1000);if(s<60)return'just now';const m=Math.floor(s/60);if(m<60)return m+'m ago';const h=Math.floor(m/60);if(h<24)return h+'h ago';return Math.floor(h/24)+'d ago'}
 
-// ---- Avatar upload ----
 let _pendingAvatar = null;
-
 function avDrag(e, on) { e.preventDefault(); document.getElementById('avatarDrop').classList.toggle('drag', on); }
 function avDrop(e) { e.preventDefault(); avDrag(e, false); if (e.dataTransfer.files[0]) avProcess(e.dataTransfer.files[0]); }
 function avFileChosen(inp) { if (inp.files[0]) avProcess(inp.files[0]); }
-
 function avProcess(file) {
   if (!file.type.startsWith('image/')) { toast('Choose an image file','err'); return; }
   if (file.size > 5*1024*1024) { toast('File too large — max 5 MB','err'); return; }
@@ -895,7 +861,6 @@ function avProcess(file) {
   };
   reader.readAsDataURL(file);
 }
-
 function saveAvatar() {
   if (!_pendingAvatar) return;
   const users=getUsers(), un=localStorage.getItem('e6c'); if (!users[un]) return;
@@ -926,7 +891,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-bg.show').forEach(m=>m.classList.remove('show'))});
   ['lUser','lPass'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()}));
   document.getElementById('sConf').addEventListener('keydown',e=>{if(e.key==='Enter')doSignup()});
-  // reset avatarModal state on open
   document.getElementById('avatarModal').addEventListener('show',()=>{
     _pendingAvatar=null;
     document.getElementById('avatarPreview').style.display='none';
