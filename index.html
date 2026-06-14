@@ -16,12 +16,13 @@
   --red:#e54545;--red-dim:rgba(229,69,69,0.08);
   --blue:#5b9cf5;--blue-dim:rgba(91,156,245,0.08);
   --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.08);
+  --orange:#f59e0b;--orange-dim:rgba(245,158,11,0.08);
+  --yellow:#fde047;--yellow-dim:rgba(253,224,71,0.08);
   --font:'IBM Plex Sans',sans-serif;--mono:'JetBrains Mono',monospace;
 }
 body{font-family:var(--font);background:var(--bg);color:var(--fg);min-height:100vh;font-size:14px;line-height:1.5;overflow-x:hidden}
 a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
-
 nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;padding:0 20px;position:sticky;top:0;z-index:50}
 .nav-in{max-width:1100px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
 .logo{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--fg2);cursor:pointer;display:flex;align-items:center;gap:8px;letter-spacing:-0.5px}
@@ -37,11 +38,9 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .btn-sm{padding:4px 10px;font-size:11px}
 .nav-avatar{width:28px;height:28px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--accent);cursor:pointer;overflow:hidden;transition:border-color .15s}
 .nav-avatar:hover{border-color:var(--accent)}.nav-avatar img{width:100%;height:100%;object-fit:cover}
-
 .container{max-width:1100px;margin:0 auto;padding:24px 20px;position:relative;z-index:1}
 .page{display:none}.page.active{display:block;animation:fadeUp .25s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
 .home-bg-video{position:fixed;top:0;left:0;width:100vw;height:100vh;overflow:hidden;z-index:0;pointer-events:none}
 .home-bg-video video{position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;opacity:0.15}
 .home-hero{position:relative;padding:48px 0 40px;border-bottom:1px solid var(--border);margin-bottom:32px;z-index:1}
@@ -50,10 +49,8 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .home-stats{display:flex;gap:24px;margin-top:24px}
 .home-stat{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
 .home-stat span{color:var(--fg2);font-weight:600;font-family:var(--mono);font-size:14px}
-
 .tag{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:3px;font-weight:600;flex-shrink:0}
 .tag-internal{background:var(--red-dim);color:var(--red)}.tag-driver{background:var(--purple-dim);color:var(--purple)}
-
 .dl-list{display:flex;flex-direction:column;gap:2px;position:relative;z-index:1}
 .dl-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .15s}
 .dl-card:hover{border-color:var(--border2)}
@@ -67,7 +64,7 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .dl-card-stat{text-align:center}
 .dl-card-stat .val{font-family:var(--mono);font-size:13px;color:var(--fg2);font-weight:600}
 .dl-card-stat .lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
-.dl-card-expand{display:none;padding:0 20px 16px;border-top:1px solid var(--border);margin-top:0}
+.dl-card-expand{display:none;padding:0 20px 16px;border-top:1px solid var(--border)}
 .dl-card-expand.open{display:block;animation:fadeUp .15s ease}
 .dl-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 .dl-detail-item{font-size:12px}.dl-detail-item .k{color:var(--muted);font-size:11px}.dl-detail-item .v{color:var(--fg2);font-family:var(--mono);margin-top:1px}
@@ -75,7 +72,6 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .dl-feat-list{display:flex;flex-wrap:wrap;gap:6px}
 .dl-feat{font-size:11px;padding:3px 10px;border-radius:4px;background:var(--bg4);color:var(--fg);border:1px solid var(--border)}
 .dl-actions{display:flex;gap:8px;align-items:center}
-
 .dumps-header{margin-bottom:20px}
 .dumps-header h2{font-size:18px;font-weight:700;color:var(--fg2);margin-bottom:4px}
 .dumps-header p{font-size:13px;color:var(--muted)}
@@ -88,16 +84,47 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .dump-game-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
 .dump-info-text h3{font-size:14px;font-weight:600;color:var(--fg2)}
 .dump-info-text span{font-size:11px;color:var(--muted);font-family:var(--mono)}
-.dump-table{width:100%;border-collapse:collapse;font-size:12px;font-family:var(--mono)}
-.dump-table th{text-align:left;padding:8px 12px;background:var(--bg3);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border)}
-.dump-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--fg)}
-.dump-table tr:hover td{background:var(--bg2)}
-.dump-table .offset{color:var(--accent)}
-.dump-table .comment{color:var(--muted);font-style:italic;font-family:var(--font)}
-.coming-soon-box{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:60px 20px;text-align:center;color:var(--muted);font-size:14px;}
-.coming-soon-box i{font-size:36px;color:var(--accent);margin-bottom:16px;display:block;}
-
-/* Community Styles */
+.coming-soon-box{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:60px 20px;text-align:center;color:var(--muted);font-size:14px}
+.coming-soon-box i{font-size:36px;color:var(--accent);margin-bottom:16px;display:block}
+/* ---- Generic raw file viewer ---- */
+.raw-dump-info{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.raw-dump-info-left{display:flex;align-items:center;gap:10px}
+.raw-game-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:var(--mono)}
+.raw-search-bar{margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.raw-search{flex:1;padding:6px 12px;background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--fg);font-size:12px;font-family:var(--mono);outline:none;transition:border-color .15s}
+.raw-search:focus{border-color:var(--accent)}.raw-search::placeholder{color:var(--muted)}
+.raw-stats-label{font-size:10px;color:var(--muted);font-family:var(--mono);white-space:nowrap}
+.raw-file-grid{display:flex;flex-direction:column;gap:6px}
+.raw-file-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:border-color .15s}
+.raw-file-card:hover{border-color:var(--border2)}
+.raw-file-head{display:flex;align-items:center;padding:10px 14px;cursor:pointer;gap:10px;transition:background .15s}
+.raw-file-head:hover{background:var(--bg3)}
+.raw-file-icon{width:26px;height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;font-family:var(--mono)}
+.raw-file-info{flex:1;min-width:0}
+.raw-file-name{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--fg2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.raw-file-desc{font-size:10px;color:var(--muted);margin-top:1px}
+.raw-file-meta{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.raw-badge{font-size:9px;padding:2px 7px;border-radius:3px;font-family:var(--mono);font-weight:600;white-space:nowrap}
+.raw-badge-ok{background:var(--accent-dim);color:var(--accent)}
+.raw-badge-err{background:var(--red-dim);color:var(--red)}
+.raw-badge-load{background:var(--blue-dim);color:var(--blue)}
+.raw-badge-pending{background:var(--bg4);color:var(--muted);border:1px solid var(--border)}
+.raw-line-count{font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--bg4);padding:2px 7px;border-radius:3px;border:1px solid var(--border)}
+.raw-chev{color:var(--muted);font-size:10px;transition:transform .2s;flex-shrink:0}
+.raw-chev.open{transform:rotate(180deg)}
+.raw-file-body{display:none;border-top:1px solid var(--border)}
+.raw-file-body.open{display:block;animation:fadeUp .15s ease}
+.raw-loading-row{padding:18px;text-align:center;color:var(--muted);font-size:12px;font-family:var(--mono)}
+.raw-error-row{padding:14px 16px;color:var(--red);font-size:11px;font-family:var(--mono);display:flex;align-items:center;gap:6px}
+.raw-viewer-toolbar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg3);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.raw-viewer-stats{font-size:10px;color:var(--muted);font-family:var(--mono);flex:1}
+.raw-code-wrap{overflow:auto;max-height:440px}
+.raw-raw-table{width:100%;border-collapse:collapse}
+.raw-raw-table tr:hover td{background:rgba(61,214,140,0.025)}
+.raw-ln{width:1%;white-space:nowrap;padding:1px 10px 1px 8px;font-family:var(--mono);font-size:10px;color:var(--muted);text-align:right;user-select:none;border-right:1px solid var(--border);background:var(--bg3);vertical-align:top}
+.raw-lc{padding:1px 12px;font-family:var(--mono);font-size:11px;color:var(--fg);white-space:pre;word-break:break-all;vertical-align:top}
+.raw-lc.t-comment{color:var(--muted)}.raw-lc.t-section{color:var(--orange);font-weight:600}.raw-lc.t-hex{color:var(--purple)}.raw-lc.t-key{color:var(--accent)}
+/* Community */
 .comm-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px}
 .comm-tab{padding:8px 18px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border:none;background:none;font-family:var(--font);transition:color .15s;position:relative}
 .comm-tab:hover{color:var(--fg)}.comm-tab.active{color:var(--accent)}
@@ -107,12 +134,15 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .news-card h3{font-size:16px;font-weight:600;color:var(--fg2);margin-bottom:6px}
 .news-meta{font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:10px;display:flex;gap:12px}
 .news-card p{font-size:13px;color:var(--fg);line-height:1.6}
-
+/* Profile */
 .profile-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden}
 .profile-head{padding:24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px}
-.profile-pic{width:56px;height:56px;border-radius:50%;background:var(--bg4);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--accent);overflow:hidden;position:relative;flex-shrink:0}
+.profile-pic{width:60px;height:60px;border-radius:50%;background:var(--bg4);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--accent);overflow:hidden;position:relative;flex-shrink:0;cursor:pointer;transition:border-color .15s}
+.profile-pic:hover{border-color:var(--accent)}
 .profile-pic img{width:100%;height:100%;object-fit:cover}
-.profile-pic-edit{position:absolute;bottom:0;right:0;width:20px;height:20px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--bg);cursor:pointer;border:2px solid var(--bg2)}
+.profile-pic-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;border-radius:50%}
+.profile-pic:hover .profile-pic-overlay{opacity:1}
+.profile-pic-overlay i{font-size:16px;color:#fff}
 .profile-name{font-size:18px;font-weight:700;color:var(--fg2)}
 .profile-role{font-size:12px;color:var(--accent);font-weight:500;margin-top:2px}
 .profile-joined{font-size:11px;color:var(--muted);margin-top:2px}
@@ -120,7 +150,7 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .profile-section{padding:20px 24px;border-right:1px solid var(--border)}
 .profile-section:nth-child(2){border-right:none}
 .profile-section:last-child{border-top:1px solid var(--border);border-right:none;grid-column:1/-1}
-.profile-sec-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.profile-sec-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px}
 .info-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px}
 .info-row .k{color:var(--muted)}.info-row .v{color:var(--fg2);font-family:var(--mono);font-size:12px}
 .toggle-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
@@ -133,10 +163,10 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .activity-item .act-icon{width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
 .act-login{background:var(--accent-dim);color:var(--accent)}.act-download{background:var(--blue-dim);color:var(--blue)}.act-update{background:var(--red-dim);color:var(--red)}
 .act-text{color:var(--fg)}.act-time{color:var(--muted);font-family:var(--mono);font-size:10px}
-
+/* Modals */
 .modal-bg{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center}
 .modal-bg.show{display:flex}
-.modal{background:var(--bg2);border:1px solid var(--border);border-radius:8px;width:100%;max-width:380px;padding:28px;animation:modalIn .2s ease}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:8px;width:100%;max-width:390px;padding:28px;animation:modalIn .2s ease}
 @keyframes modalIn{from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}}
 .modal h2{font-size:18px;font-weight:700;color:var(--fg2);margin-bottom:4px}
 .modal .sub{font-size:13px;color:var(--muted);margin-bottom:24px}
@@ -156,7 +186,6 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .modal-btn{width:100%;padding:10px;font-size:13px}
 .modal-switch{text-align:center;margin-top:16px;font-size:12px;color:var(--muted)}
 .modal-switch a{color:var(--accent);cursor:pointer;font-weight:600}
-
 .toast-box{position:fixed;top:60px;right:16px;z-index:200;display:flex;flex-direction:column;gap:6px}
 .toast{padding:10px 16px;border-radius:5px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:8px;animation:tIn .2s ease,tOut .2s ease 2.6s forwards;border:1px solid}
 .toast-ok{background:rgba(61,214,140,0.06);border-color:rgba(61,214,140,0.15);color:var(--accent)}
@@ -164,36 +193,43 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 .toast-info{background:var(--blue-dim);border-color:rgba(91,156,245,0.15);color:var(--blue)}
 @keyframes tIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
 @keyframes tOut{to{opacity:0;transform:translateX(20px)}}
-
 .edit-field{margin-bottom:14px}
 .edit-field label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.3px}
 .edit-field input,.edit-field textarea{width:100%;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--fg);font-size:13px;font-family:var(--font);outline:none;transition:border-color .15s}
 .edit-field textarea{resize:vertical;min-height:60px}
 .edit-field input:focus,.edit-field textarea:focus{border-color:var(--accent)}
-
 .status-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;margin-right:4px;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
 .mobile-btn{display:none;background:none;border:none;color:var(--fg);font-size:16px;cursor:pointer}
+/* Avatar upload */
+.avatar-drop-zone{border:2px dashed var(--border2);border-radius:8px;padding:24px 20px;text-align:center;cursor:pointer;transition:all .15s;margin-bottom:16px}
+.avatar-drop-zone:hover,.avatar-drop-zone.drag{border-color:var(--accent);background:var(--accent-dim)}
+.avatar-drop-zone i{font-size:28px;color:var(--muted);display:block;margin-bottom:10px;transition:color .15s}
+.avatar-drop-zone:hover i{color:var(--accent)}
+.avatar-drop-zone p{font-size:12px;color:var(--muted)}
+.avatar-preview-wrap{display:flex;justify-content:center;margin-bottom:14px}
+.avatar-preview-img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);display:none}
+/* Reset code box */
+.reset-code-box{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:14px;margin-bottom:16px;font-family:var(--mono);font-size:18px;font-weight:700;color:var(--accent);text-align:center;letter-spacing:4px}
+.demo-notice{background:var(--yellow-dim);border:1px solid rgba(253,224,71,0.2);border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:var(--yellow);line-height:1.5}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fa-spin{animation:spin .7s linear infinite}
 @media(max-width:640px){
   .mobile-btn{display:block}
   .nav-tabs{display:none;position:absolute;top:52px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);flex-direction:column;padding:8px}
   .nav-tabs.open{display:flex}.nav-tab.active::after{display:none}
   .profile-body{grid-template-columns:1fr}.profile-section{border-right:none!important}
   .home-stats{flex-wrap:wrap;gap:12px}.dl-card-right{display:none}
-  .dl-detail-grid{grid-template-columns:1fr}.dump-table{font-size:10px}
-  .dump-table th,.dump-table td{padding:6px 8px}
+  .dl-detail-grid{grid-template-columns:1fr}
   .dl-card-head{padding:12px 14px}
+  .raw-ln{padding:1px 6px 1px 4px}.raw-lc{padding:1px 8px}
 }
 </style>
 </head>
 <body>
-
 <div class="toast-box" id="toasts"></div>
-
 <nav>
   <div class="nav-in">
-    <!-- Removed the green square logo-mark -->
     <div class="logo" onclick="go('home')">engine6</div>
     <button class="mobile-btn" onclick="document.querySelector('.nav-tabs').classList.toggle('open')"><i class="fas fa-bars"></i></button>
     <div class="nav-tabs" id="navTabs">
@@ -210,26 +246,33 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
     </div>
   </div>
 </nav>
-
-<!-- 4K Background Video -->
 <div class="home-bg-video">
   <video autoplay muted loop playsinline>
-    <!-- PUT YOUR VIDEO FILE PATH OR LINK RIGHT HERE IN THE src="" -->
     <source src="https://www.pexels.com/download/video/35000595/" type="video/mp4">
   </video>
 </div>
 
-<!-- AUTH -->
+<!-- ===== AUTH MODAL ===== -->
 <div class="modal-bg" id="authModal">
   <div class="modal">
     <button class="modal-close" onclick="closeAuth()"><i class="fas fa-times"></i></button>
+
+    <!-- LOGIN -->
     <div id="loginView">
       <h2>Log in</h2><p class="sub">Access your Engine6 account</p>
       <div class="field"><label>Username or email</label><input id="lUser" placeholder="Enter username or email" autocomplete="username"></div>
-      <div class="field"><label>Password</label><div class="pw-wrap"><input type="password" id="lPass" placeholder="Password" autocomplete="current-password"><button class="pw-toggle" onclick="togPw('lPass',this)"><i class="fas fa-eye"></i></button></div></div>
+      <div class="field">
+        <label>Password</label>
+        <div class="pw-wrap"><input type="password" id="lPass" placeholder="Password" autocomplete="current-password"><button class="pw-toggle" onclick="togPw('lPass',this)"><i class="fas fa-eye"></i></button></div>
+      </div>
+      <div style="text-align:right;margin-top:-8px;margin-bottom:16px">
+        <a style="font-size:11px;color:var(--muted);cursor:pointer" onclick="openAuth('forgot')">Forgot password?</a>
+      </div>
       <button class="btn btn-accent modal-btn" onclick="doLogin()">Log in</button>
       <div class="modal-switch">No account? <a onclick="openAuth('signup')">Sign up</a></div>
     </div>
+
+    <!-- SIGNUP -->
     <div id="signupView" style="display:none">
       <h2>Create account</h2><p class="sub">Join Engine6</p>
       <div class="field"><label>Username</label><input id="sUser" placeholder="3-20 chars, alphanumeric" autocomplete="username"><div class="err-msg" id="sUserErr">3-20 characters, letters/numbers/underscore</div></div>
@@ -240,10 +283,70 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
       <button class="btn btn-accent modal-btn" onclick="doSignup()">Create account</button>
       <div class="modal-switch">Have an account? <a onclick="openAuth('login')">Log in</a></div>
     </div>
+
+    <!-- FORGOT PASSWORD — 3 steps -->
+    <div id="forgotView" style="display:none">
+
+      <!-- Step 1: enter email -->
+      <div id="fStep1">
+        <h2>Forgot password</h2><p class="sub">Enter your account email to get a reset code</p>
+        <div class="field"><label>Email address</label><input id="fEmail" placeholder="you@email.com"><div class="err-msg" id="fEmailErr">No account found with that email</div></div>
+        <button class="btn btn-accent modal-btn" onclick="doForgot1()">Send reset code</button>
+        <div class="modal-switch"><a onclick="openAuth('login')">Back to login</a></div>
+      </div>
+
+      <!-- Step 2: verify code -->
+      <div id="fStep2" style="display:none">
+        <h2>Enter code</h2><p class="sub">Check your email for the reset code</p>
+        <!--
+          PRODUCTION NOTE: Hook real email sending here.
+          When doForgot1() runs, call your backend:
+            fetch('/api/send-reset', { method:'POST', body: JSON.stringify({ to: email, code: _resetCode }) })
+          Use SendGrid / Resend / Nodemailer on the server to email the code.
+          Remove the demo notice + resetCodeDisplay div below in production.
+        -->
+        <div class="demo-notice"><i class="fas fa-info-circle" style="margin-right:6px"></i>Demo mode — in production this code is emailed to you. Your code:</div>
+        <div class="reset-code-box" id="resetCodeDisplay"></div>
+        <div class="field"><label>Paste your code</label><input id="fCode" placeholder="6-character code"><div class="err-msg" id="fCodeErr">Incorrect code — try again</div></div>
+        <button class="btn btn-accent modal-btn" onclick="doForgot2()">Verify code</button>
+        <div class="modal-switch"><a onclick="openAuth('login')">Back to login</a></div>
+      </div>
+
+      <!-- Step 3: new password -->
+      <div id="fStep3" style="display:none">
+        <h2>New password</h2><p class="sub">Almost done — set your new password</p>
+        <div class="field"><label>New password</label><div class="pw-wrap"><input type="password" id="fNew" placeholder="Min 8 characters" oninput="chkStr('fNew','fFill','fStr')"><button class="pw-toggle" onclick="togPw('fNew',this)"><i class="fas fa-eye"></i></button></div><div class="str-bar"><div class="str-fill" id="fFill"></div></div><div class="str-text" id="fStr"></div></div>
+        <div class="field"><label>Confirm password</label><div class="pw-wrap"><input type="password" id="fConf" placeholder="Repeat password"><button class="pw-toggle" onclick="togPw('fConf',this)"><i class="fas fa-eye"></i></button></div><div class="err-msg" id="fConfErr">Passwords don't match</div></div>
+        <button class="btn btn-accent modal-btn" onclick="doForgot3()">Reset password</button>
+      </div>
+
+    </div>
   </div>
 </div>
 
-<!-- EDIT PROFILE -->
+<!-- ===== AVATAR UPLOAD MODAL ===== -->
+<div class="modal-bg" id="avatarModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeEl('avatarModal')"><i class="fas fa-times"></i></button>
+    <h2>Profile picture</h2><p class="sub">Upload a photo from your device</p>
+    <div class="avatar-preview-wrap">
+      <img class="avatar-preview-img" id="avatarPreview">
+    </div>
+    <div class="avatar-drop-zone" id="avatarDrop"
+      onclick="document.getElementById('avatarInput').click()"
+      ondragover="avDrag(event,true)" ondragleave="avDrag(event,false)" ondrop="avDrop(event)">
+      <i class="fas fa-cloud-upload-alt"></i>
+      <p>Click to browse or drag &amp; drop an image<br><span style="font-size:10px;opacity:.6">JPG · PNG · GIF · WEBP &nbsp;·&nbsp; max 5 MB</span></p>
+    </div>
+    <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="avFileChosen(this)">
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-accent modal-btn" style="flex:1" id="avSaveBtn" onclick="saveAvatar()" disabled>Save picture</button>
+      <button class="btn btn-ghost modal-btn" onclick="closeEl('avatarModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EDIT PROFILE MODAL ===== -->
 <div class="modal-bg" id="editModal">
   <div class="modal">
     <button class="modal-close" onclick="closeEdit()"><i class="fas fa-times"></i></button>
@@ -256,7 +359,7 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
   </div>
 </div>
 
-<!-- CHANGE PW -->
+<!-- ===== CHANGE PASSWORD MODAL ===== -->
 <div class="modal-bg" id="pwModal">
   <div class="modal">
     <button class="modal-close" onclick="closeEl('pwModal')"><i class="fas fa-times"></i></button>
@@ -269,363 +372,578 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);height:52px;disp
 </div>
 
 <main class="container">
-
-<!-- HOME -->
-<div class="page active" id="p-home">
-  <div class="home-hero">
-    <h1>Engine6, #1 Free cheats</h1>
-    <p>Verified files, tested builds, no malware. Two solid products maintained by real devs.</p>
-    <div class="home-stats">
-      <div class="home-stat"><span>2</span> projects</div>
-      <div class="home-stat"><span>577</span> members</div>
-      <div class="home-stat"><span><span class="status-dot"></span>Api Online</span>now</div>
+  <!-- HOME -->
+  <div class="page active" id="p-home">
+    <div class="home-hero">
+      <h1>Engine6, #1 Free cheats</h1>
+      <p>Verified files, tested builds, no malware. Two solid products maintained by real devs.</p>
+      <div class="home-stats">
+        <div class="home-stat"><span>2</span> projects</div>
+        <div class="home-stat"><span>577</span> members</div>
+        <div class="home-stat"><span><span class="status-dot"></span>Api Online</span>now</div>
+      </div>
     </div>
+    <div style="margin-bottom:16px"><h3 style="font-size:14px;font-weight:600;color:var(--fg2)">Available products</h3></div>
+    <div class="dl-list" id="homeList"></div>
   </div>
-  <div style="margin-bottom:16px"><h3 style="font-size:14px;font-weight:600;color:var(--fg2)">Available products</h3></div>
-  <div class="dl-list" id="homeList"></div>
-</div>
 
-<!-- DUMPS -->
-<div class="page" id="p-dumps">
-  <div class="dumps-header">
-    <h2>Offset Dumps</h2>
-    <p>Latest offsets for supported titles.</p>
+  <!-- DUMPS -->
+  <div class="page" id="p-dumps">
+    <div class="dumps-header"><h2>Offset Dumps</h2><p>Latest offsets for supported titles.</p></div>
+    <div class="dump-tabs" id="dumpTabs"></div>
+    <div id="dumpContent"></div>
   </div>
-  <div class="dump-tabs" id="dumpTabs"></div>
-  <div id="dumpContent"></div>
-</div>
 
-<!-- COMMUNITY -->
-<div class="page" id="p-community">
-  <div class="dumps-header">
-    <h2>Community</h2>
-    <p>Connect with the Engine6 community.</p>
+  <!-- COMMUNITY -->
+  <div class="page" id="p-community">
+    <div class="dumps-header"><h2>Community</h2><p>Connect with the Engine6 community.</p></div>
+    <div class="comm-tabs"><button class="comm-tab active" onclick="setCommTab('news',this)">News</button></div>
+    <div id="commContent"></div>
   </div>
-  <div class="comm-tabs">
-    <button class="comm-tab active" onclick="setCommTab('news', this)">News</button>
-  </div>
-  <div id="commContent"></div>
-</div>
 
-<!-- PROFILE -->
-<div class="page" id="p-profile">
-  <div id="profileContent"></div>
-</div>
-
+  <!-- PROFILE -->
+  <div class="page" id="p-profile"><div id="profileContent"></div></div>
 </main>
 
 <script>
+// ================================================================
+//  DATA
+// ================================================================
 const files = [
-  { id: 1, name: "Bloodstrike", sub: "Internal", cat: "internal", desc: "Full-featured internal cheat for Bloodstrike. Runs inside the game process for maximum performance and feature depth.", ver: "2.4.1", size: "4.8 MB", updated: "2h ago", status: "Undetected", features: ["ESP","Distance Tags"], icon: "fa-crosshairs", iconBg: "var(--red-dim)", iconColor: "var(--red)", dlUrl: "https://files.catbox.moe/56hhez.rar" },
-  { id: 2, name: "Lotdk", sub: "External Driver", cat: "driver", desc: "Kernel-level external driver for Lotdk. Operates from ring-0, completely invisible to user-mode anti-cheat. Highest security.", ver: "1.8.3", size: "1.7 MB", updated: "1d ago", status: "Undetected", features: ["Auto-Update",], icon: "fa-microchip", iconBg: "var(--purple-dim)", iconColor: "var(--purple)", dlUrl: "https://example.com/lotdk-download" }
+  {id:1,name:"Bloodstrike",sub:"Internal",cat:"internal",desc:"Full-featured internal cheat for Bloodstrike. Runs inside the game process for maximum performance and feature depth.",ver:"2.4.1",size:"4.8 MB",updated:"2h ago",status:"Undetected",features:["ESP","Distance Tags"],icon:"fa-crosshairs",iconBg:"var(--red-dim)",iconColor:"var(--red)",dlUrl:"https://files.catbox.moe/56hhez.rar"},
+  {id:2,name:"Lotdk",sub:"External Driver",cat:"driver",desc:"Kernel-level external driver for Lotdk. Operates from ring-0, completely invisible to user-mode anti-cheat.",ver:"1.8.3",size:"1.7 MB",updated:"1d ago",status:"Undetected",features:["Auto-Update"],icon:"fa-microchip",iconBg:"var(--purple-dim)",iconColor:"var(--purple)",dlUrl:"https://example.com/lotdk-download"}
 ];
-
-const catClass = { internal: 'tag-internal', driver: 'tag-driver' };
-
-const bsOffsets = [
-  { name: "hWnd", offset: "0x6DE9430", comment: "window handle" },
-  { name: "Messiah__IObject__Initalizer", offset: "0x2CF160", comment: "IObject initializer" },
-  { name: "Messiah__IObject__Deconstructor", offset: "0x2CF890", comment: "IObject deconstructor" },
-  { name: "Messiah_WorldToScreen", offset: "0x940F60", comment: "world to screen fn" },
-  { name: "Messiah__GetBoneTransform", offset: "0xD2BEC0", comment: "bone transform fn" },
-  { name: "Messiah__IEntity__Constructor", offset: "0x780C90", comment: "IEntity constructor" },
-  { name: "Messiah__IEntity", offset: "0x3D80048", comment: "IEntity base" },
-  { name: "Messiah__ICamera", offset: "0x3F9B1D0", comment: "ICamera base" },
-  { name: "Messiah__AnimationCore__Pose", offset: "0x3FA2F18", comment: "animation pose" },
-  { name: "Messiah__SkeletonComponent", offset: "0x4103698", comment: "skeleton component" },
-  { name: "Messiah__Actor", offset: "0x5001C20", comment: "actor base" },
-  { name: "Messiah__ActorComponent", offset: "0x4138AB0", comment: "actor component" },
-  { name: "Messiah__IArea", offset: "0x3FBAA68", comment: "area ptr" },
-  { name: "Messiah__TachComponent", offset: "0x4101FC8", comment: "tach component" },
-  { name: "Messiah__FontType", offset: "0x3C189F0", comment: "font type" },
-  { name: "Messiah__ClientEngine", offset: "0x65F7AD0", comment: "client engine" },
-  { name: "Messiah__EntityList", offset: "0x6E4D0D8", comment: "entity list" },
-  { name: "ClientEngine_to_IGameplay", offset: "0x58", comment: "engine -> gameplay" },
-  { name: "ClientPlayer_to_localActor", offset: "0x288", comment: "player -> local actor" },
-  { name: "ClientPlayer_to_camera", offset: "0x238", comment: "player -> camera" },
-  { name: "actorInstance_to_actorProps", offset: "0x278", comment: "instance -> props" },
-  { name: "IEntity_to_entityMask", offset: "0x2E0", comment: "entity -> mask" },
-  { name: "IEntity_to_IArea", offset: "0x88", comment: "entity -> area" },
-  { name: "pose_to_BipedPose", offset: "0x90", comment: "pose -> biped" }
-];
+const catClass = {internal:'tag-internal', driver:'tag-driver'};
 
 const newsData = [
-  { title: "Bloodstrike v2.4.1 Released", date: "Jun 14, 2025", author: "u.unknown", content: "We've just pushed the latest update for Bloodstrike. This includes improved Esp and imporved skelton drawing added head dot and adding radar soon." },
-  { title: "Lotdk Driver Update Incoming", date: "Jun 12, 2025", author: "u.unknown", content: "Our dev team is currently rewriting the core driver for Lotdk to ensure maximum bypass efficiency  Offsets will be posted as soon as the testing phase is complete. Stay tuned!" },
-  { title: "Welcome to Engine6", date: "Jun 10, 2025", author: "System", content: "The new Engine6 platform is officially live. You can now create accounts, download files securely, and check offset dumps all in one place. Report any bugs in our Discord server." }
+  {title:"Bloodstrike v2.4.1 Released",date:"Jun 14, 2025",author:"u.unknown",content:"We've just pushed the latest update for Bloodstrike. This includes improved ESP, improved skeleton drawing, added head dot — radar coming soon."},
+  {title:"Lotdk Driver Update Incoming",date:"Jun 12, 2025",author:"u.unknown",content:"Our dev team is currently rewriting the core driver for Lotdk to ensure maximum bypass efficiency. Offsets will be posted as soon as testing is complete."},
+  {title:"Welcome to Engine6",date:"Jun 10, 2025",author:"System",content:"The new Engine6 platform is officially live. Create accounts, download files securely, and check offset dumps all in one place."}
 ];
 
-// ========= AUTH =========
-function hashPw(p) {
-  let h = 0; for (let i = 0; i < p.length; i++) { h = ((h << 5) - h) + p.charCodeAt(i); h |= 0; }
-  const s = p + '_e6s_' + h; let h2 = 0; for (let i = 0; i < s.length; i++) { h2 = ((h2 << 7) - h2) + s.charCodeAt(i); h2 |= 0; }
-  return 'e6$' + Math.abs(h).toString(36) + '$' + Math.abs(h2).toString(36);
+// ================================================================
+//  RAW FILE VIEWER — generic, shared by all dump tabs
+//  Each dump gets its own namespace: { files, cache, open, search }
+// ================================================================
+const NS = {};
+
+function mkNS(key, fileList) {
+  NS[key] = { files: fileList, cache: {}, open: {}, search: '' };
 }
-function getUsers() { try { return JSON.parse(localStorage.getItem('e6u') || '{}') } catch { return {} } }
-function saveUsers(u) { localStorage.setItem('e6u', JSON.stringify(u)) }
-function getCu() { const u = localStorage.getItem('e6c'); if (!u) return null; return getUsers()[u] || null; }
-function setCu(u) { localStorage.setItem('e6c', u) }
+
+// Bloodstrike — single raw link
+// Replace the URL with your actual Bloodstrike offsets raw file
+const bsFiles = [
+  { name:"bloodstrike_offsets.hpp", desc:"All Bloodstrike / Messiah engine offsets",
+    url:"https://raw.githubusercontent.com/Itzzzduckey/Always-Updated-Lego-batman-the-vid-game-offsets/refs/heads/main/blood%20strike%20offset%20for%20steam" }
+];
+
+// CS2 — 20 files
+const cs2Files = [
+  {name:"offsets.hpp",               desc:"Core engine offsets",              url:"https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/offsets.hpp"},
+  {name:"buttons.hpp",               desc:"Input button bindings",            url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/buttons.hpp"},
+  {name:"client.dll.hpp",            desc:"client.dll class offsets",         url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/client_dll.hpp"},
+  {name:"engine2.dll.hpp",           desc:"engine2.dll offsets",              url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/engine2_dll.hpp"},
+  {name:"inputsystem.dll.hpp",       desc:"Input system offsets",             url:"https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/inputsystem.dll.hpp"},
+  {name:"matchmaking.dll.hpp",       desc:"Matchmaking module",               url:"https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/matchmaking.dll.hpp"},
+  {name:"networksystem.dll.hpp",     desc:"Network system offsets",           url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/networksystem_dll.hpp"},
+  {name:"particles.dll.hpp",         desc:"Particle system offsets",          url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/particles_dll.hpp"},
+  {name:"pulse_system.dll.hpp",      desc:"Pulse system module",              url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/pulse_system_dll.hpp"},
+  {name:"rendersystemdx11.dll.hpp",  desc:"DX11 render offsets",              url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/rendersystemdx11_dll.hpp"},
+  {name:"resourcesystem.dll.hpp",    desc:"Resource system offsets",          url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/resourcesystem_dll.hpp"},
+  {name:"scenesystem.dll.hpp",       desc:"Scene file cache",                 url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/scenesystem_dll.hpp"},
+  {name:"schemasystem.dll.hpp",      desc:"Schema system offsets",            url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/schemasystem_dll.hpp"},
+  {name:"soundsystem.dll.hpp",       desc:"Sound system offsets",             url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/soundsystem_dll.hpp"},
+  {name:"steamaudio.dll.hpp",        desc:"Steam audio module",               url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/steamaudio_dll.hpp"},
+  {name:"tier0.dll.rs",              desc:"tier0.dll Rust source",            url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/src/source2/tier0/mod.rs"},
+  {name:"worldrenderer.dll.hpp",     desc:"World renderer offsets",           url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/worldrenderer_dll.hpp"},
+  {name:"offsets.json",              desc:"JSON — all offsets",               url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/offsets.json"},
+  {name:"buttons.json",              desc:"JSON — button bindings",           url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/buttons.json"},
+  {name:"client.dll.json",           desc:"JSON — client.dll offsets",        url:"https://raw.githubusercontent.com/a2x/cs2-dumper/refs/heads/main/output/client_dll.json"}
+];
+
+// LEGO Batman — 20 files
+// Replace URLs below with your actual raw links for LOTDK
+// LEGO Batman — Single file only
+const lbFiles = [
+  {
+    name: "Lego Batman", 
+    desc: "Lego Batman Aob Sigs and lua scripts", 
+    url: "https://raw.githubusercontent.com/Itzzzduckey/Always-Updated-Lego-batman-the-vid-game-offsets/refs/heads/main/All%20Aob%20sigs%20for%20batman%20lego%20vid%20game"
+  }
+];
+
+mkNS('bs',  bsFiles);
+mkNS('cs2', cs2Files);
+mkNS('lb',  lbFiles);
+
+const dumpTheme = {
+  bs:  { bg:'var(--red-dim)',    fg:'var(--red)',    icon:'BS'  },
+  cs2: { bg:'var(--orange-dim)', fg:'var(--orange)', icon:'CS2' },
+  lb:  { bg:'var(--yellow-dim)', fg:'var(--yellow)', icon:'LB'  }
+};
+
+// ================================================================
+//  GENERIC RAW VIEWER
+// ================================================================
+function renderRawDump(el, nsKey, title, subtitle) {
+  const ns = NS[nsKey], th = dumpTheme[nsKey];
+  const loaded = ns.files.filter(f => ns.cache[f.url] && ns.cache[f.url] !== 'loading' && ns.cache[f.url] !== 'error').length;
+  el.innerHTML = `
+    <div class="raw-dump-info">
+      <div class="raw-dump-info-left">
+        <div class="raw-game-icon" style="background:${th.bg};color:${th.fg}">${th.icon}</div>
+        <div class="dump-info-text"><h3>${title}</h3><span>${subtitle} &middot; ${ns.files.length} files</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="raw-stats-label" id="${nsKey}Stats">${loaded}/${ns.files.length} loaded</span>
+        <button class="btn btn-ghost btn-sm" onclick="rawFetchAll('${nsKey}')"><i class="fas fa-sync-alt" style="margin-right:4px"></i>Fetch all</button>
+      </div>
+    </div>
+    <div class="raw-search-bar">
+      <input class="raw-search" id="${nsKey}SearchInput" placeholder="Filter files by name or description…" value="${esc(ns.search)}" oninput="rawSearch('${nsKey}',this.value)">
+      <span class="raw-stats-label" id="${nsKey}FileCount">${ns.files.length} files</span>
+    </div>
+    <div class="raw-file-grid" id="${nsKey}Grid"></div>`;
+  rawBuildGrid(nsKey);
+}
+
+function rawSearch(k, v) { NS[k].search = v; rawBuildGrid(k); }
+
+function rawBuildGrid(k) {
+  const ns = NS[k], th = dumpTheme[k];
+  const grid = document.getElementById(k + 'Grid'); if (!grid) return;
+  const q = ns.search.trim().toLowerCase();
+  const list = q ? ns.files.filter(f => f.name.toLowerCase().includes(q) || f.desc.toLowerCase().includes(q)) : ns.files;
+  const fc = document.getElementById(k + 'FileCount'); if (fc) fc.textContent = list.length + ' file' + (list.length !== 1 ? 's' : '');
+  grid.innerHTML = list.map(f => {
+    const idx = ns.files.indexOf(f);
+    const state = !ns.cache[f.url] ? 'pending' : ns.cache[f.url] === 'loading' ? 'loading' : ns.cache[f.url] === 'error' ? 'error' : 'loaded';
+    const lines = state === 'loaded' ? ns.cache[f.url].split('\n').length : null;
+    const ext = f.name.split('.').pop().toUpperCase().slice(0, 3);
+    const badge = state === 'loaded'   ? `<span class="raw-badge raw-badge-ok"><i class="fas fa-check" style="margin-right:3px"></i>loaded</span>`
+                : state === 'loading'  ? `<span class="raw-badge raw-badge-load"><i class="fas fa-circle-notch fa-spin" style="margin-right:3px"></i>loading</span>`
+                : state === 'error'    ? `<span class="raw-badge raw-badge-err"><i class="fas fa-times" style="margin-right:3px"></i>error</span>`
+                :                        `<span class="raw-badge raw-badge-pending">pending</span>`;
+    const lc  = lines !== null ? `<span class="raw-line-count">${lines} lines</span>` : '';
+    const cp  = state === 'loaded' ? `<button class="btn btn-ghost btn-sm" onclick="rawCopy('${k}',${idx});event.stopPropagation()"><i class="fas fa-copy"></i></button>` : '';
+    const isOpen = !!ns.open[idx];
+    return `<div class="raw-file-card" id="${k}card-${idx}">
+      <div class="raw-file-head" onclick="rawToggle('${k}',${idx})">
+        <div class="raw-file-icon" style="background:${th.bg};color:${th.fg}">${ext}</div>
+        <div class="raw-file-info"><div class="raw-file-name">${f.name}</div><div class="raw-file-desc">${f.desc}</div></div>
+        <div class="raw-file-meta" id="${k}meta-${idx}">${badge}${lc}${cp}<i class="fas fa-chevron-down raw-chev${isOpen?' open':''}" id="${k}chev-${idx}"></i></div>
+      </div>
+      <div class="raw-file-body${isOpen?' open':''}" id="${k}body-${idx}">
+        <div id="${k}content-${idx}">${isOpen ? rawContentHTML(k, idx) : ''}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function rawToggle(k, idx) {
+  const ns = NS[k], wasOpen = !!ns.open[idx];
+  ns.open[idx] = !wasOpen;
+  const body = document.getElementById(k+'body-'+idx);
+  const chev = document.getElementById(k+'chev-'+idx);
+  const cEl  = document.getElementById(k+'content-'+idx);
+  if (!body) return;
+  if (!wasOpen) {
+    body.classList.add('open'); if (chev) chev.classList.add('open');
+    const f = ns.files[idx];
+    if (!ns.cache[f.url]) {
+      cEl.innerHTML = `<div class="raw-loading-row"><i class="fas fa-circle-notch fa-spin" style="margin-right:6px"></i>Fetching from GitHub…</div>`;
+      rawFetchOne(k, idx);
+    } else { cEl.innerHTML = rawContentHTML(k, idx); }
+  } else {
+    body.classList.remove('open'); if (chev) chev.classList.remove('open');
+  }
+}
+
+async function rawFetchOne(k, idx) {
+  const ns = NS[k], f = ns.files[idx];
+  ns.cache[f.url] = 'loading'; rawUpdStats(k);
+  try {
+    const r = await fetch(f.url);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    ns.cache[f.url] = await r.text();
+  } catch(e) { ns.cache[f.url] = 'error'; }
+  rawUpdStats(k);
+  // patch badge + content without full re-render
+  const th = dumpTheme[k];
+  const state = ns.cache[f.url] === 'error' ? 'error' : 'loaded';
+  const lines = state === 'loaded' ? ns.cache[f.url].split('\n').length : null;
+  const badge = state === 'loaded' ? `<span class="raw-badge raw-badge-ok"><i class="fas fa-check" style="margin-right:3px"></i>loaded</span>` : `<span class="raw-badge raw-badge-err"><i class="fas fa-times" style="margin-right:3px"></i>error</span>`;
+  const lc  = lines !== null ? `<span class="raw-line-count">${lines} lines</span>` : '';
+  const cp  = state === 'loaded' ? `<button class="btn btn-ghost btn-sm" onclick="rawCopy('${k}',${idx});event.stopPropagation()"><i class="fas fa-copy"></i></button>` : '';
+  const isOpen = !!ns.open[idx];
+  const meta = document.getElementById(k+'meta-'+idx);
+  if (meta) meta.innerHTML = `${badge}${lc}${cp}<i class="fas fa-chevron-down raw-chev${isOpen?' open':''}" id="${k}chev-${idx}"></i>`;
+  const cEl = document.getElementById(k+'content-'+idx);
+  if (cEl && isOpen) cEl.innerHTML = rawContentHTML(k, idx);
+}
+
+function rawFetchAll(k) {
+  toast('Fetching all files…', 'info');
+  NS[k].files.forEach((f, idx) => {
+    if (!NS[k].cache[f.url] || NS[k].cache[f.url] === 'error')
+      setTimeout(() => rawFetchOne(k, idx), idx * 60);
+  });
+}
+
+function rawUpdStats(k) {
+  const loaded = NS[k].files.filter(f => NS[k].cache[f.url] && NS[k].cache[f.url] !== 'loading' && NS[k].cache[f.url] !== 'error').length;
+  const el = document.getElementById(k+'Stats'); if (el) el.textContent = loaded+'/'+NS[k].files.length+' loaded';
+}
+
+function rawContentHTML(k, idx) {
+  const ns = NS[k], f = ns.files[idx];
+  const state = !ns.cache[f.url] ? 'pending' : ns.cache[f.url] === 'loading' ? 'loading' : ns.cache[f.url] === 'error' ? 'error' : 'loaded';
+  if (state !== 'loaded') return `<div class="raw-${state === 'error' ? 'error' : 'loading'}-row">${state === 'error' ? '<i class="fas fa-exclamation-triangle"></i>Failed to load offsets from Api/or dumper is not dumping these files' : '<i class="fas fa-circle-notch fa-spin" style="margin-right:6px"></i>Fetching from GitHub…'}</div>`;
+  const lines = ns.cache[f.url].split('\n');
+  const rows  = lines.map((ln, i) => {
+    const cls = rawCls(ln), safe = esc(ln);
+    return `<tr><td class="raw-ln">${i+1}</td><td class="raw-lc${cls?' '+cls:''}">${safe||' '}</td></tr>`;
+  }).join('');
+  return `<div class="raw-viewer-toolbar"><span class="raw-viewer-stats">${lines.length} lines &middot; ${f.name}</span><button class="btn btn-ghost btn-sm" onclick="rawCopy('${k}',${idx})"><i class="fas fa-copy" style="margin-right:4px"></i>Copy</button></div><div class="raw-code-wrap"><table class="raw-raw-table"><tbody>${rows}</tbody></table></div>`;
+}
+
+function rawCls(ln) {
+  const t = ln.trimStart();
+  if (!t) return '';
+  if (t.startsWith('//') || t.startsWith('/*') || t.startsWith('*')) return 't-comment';
+  if (/^(namespace|class|struct|enum|constexpr|const|typedef|using|#pragma|#ifndef|#define|#endif|#include)/.test(t)) return 't-section';
+  if (/0x[0-9a-fA-F]+/.test(t)) return 't-hex';
+  if (t.includes('=')) return 't-key';
+  return '';
+}
+
+function rawCopy(k, idx) {
+  const ns = NS[k], f = ns.files[idx], v = ns.cache[f.url];
+  if (!v || v === 'loading' || v === 'error') { toast('File not loaded yet','err'); return; }
+  navigator.clipboard.writeText(v).then(()=>toast('Copied '+f.name,'ok')).catch(()=>toast('Copy failed','err'));
+}
+
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ================================================================
+//  AUTH
+// ================================================================
+function hashPw(p){let h=0;for(let i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h|=0}const s=p+'_e6s_'+h;let h2=0;for(let i=0;i<s.length;i++){h2=((h2<<7)-h2)+s.charCodeAt(i);h2|=0}return'e6$'+Math.abs(h).toString(36)+'$'+Math.abs(h2).toString(36)}
+function getUsers(){try{return JSON.parse(localStorage.getItem('e6u')||'{}')}catch{return{}}}
+function saveUsers(u){localStorage.setItem('e6u',JSON.stringify(u))}
+function getCu(){const u=localStorage.getItem('e6c');if(!u)return null;return getUsers()[u]||null}
+function setCu(u){localStorage.setItem('e6c',u)}
+
+let _resetKey=null, _resetCode=null;
 
 function openAuth(m) {
   document.getElementById('authModal').classList.add('show');
-  document.getElementById('loginView').style.display = m === 'login' ? 'block' : 'none';
-  document.getElementById('signupView').style.display = m === 'signup' ? 'block' : 'none';
+  document.getElementById('loginView').style.display  = m==='login'  ? 'block':'none';
+  document.getElementById('signupView').style.display = m==='signup' ? 'block':'none';
+  document.getElementById('forgotView').style.display = m==='forgot' ? 'block':'none';
+  if (m==='forgot') {
+    document.getElementById('fStep1').style.display='block';
+    document.getElementById('fStep2').style.display='none';
+    document.getElementById('fStep3').style.display='none';
+    _resetKey=null; _resetCode=null;
+  }
   clearErrs();
 }
-function closeAuth() { document.getElementById('authModal').classList.remove('show') }
-function clearErrs() {
-  document.querySelectorAll('.err-msg').forEach(e => e.classList.remove('show'));
-  document.querySelectorAll('.field input').forEach(e => e.classList.remove('err'));
-}
-function togPw(id, btn) {
-  const i = document.getElementById(id); const show = i.type === 'password';
-  i.type = show ? 'text' : 'password';
-  btn.innerHTML = '<i class="fas fa-eye' + (show ? '-slash' : '') + '"></i>';
-}
-function showErr(id, inId) {
-  document.getElementById(id).classList.add('show');
-  if (inId) document.getElementById(inId).classList.add('err');
-}
-function chkStr(pId, fId, tId) {
-  const p = document.getElementById(pId).value; let s = 0;
-  if (p.length >= 8) s++; if (p.length >= 12) s++;
-  if (/[a-z]/.test(p) && /[A-Z]/.test(p)) s++; if (/\d/.test(p)) s++; if (/[^a-zA-Z0-9]/.test(p)) s++;
-  const f = document.getElementById(fId), t = document.getElementById(tId);
-  const lv = [{ w: '0%', c: 'transparent', tx: '' }, { w: '20%', c: '#e54545', tx: 'Weak' }, { w: '40%', c: '#e5a545', tx: 'Fair' }, { w: '60%', c: '#e5c545', tx: 'Decent' }, { w: '80%', c: '#3dd68c', tx: 'Strong' }, { w: '100%', c: '#2ba86e', tx: 'Very strong' }];
-  const l = p.length === 0 ? lv[0] : lv[s] || lv[0]; f.style.width = l.w; f.style.background = l.c; t.textContent = l.tx; t.style.color = l.c;
+function closeAuth(){document.getElementById('authModal').classList.remove('show')}
+function clearErrs(){document.querySelectorAll('.err-msg').forEach(e=>e.classList.remove('show'));document.querySelectorAll('.field input').forEach(e=>e.classList.remove('err'))}
+function togPw(id,btn){const i=document.getElementById(id);const show=i.type==='password';i.type=show?'text':'password';btn.innerHTML='<i class="fas fa-eye'+(show?'-slash':'')+'"></i>'}
+function showErr(id,inId){document.getElementById(id).classList.add('show');if(inId)document.getElementById(inId).classList.add('err')}
+function chkStr(pId,fId,tId){const p=document.getElementById(pId).value;let s=0;if(p.length>=8)s++;if(p.length>=12)s++;if(/[a-z]/.test(p)&&/[A-Z]/.test(p))s++;if(/\d/.test(p))s++;if(/[^a-zA-Z0-9]/.test(p))s++;const f=document.getElementById(fId),t=document.getElementById(tId);const lv=[{w:'0%',c:'transparent',tx:''},{w:'20%',c:'#e54545',tx:'Weak'},{w:'40%',c:'#e5a545',tx:'Fair'},{w:'60%',c:'#e5c545',tx:'Decent'},{w:'80%',c:'#3dd68c',tx:'Strong'},{w:'100%',c:'#2ba86e',tx:'Very strong'}];const l=p.length===0?lv[0]:lv[s]||lv[0];f.style.width=l.w;f.style.background=l.c;t.textContent=l.tx;t.style.color=l.c}
+
+function doLogin(){
+  clearErrs();
+  const u=document.getElementById('lUser').value.trim(),p=document.getElementById('lPass').value;
+  if(!u||!p){toast('Fill in all fields','err');return}
+  const users=getUsers(),hp=hashPw(p);let found=null;
+  for(const[un,ud]of Object.entries(users)){if((un.toLowerCase()===u.toLowerCase()||ud.email.toLowerCase()===u.toLowerCase())&&ud.pw===hp){found=un;break}}
+  if(!found){toast('Wrong credentials','err');return}
+  users[found].lastLogin=new Date().toISOString();users[found].logins=(users[found].logins||0)+1;
+  if(!users[found].act)users[found].act=[];users[found].act.unshift({t:'login',txt:'Signed in',time:new Date().toISOString()});
+  saveUsers(users);setCu(found);closeAuth();updNav();toast('Welcome back, '+users[found].display,'ok');go('home');
 }
 
-function doLogin() {
-  clearErrs(); const u = document.getElementById('lUser').value.trim(), p = document.getElementById('lPass').value;
-  if (!u || !p) { toast('Fill in all fields', 'err'); return; }
-  const users = getUsers(), hp = hashPw(p); let found = null;
-  for (const [un, ud] of Object.entries(users)) { if ((un.toLowerCase() === u.toLowerCase() || ud.email.toLowerCase() === u.toLowerCase()) && ud.pw === hp) { found = un; break; } }
-  if (!found) { toast('Wrong credentials', 'err'); return; }
-  users[found].lastLogin = new Date().toISOString(); users[found].logins = (users[found].logins || 0) + 1;
-  if (!users[found].act) users[found].act = [];
-  users[found].act.unshift({ t: 'login', txt: 'Signed in', time: new Date().toISOString() });
-  saveUsers(users); setCu(found); closeAuth(); updNav(); toast('Welcome back, ' + users[found].display, 'ok'); go('home');
+function doSignup(){
+  clearErrs();
+  const un=document.getElementById('sUser').value.trim(),em=document.getElementById('sEmail').value.trim(),pw=document.getElementById('sPass').value,cf=document.getElementById('sConf').value,tm=document.getElementById('sTerms').checked;
+  let ok=true;
+  if(!/^[a-zA-Z0-9_]{3,20}$/.test(un)){showErr('sUserErr','sUser');ok=false}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showErr('sEmailErr','sEmail');ok=false}
+  if(pw.length<8){showErr('sPassErr','sPass');ok=false}
+  if(pw!==cf){showErr('sConfErr','sConf');ok=false}
+  if(!ok)return;
+  const users=getUsers();
+  if(users[un.toLowerCase()]){toast('Username taken','err');return}
+  for(const u of Object.values(users)){if(u.email.toLowerCase()===em.toLowerCase()){toast('Email already registered','err');return}}
+  if(!tm){toast('Accept the terms to continue','err');return}
+  const now=new Date().toISOString();
+  users[un.toLowerCase()]={user:un,email:em,pw:hashPw(pw),display:un,bio:'',loc:'',web:'',avatar:'',role:'Member',joined:now,lastLogin:now,logins:1,dl:[],act:[{t:'login',txt:'Account created',time:now}],settings:{emailNotifs:true,showOnline:true,twoFactor:false,publicProfile:true}};
+  saveUsers(users);setCu(un.toLowerCase());closeAuth();updNav();toast('Welcome to Engine6, '+un,'ok');go('home');
 }
 
-function doSignup() {
-  clearErrs(); const un = document.getElementById('sUser').value.trim(), em = document.getElementById('sEmail').value.trim(), pw = document.getElementById('sPass').value, cf = document.getElementById('sConf').value, tm = document.getElementById('sTerms').checked;
-  let ok = true;
-  if (!/^[a-zA-Z0-9_]{3,20}$/.test(un)) { showErr('sUserErr', 'sUser'); ok = false; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { showErr('sEmailErr', 'sEmail'); ok = false; }
-  if (pw.length < 8) { showErr('sPassErr', 'sPass'); ok = false; }
-  if (pw !== cf) { showErr('sConfErr', 'sConf'); ok = false; }
-  if (!ok) return;
-  const users = getUsers();
-  if (users[un.toLowerCase()]) { toast('Username taken', 'err'); return; }
-  for (const u of Object.values(users)) { if (u.email.toLowerCase() === em.toLowerCase()) { toast('Email already registered', 'err'); return; } }
-  if (!tm) { toast('Accept the terms to continue', 'err'); return; }
-  const now = new Date().toISOString();
-  users[un.toLowerCase()] = { user: un, email: em, pw: hashPw(pw), display: un, bio: '', loc: '', web: '', avatar: '', role: 'Member', joined: now, lastLogin: now, logins: 1, dl: [], act: [{ t: 'login', txt: 'Account created', time: now }], settings: { emailNotifs: true, showOnline: true, twoFactor: false, publicProfile: true } };
-  saveUsers(users); setCu(un.toLowerCase()); closeAuth(); updNav(); toast('Welcome to Engine6, ' + un, 'ok'); go('home');
+function doLogout(){localStorage.removeItem('e6c');updNav();go('home');toast('Logged out','info')}
+
+// ---- Forgot password ----
+function doForgot1(){
+  clearErrs();
+  const em=document.getElementById('fEmail').value.trim();
+  const users=getUsers();let found=null;
+  for(const[k,u]of Object.entries(users)){if(u.email.toLowerCase()===em.toLowerCase()){found=k;break}}
+  if(!found){showErr('fEmailErr','fEmail');return}
+  _resetKey=found;
+  _resetCode=Math.random().toString(36).substring(2,8).toUpperCase();
+  // -------------------------------------------------------
+  // PRODUCTION HOOK — email the code here instead of showing it.
+  // Example:
+  //   fetch('/api/send-reset', { method:'POST',
+  //     headers:{'Content-Type':'application/json'},
+  //     body: JSON.stringify({ to: users[found].email, code: _resetCode }) });
+  // Remove the demo-notice div and resetCodeDisplay in production.
+  // -------------------------------------------------------
+  document.getElementById('resetCodeDisplay').textContent = _resetCode;
+  document.getElementById('fStep1').style.display='none';
+  document.getElementById('fStep2').style.display='block';
 }
 
-function doLogout() { localStorage.removeItem('e6c'); updNav(); go('home'); toast('Logged out', 'info'); }
-function updNav() {
-  const u = getCu(); const bl = document.getElementById('bLogin'), bs = document.getElementById('bSignup'), av = document.getElementById('navAv'), bo = document.getElementById('bLogout'), tp = document.getElementById('tabProfile');
-  if (u) { bl.style.display = 'none'; bs.style.display = 'none'; av.style.display = 'flex'; bo.style.display = 'inline-flex'; tp.style.display = 'inline'; av.innerHTML = u.avatar ? '<img src="' + u.avatar + '">' : u.display.charAt(0).toUpperCase(); }
-  else { bl.style.display = 'inline-flex'; bs.style.display = 'inline-flex'; av.style.display = 'none'; bo.style.display = 'none'; tp.style.display = 'none'; }
+function doForgot2(){
+  clearErrs();
+  const entered=document.getElementById('fCode').value.trim().toUpperCase();
+  if(entered!==_resetCode){showErr('fCodeErr','fCode');return}
+  document.getElementById('fStep2').style.display='none';
+  document.getElementById('fStep3').style.display='block';
 }
-function go(p) {
-  document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
-  const el = document.getElementById('p-' + p); if (el) { el.classList.add('active'); el.style.animation = 'none'; el.offsetHeight; el.style.animation = ''; }
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  const tabBtn = document.querySelector('.nav-tab[data-p="' + p + '"]'); if (tabBtn) tabBtn.classList.add('active');
+
+function doForgot3(){
+  clearErrs();
+  const np=document.getElementById('fNew').value,cf=document.getElementById('fConf').value;
+  if(np.length<8){toast('Min 8 characters','err');return}
+  if(np!==cf){showErr('fConfErr','fConf');return}
+  const users=getUsers();
+  if(!users[_resetKey]){toast('Account error','err');return}
+  users[_resetKey].pw=hashPw(np);
+  if(!users[_resetKey].act)users[_resetKey].act=[];
+  users[_resetKey].act.unshift({t:'update',txt:'Password reset',time:new Date().toISOString()});
+  saveUsers(users);
+  closeAuth();
+  toast('Password reset! Log in with your new password.','ok');
+  setTimeout(()=>openAuth('login'),400);
+  _resetKey=null;_resetCode=null;
+}
+
+function updNav(){
+  const u=getCu();
+  const bl=document.getElementById('bLogin'),bs=document.getElementById('bSignup'),av=document.getElementById('navAv'),bo=document.getElementById('bLogout'),tp=document.getElementById('tabProfile');
+  if(u){
+    bl.style.display='none';bs.style.display='none';av.style.display='flex';bo.style.display='inline-flex';tp.style.display='inline';
+    av.innerHTML=u.avatar?`<img src="${u.avatar}">`:`<span>${u.display.charAt(0).toUpperCase()}</span>`;
+  } else {
+    bl.style.display='inline-flex';bs.style.display='inline-flex';av.style.display='none';bo.style.display='none';tp.style.display='none';
+  }
+}
+
+function go(p){
+  document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('active'));
+  const el=document.getElementById('p-'+p);
+  if(el){el.classList.add('active');el.style.animation='none';el.offsetHeight;el.style.animation=''}
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  const tb=document.querySelector('.nav-tab[data-p="'+p+'"]');if(tb)tb.classList.add('active');
   document.querySelector('.nav-tabs').classList.remove('open');
-  if (p === 'profile') renderProfile(); if (p === 'dumps') renderDumps(); if (p === 'community') renderCommunity();
+  if(p==='profile')renderProfile();
+  if(p==='dumps')renderDumps();
+  if(p==='community')renderCommunity();
 }
-document.querySelectorAll('.nav-tab').forEach(t => t.addEventListener('click', () => go(t.dataset.p)));
-function toast(msg, type = 'info') {
-  const c = document.getElementById('toasts'), d = document.createElement('div'); d.className = 'toast toast-' + type;
-  const ic = { ok: 'fa-check-circle', err: 'fa-exclamation-circle', info: 'fa-info-circle' };
-  d.innerHTML = '<i class="fas ' + (ic[type] || ic.info) + '"></i>' + msg; c.appendChild(d); setTimeout(() => d.remove(), 3000);
-}
+document.querySelectorAll('.nav-tab').forEach(t=>t.addEventListener('click',()=>go(t.dataset.p)));
 
-// ========= HOME =========
-function renderHome() {
-  document.getElementById('homeList').innerHTML = files.map(f => {
-    const u = getCu(); const owned = u && u.dl && u.dl.includes(f.id);
-    return `<div class="dl-card" id="dlc-${f.id}"><div class="dl-card-head" onclick="togCard(${f.id})"><div class="dl-card-icon" style="background:${f.iconBg};color:${f.iconColor}"><i class="fas ${f.icon}"></i></div><div class="dl-card-info"><div class="dl-card-name">${f.name} <span class="tag ${catClass[f.cat]}" style="font-size:9px;vertical-align:middle">${f.sub}</span></div><div class="dl-card-desc">${f.desc}</div></div><div class="dl-card-right"><div class="dl-card-stat"><div class="val">v${f.ver}</div><div class="lbl">Version</div></div><div class="dl-card-stat"><div class="val">${f.size}</div><div class="lbl">Size</div></div><div class="dl-card-stat"><div class="val" style="color:var(--accent)">${f.status}</div><div class="lbl">Status</div></div></div></div><div class="dl-card-expand" id="dle-${f.id}"><div style="padding-top:16px"><div class="dl-detail-grid"><div class="dl-detail-item"><div class="k">Version</div><div class="v">${f.ver}</div></div><div class="dl-detail-item"><div class="k">Size</div><div class="v">${f.size}</div></div><div class="dl-detail-item"><div class="k">Type</div><div class="v">${f.sub}</div></div><div class="dl-detail-item"><div class="k">Updated</div><div class="v">${f.updated}</div></div><div class="dl-detail-item"><div class="k">Status</div><div class="v" style="color:var(--accent)">${f.status}</div></div><div class="dl-detail-item"><div class="k">Category</div><div class="v" style="text-transform:capitalize">${f.cat}</div></div></div><div class="dl-features"><h4>Features</h4><div class="dl-feat-list">${f.features.map(ft => '<span class="dl-feat">' + ft + '</span>').join('')}</div></div><div class="dl-actions"><button class="btn btn-accent" onclick="handleDl(${f.id});event.stopPropagation()"><i class="fas fa-download" style="margin-right:6px"></i>${owned ? 'Download Again' : 'Download'}</button>${owned ? '<span style="font-size:12px;color:var(--accent)"><i class="fas fa-check" style="margin-right:4px"></i>Owned</span>' : ''}</div></div></div></div>`;
+function toast(msg,type='info'){const c=document.getElementById('toasts'),d=document.createElement('div');d.className='toast toast-'+type;const ic={ok:'fa-check-circle',err:'fa-exclamation-circle',info:'fa-info-circle'};d.innerHTML='<i class="fas '+(ic[type]||ic.info)+'"></i>'+msg;c.appendChild(d);setTimeout(()=>d.remove(),3000)}
+
+// ================================================================
+//  HOME
+// ================================================================
+function renderHome(){
+  document.getElementById('homeList').innerHTML=files.map(f=>{
+    const u=getCu();const owned=u&&u.dl&&u.dl.includes(f.id);
+    return`<div class="dl-card" id="dlc-${f.id}"><div class="dl-card-head" onclick="togCard(${f.id})"><div class="dl-card-icon" style="background:${f.iconBg};color:${f.iconColor}"><i class="fas ${f.icon}"></i></div><div class="dl-card-info"><div class="dl-card-name">${f.name} <span class="tag ${catClass[f.cat]}" style="font-size:9px;vertical-align:middle">${f.sub}</span></div><div class="dl-card-desc">${f.desc}</div></div><div class="dl-card-right"><div class="dl-card-stat"><div class="val">v${f.ver}</div><div class="lbl">Version</div></div><div class="dl-card-stat"><div class="val">${f.size}</div><div class="lbl">Size</div></div><div class="dl-card-stat"><div class="val" style="color:var(--accent)">${f.status}</div><div class="lbl">Status</div></div></div></div><div class="dl-card-expand" id="dle-${f.id}"><div style="padding-top:16px"><div class="dl-detail-grid"><div class="dl-detail-item"><div class="k">Version</div><div class="v">${f.ver}</div></div><div class="dl-detail-item"><div class="k">Size</div><div class="v">${f.size}</div></div><div class="dl-detail-item"><div class="k">Type</div><div class="v">${f.sub}</div></div><div class="dl-detail-item"><div class="k">Updated</div><div class="v">${f.updated}</div></div><div class="dl-detail-item"><div class="k">Status</div><div class="v" style="color:var(--accent)">${f.status}</div></div><div class="dl-detail-item"><div class="k">Category</div><div class="v" style="text-transform:capitalize">${f.cat}</div></div></div><div class="dl-features"><h4>Features</h4><div class="dl-feat-list">${f.features.map(ft=>'<span class="dl-feat">'+ft+'</span>').join('')}</div></div><div class="dl-actions"><button class="btn btn-accent" onclick="handleDl(${f.id});event.stopPropagation()"><i class="fas fa-download" style="margin-right:6px"></i>${owned?'Download Again':'Download'}</button>${owned?'<span style="font-size:12px;color:var(--accent)"><i class="fas fa-check" style="margin-right:4px"></i>Owned</span>':''}</div></div></div></div>`;
   }).join('');
 }
-function togCard(id) { const el = document.getElementById('dle-' + id); if(el) el.classList.toggle('open'); }
-
-function handleDl(id) {
-  const u = getCu(); if (!u) { toast('Log in to download', 'err'); openAuth('login'); return; }
-  const f = files.find(x => x.id === id); if (!f) return;
-  const users = getUsers(), un = localStorage.getItem('e6c');
-  if (!users[un].dl.includes(id)) users[un].dl.push(id);
-  if (!users[un].act) users[un].act = [];
-  users[un].act.unshift({ t: 'download', txt: 'Downloaded ' + f.name + ' ' + f.sub, time: new Date().toISOString() });
-  saveUsers(users); toast('Downloading ' + f.name + ' ' + f.sub + ' v' + f.ver + '...', 'ok');
-  window.open(f.dlUrl, '_blank'); renderHome();
-  setTimeout(() => { const el = document.getElementById('dle-' + id); if(el) el.classList.add('open'); }, 50);
+function togCard(id){const el=document.getElementById('dle-'+id);if(el)el.classList.toggle('open')}
+function handleDl(id){
+  const u=getCu();if(!u){toast('Log in to download','err');openAuth('login');return}
+  const f=files.find(x=>x.id===id);if(!f)return;
+  const users=getUsers(),un=localStorage.getItem('e6c');
+  if(!users[un].dl.includes(id))users[un].dl.push(id);
+  if(!users[un].act)users[un].act=[];
+  users[un].act.unshift({t:'download',txt:'Downloaded '+f.name+' '+f.sub,time:new Date().toISOString()});
+  saveUsers(users);toast('Downloading '+f.name+' v'+f.ver+'…','ok');
+  window.open(f.dlUrl,'_blank');renderHome();
+  setTimeout(()=>{const el=document.getElementById('dle-'+id);if(el)el.classList.add('open')},50);
 }
 
-// ========= DUMPS =========
+// ================================================================
+//  DUMPS
+// ================================================================
 let curDump = 'bloodstrike';
+const dumpList = [
+  {k:'bloodstrike', l:'Bloodstrike'},
+  {k:'lotdk',       l:'Lotdk'},
+  {k:'cs2',         l:'CS2'},
+  {k:'legobatman',  l:'Lego Batman'}
+];
 
-function renderDumps() {
-  const tabs = document.getElementById('dumpTabs'), content = document.getElementById('dumpContent');
-  tabs.innerHTML = `<button class="dump-tab${curDump === 'bloodstrike' ? ' active' : ''}" onclick="setDump('bloodstrike')">Bloodstrike</button><button class="dump-tab${curDump === 'lotdk' ? ' active' : ''}" onclick="setDump('lotdk')">Lotdk</button>`;
-  if (curDump === 'bloodstrike') renderBSDumps(content);
-  else if (curDump === 'lotdk') renderLotdkDumps(content);
+function renderDumps(){
+  document.getElementById('dumpTabs').innerHTML = dumpList.map(t =>
+    `<button class="dump-tab${curDump===t.k?' active':''}" onclick="setDump('${t.k}')">${t.l}</button>`
+  ).join('');
+  const el = document.getElementById('dumpContent');
+  if      (curDump==='bloodstrike') renderRawDump(el,'bs','Bloodstrike Offsets','Messiah Engine');
+  else if (curDump==='lotdk')       renderLotdkDumps(el);
+  else if (curDump==='cs2')         renderRawDump(el,'cs2','Counter-Strike 2 Offsets','Source 2 Engine');
+  else if (curDump==='legobatman')  renderRawDump(el,'lb','LEGO Batman the video game Aob sigs and lua Scripts','Custom engine');
 }
-function setDump(k) { curDump = k; renderDumps() }
+function setDump(k){curDump=k;renderDumps()}
 
-function renderBSDumps(el) { el.innerHTML = `<div class="dump-info"><div class="dump-info-left"><div class="dump-game-icon" style="background:var(--red-dim);color:var(--red)">B</div><div class="dump-info-text"><h3>Bloodstrike Offsets</h3><span>Messiah Engine &middot; Updated Jun 14, 2025</span></div></div><button class="btn btn-ghost btn-sm" onclick="copyBS()"><i class="fas fa-copy" style="margin-right:4px"></i>Copy all</button></div><table class="dump-table"><thead><tr><th>Name</th><th>Offset</th><th>Info</th></tr></thead><tbody>${bsOffsets.map(o => `<tr><td style="font-weight:600">${o.name}</td><td class="offset">${o.offset}</td><td class="comment">${o.comment}</td></tr>`).join('')}</tbody></table>` }
-function copyBS() { let txt = 'Bloodstrike Offset Dump\nMessiah Engine — Jun 14, 2025\n\n'; bsOffsets.forEach(o => txt += o.name + ' = ' + o.offset + ' // ' + o.comment + '\n'); navigator.clipboard.writeText(txt).then(() => toast('Copied', 'ok')).catch(() => toast('Copy failed', 'err')) }
-
-function renderLotdkDumps(el) { el.innerHTML = `<div class="dump-info"><div class="dump-info-left"><div class="dump-game-icon" style="background:var(--purple-dim);color:var(--purple)">L</div><div class="dump-info-text"><h3>Lotdk Offsets</h3><span>Currently in development</span></div></div></div><div class="coming-soon-box"><i class="fas fa-hourglass-half"></i><h3 style="color:var(--fg2);margin-bottom:4px">Coming Soon</h3><p>Our team is actively working on mapping out the offsets for Lotdk. Check back soon for updates!</p></div>` }
-
-// ========= COMMUNITY =========
-let curComm = 'news';
-function renderCommunity() {
-  const content = document.getElementById('commContent');
-  if (curComm === 'news') renderNews(content);
-}
-function setCommTab(k, btn) {
-  curComm = k;
-  document.querySelectorAll('.comm-tab').forEach(t => t.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  renderCommunity();
+function renderLotdkDumps(el){
+  el.innerHTML=`<div class="dump-info"><div class="dump-info-left"><div class="dump-game-icon" style="background:var(--purple-dim);color:var(--purple)">L</div><div class="dump-info-text"><h3>Lotdk Offsets</h3><span>Currently in development</span></div></div></div><div class="coming-soon-box"><i class="fas fa-hourglass-half"></i><h3 style="color:var(--fg2);margin-bottom:4px">Coming Soon</h3><p>Our team is actively working on mapping out the offsets for Lotdk. Check back soon!</p></div>`;
 }
 
-function renderNews(el) {
-  el.innerHTML = newsData.map(n => `
-    <div class="news-card">
-      <h3>${n.title}</h3>
-      <div class="news-meta">
-        <span><i class="fas fa-calendar" style="margin-right:4px"></i>${n.date}</span>
-        <span><i class="fas fa-user" style="margin-right:4px"></i>${n.author}</span>
+// ================================================================
+//  COMMUNITY
+// ================================================================
+function renderCommunity(){const content=document.getElementById('commContent');renderNews(content)}
+function setCommTab(k,btn){document.querySelectorAll('.comm-tab').forEach(t=>t.classList.remove('active'));if(btn)btn.classList.add('active');renderCommunity()}
+function renderNews(el){el.innerHTML=newsData.map(n=>`<div class="news-card"><h3>${n.title}</h3><div class="news-meta"><span><i class="fas fa-calendar" style="margin-right:4px"></i>${n.date}</span><span><i class="fas fa-user" style="margin-right:4px"></i>${n.author}</span></div><p>${n.content}</p></div>`).join('')}
+
+// ================================================================
+//  PROFILE
+// ================================================================
+function renderProfile(){
+  const u=getCu(),c=document.getElementById('profileContent');
+  if(!u){c.innerHTML=`<div style="text-align:center;padding:60px 0"><p style="color:var(--muted);margin-bottom:16px">You need to be logged in to view your profile</p><button class="btn btn-accent" onclick="openAuth('login')">Log in</button></div>`;return}
+  const jd=new Date(u.joined).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+  const ll=new Date(u.lastLogin).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+  const udls=(u.dl||[]).map(id=>files.find(f=>f.id===id)).filter(Boolean);
+  const acts=(u.act||[]).slice(0,6);
+  const avHtml=u.avatar?`<img src="${u.avatar}" style="width:100%;height:100%;object-fit:cover;display:block">`:`<span>${u.display.charAt(0).toUpperCase()}</span>`;
+  c.innerHTML=`<div class="profile-card">
+    <div class="profile-head">
+      <div class="profile-pic" onclick="openEl('avatarModal')" title="Change profile picture">
+        ${avHtml}
+        <div class="profile-pic-overlay"><i class="fas fa-camera"></i></div>
       </div>
-      <p>${n.content}</p>
+      <div>
+        <div class="profile-name">${u.display}</div>
+        <div class="profile-role">${u.role}</div>
+        <div class="profile-joined">Joined ${jd}</div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:6px">
+        <button class="btn btn-ghost btn-sm" onclick="openEdit()"><i class="fas fa-pen" style="margin-right:4px"></i>Edit</button>
+        <button class="btn btn-red btn-sm" onclick="confirmDel()"><i class="fas fa-trash"></i></button>
+      </div>
     </div>
-  `).join('');
+    <div class="profile-body">
+      <div class="profile-section">
+        <div class="profile-sec-title">Account info</div>
+        <div class="info-row"><span class="k">Username</span><span class="v">${u.user}</span></div>
+        <div class="info-row"><span class="k">Email</span><span class="v">${maskEmail(u.email)}</span></div>
+        <div class="info-row"><span class="k">Role</span><span class="v" style="color:var(--accent)">${u.role}</span></div>
+        <div class="info-row"><span class="k">Joined</span><span class="v">${jd}</span></div>
+        <div class="info-row"><span class="k">Last login</span><span class="v">${ll}</span></div>
+        <div class="info-row"><span class="k">Logins</span><span class="v">${u.logins||1}</span></div>
+        ${u.loc?`<div class="info-row"><span class="k">Location</span><span class="v">${u.loc}</span></div>`:''}
+        ${u.web?`<div class="info-row"><span class="k">Website</span><span class="v"><a href="${u.web}" target="_blank">${u.web}</a></span></div>`:''}
+        <div style="margin-top:12px"><button class="btn btn-ghost btn-sm" onclick="openEl('pwModal')">Change password</button></div>
+      </div>
+      <div class="profile-section">
+        <div class="profile-sec-title">Preferences</div>
+        <div class="toggle-row"><div><div class="toggle-label">Email notifications</div><div class="toggle-desc">Updates about new files</div></div><div class="toggle${u.settings?.emailNotifs?' on':''}" onclick="togSet('emailNotifs',this)"></div></div>
+        <div class="toggle-row"><div><div class="toggle-label">Show online status</div><div class="toggle-desc">Others see when you're active</div></div><div class="toggle${u.settings?.showOnline?' on':''}" onclick="togSet('showOnline',this)"></div></div>
+        <div class="toggle-row"><div><div class="toggle-label">Two-factor auth</div><div class="toggle-desc">Extra login security</div></div><div class="toggle${u.settings?.twoFactor?' on':''}" onclick="togSet('twoFactor',this)"></div></div>
+        <div class="toggle-row"><div><div class="toggle-label">Public profile</div><div class="toggle-desc">Visible to other members</div></div><div class="toggle${u.settings?.publicProfile?' on':''}" onclick="togSet('publicProfile',this)"></div></div>
+      </div>
+      <div class="profile-section">
+        <div class="profile-sec-title">Downloads (${udls.length})</div>
+        ${udls.length===0?'<div style="color:var(--muted);font-size:12px;padding:4px 0">Nothing yet.</div>':udls.map(f=>`<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span style="color:var(--fg2)">${f.name}</span><span style="color:var(--accent);font-family:var(--mono);font-size:11px">v${f.ver}</span></div>`).join('')}
+      </div>
+    </div>
+  </div>
+  ${acts.length?`<div style="margin-top:16px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:16px 20px"><div class="profile-sec-title" style="margin-bottom:8px">Activity</div>${acts.map(a=>`<div class="activity-item"><div class="act-icon act-${a.t}"><i class="fas fa-${a.t==='download'?'download':a.t==='login'?'sign-in-alt':'pen'}"></i></div><div><div class="act-text">${a.txt}</div><div class="act-time">${timeAgo(new Date(a.time))}</div></div></div>`).join('')}</div>`:''}`;
 }
 
-// ========= PROFILE =========
-function renderProfile() {
-  const u = getCu(), c = document.getElementById('profileContent');
-  if (!u) { c.innerHTML = `<div style="text-align:center;padding:60px 0"><p style="color:var(--muted);margin-bottom:16px">You need to be logged in to view your profile</p><button class="btn btn-accent" onclick="openAuth('login')">Log in</button></div>`; return; }
-  const jd = new Date(u.joined).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); const ll = new Date(u.lastLogin).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-  const udls = (u.dl || []).map(id => files.find(f => f.id === id)).filter(Boolean); const acts = (u.act || []).slice(0, 6);
-  c.innerHTML = `<div class="profile-card"><div class="profile-head"><div class="profile-pic">${u.avatar ? '<img src="' + u.avatar + '">' : u.display.charAt(0).toUpperCase()}<div class="profile-pic-edit" onclick="changeAvatar()"><i class="fas fa-camera"></i></div></div><div><div class="profile-name">${u.display}</div><div class="profile-role">${u.role}</div><div class="profile-joined">Joined ${jd}</div></div><div style="margin-left:auto;display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="openEdit()"><i class="fas fa-pen" style="margin-right:4px"></i>Edit</button><button class="btn btn-red btn-sm" onclick="confirmDel()"><i class="fas fa-trash"></i></button></div></div><div class="profile-body"><div class="profile-section"><div class="profile-sec-title">Account info</div><div class="info-row"><span class="k">Username</span><span class="v">${u.user}</span></div><div class="info-row"><span class="k">Email</span><span class="v">${maskEmail(u.email)}</span></div><div class="info-row"><span class="k">Role</span><span class="v" style="color:var(--accent)">${u.role}</span></div><div class="info-row"><span class="k">Joined</span><span class="v">${jd}</span></div><div class="info-row"><span class="k">Last login</span><span class="v">${ll}</span></div><div class="info-row"><span class="k">Logins</span><span class="v">${u.logins || 1}</span></div>${u.loc ? '<div class="info-row"><span class="k">Location</span><span class="v">' + u.loc + '</span></div>' : ''}${u.web ? '<div class="info-row"><span class="k">Website</span><span class="v"><a href="' + u.web + '" target="_blank">' + u.web + '</a></span></div>' : ''}<div style="margin-top:12px"><button class="btn btn-ghost btn-sm" onclick="openEl('pwModal')">Change password</button></div></div><div class="profile-section"><div class="profile-sec-title">Preferences</div><div class="toggle-row"><div><div class="toggle-label">Email notifications</div><div class="toggle-desc">Updates about new files</div></div><div class="toggle${u.settings?.emailNotifs ? ' on' : ''}" onclick="togSet('emailNotifs',this)"></div></div><div class="toggle-row"><div><div class="toggle-label">Show online status</div><div class="toggle-desc">Others see when you're active</div></div><div class="toggle${u.settings?.showOnline ? ' on' : ''}" onclick="togSet('showOnline',this)"></div></div><div class="toggle-row"><div><div class="toggle-label">Two-factor auth</div><div class="toggle-desc">Extra login security</div></div><div class="toggle${u.settings?.twoFactor ? ' on' : ''}" onclick="togSet('twoFactor',this)"></div></div><div class="toggle-row"><div><div class="toggle-label">Public profile</div><div class="toggle-desc">Visible to other members</div></div><div class="toggle${u.settings?.publicProfile ? ' on' : ''}" onclick="togSet('publicProfile',this)"></div></div></div><div class="profile-section"><div class="profile-sec-title">Downloads (${udls.length})</div>${udls.length === 0 ? '<div style="color:var(--muted);font-size:12px;padding:4px 0">Nothing yet.</div>' : udls.map(f => `<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span style="color:var(--fg2)">${f.name} <span class="tag catClass-${f.cat}" style="font-size:8px;vertical-align:middle">${f.sub}</span></span><span style="color:var(--accent);font-family:var(--mono);font-size:11px">v${f.ver}</span></div>`).join('')}</div></div></div>${acts.length ? `<div style="margin-top:16px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:16px 20px"><div class="profile-sec-title" style="margin-bottom:8px">Activity</div>${acts.map(a => `<div class="activity-item"><div class="act-icon act-${a.t}"><i class="fas fa-${a.t === 'download' ? 'download' : a.t === 'login' ? 'sign-in-alt' : 'pen'}"></i></div><div><div class="act-text">${a.txt}</div><div class="act-time">${timeAgo(new Date(a.time))}</div></div></div>`).join('')}</div>` : ''}`;
-}
-function maskEmail(e) { const parts = e.split('@'); if(parts[0].length <= 2) return e; return parts[0][0] + '*'.repeat(parts[0].length - 2) + parts[0][parts[0].length - 1] + '@' + parts[1]; }
-function timeAgo(d) { const s = Math.floor((Date.now() - d) / 1000); if (s < 60) return 'just now'; const m = Math.floor(s / 60); if (m < 60) return m + 'm ago'; const h = Math.floor(m / 60); if (h < 24) return h + 'h ago'; const dy = Math.floor(h / 24); return dy + 'd ago'; }
-function openEdit() { const u = getCu(); if (!u) return; document.getElementById('eName').value = u.display || ''; document.getElementById('eBio').value = u.bio || ''; document.getElementById('eLoc').value = u.loc || ''; document.getElementById('eWeb').value = u.web || ''; document.getElementById('editModal').classList.add('show') }
-function closeEdit() { document.getElementById('editModal').classList.remove('show') }
-function saveProfile() {
-  const users = getUsers(), un = localStorage.getItem('e6c'); if (!users[un]) return;
-  const n = document.getElementById('eName').value.trim(); if (!n) { toast('Name required', 'err'); return; }
-  users[un].display = n; users[un].bio = document.getElementById('eBio').value.trim(); users[un].loc = document.getElementById('eLoc').value.trim(); users[un].web = document.getElementById('eWeb').value.trim();
-  if (!users[un].act) users[un].act = []; users[un].act.unshift({ t: 'update', txt: 'Updated profile', time: new Date().toISOString() });
-  saveUsers(users); closeEdit(); updNav(); renderProfile(); toast('Profile saved', 'ok');
-}
-function changeAvatar() { const url = 'https://picsum.photos/seed/a' + Math.floor(Math.random() * 9999) + '/100/100.jpg'; const users = getUsers(), un = localStorage.getItem('e6c'); if (!users[un]) return; users[un].avatar = url; saveUsers(users); updNav(); renderProfile(); toast('Avatar updated', 'ok'); }
-function togSet(k, el) { const users = getUsers(), un = localStorage.getItem('e6c'); if (!users[un]) return; if (!users[un].settings) users[un].settings = {}; users[un].settings[k] = !users[un].settings[k]; el.classList.toggle('on'); saveUsers(users); toast(k + (users[un].settings[k] ? ' enabled' : ' disabled'), 'info'); }
-function changePw() {
-  document.querySelectorAll('#pwModal .err-msg').forEach(e => e.classList.remove('show'));
-  const users = getUsers(), un = localStorage.getItem('e6c'); if (!users[un]) return;
-  const cur = document.getElementById('cpCur').value, np = document.getElementById('cpNew').value, cf = document.getElementById('cpConf').value;
-  if (hashPw(cur) !== users[un].pw) { showErr('cpCurErr'); return; } if (np.length < 8) { toast('Min 8 characters', 'err'); return; } if (np !== cf) { showErr('cpConfErr'); return; }
-  users[un].pw = hashPw(np); if (!users[un].act) users[un].act = []; users[un].act.unshift({ t: 'update', txt: 'Changed password', time: new Date().toISOString() }); saveUsers(users); closeEl('pwModal'); toast('Password updated', 'ok');
-}
-function confirmDel() { const el = document.createElement('div'); el.className = 'modal-bg show'; el.style.zIndex = '110'; el.innerHTML = `<div class="modal" style="max-width:340px;text-align:center"><i class="fas fa-exclamation-triangle" style="font-size:28px;color:var(--red);margin-bottom:12px"></i><h2 style="font-size:16px">Delete account?</h2><p style="color:var(--muted);font-size:13px;margin:8px 0 20px">This is permanent. All your data will be gone.</p><div style="display:flex;gap:8px"><button class="btn btn-ghost modal-btn" onclick="this.closest('.modal-bg').remove()">Cancel</button><button class="btn btn-red modal-btn" onclick="delAccount()">Delete</button></div></div>`; document.body.appendChild(el); }
-function delAccount() { const users = getUsers(), un = localStorage.getItem('e6c'); if (users[un]) delete users[un]; saveUsers(users); localStorage.removeItem('e6c'); document.querySelector('.modal-bg[style*="z-index: 110"]')?.remove(); updNav(); go('home'); toast('Account deleted', 'info'); }
-function openEl(id) { document.getElementById(id).classList.add('show') }
-function closeEl(id) { document.getElementById(id).classList.remove('show') }
+function maskEmail(e){const p=e.split('@');if(p[0].length<=2)return e;return p[0][0]+'*'.repeat(p[0].length-2)+p[0][p[0].length-1]+'@'+p[1]}
+function timeAgo(d){const s=Math.floor((Date.now()-d)/1000);if(s<60)return'just now';const m=Math.floor(s/60);if(m<60)return m+'m ago';const h=Math.floor(m/60);if(h<24)return h+'h ago';return Math.floor(h/24)+'d ago'}
 
-document.addEventListener('DOMContentLoaded', () => {
+// ---- Avatar upload ----
+let _pendingAvatar = null;
+
+function avDrag(e, on) { e.preventDefault(); document.getElementById('avatarDrop').classList.toggle('drag', on); }
+function avDrop(e) { e.preventDefault(); avDrag(e, false); if (e.dataTransfer.files[0]) avProcess(e.dataTransfer.files[0]); }
+function avFileChosen(inp) { if (inp.files[0]) avProcess(inp.files[0]); }
+
+function avProcess(file) {
+  if (!file.type.startsWith('image/')) { toast('Choose an image file','err'); return; }
+  if (file.size > 5*1024*1024) { toast('File too large — max 5 MB','err'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    _pendingAvatar = e.target.result;
+    const img = document.getElementById('avatarPreview');
+    img.src = _pendingAvatar; img.style.display = 'block';
+    document.getElementById('avSaveBtn').disabled = false;
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveAvatar() {
+  if (!_pendingAvatar) return;
+  const users=getUsers(), un=localStorage.getItem('e6c'); if (!users[un]) return;
+  users[un].avatar = _pendingAvatar;
+  if (!users[un].act) users[un].act=[];
+  users[un].act.unshift({t:'update',txt:'Updated profile picture',time:new Date().toISOString()});
+  saveUsers(users); closeEl('avatarModal'); updNav(); renderProfile();
+  toast('Profile picture updated','ok');
+  _pendingAvatar=null;
+}
+
+function openEdit(){const u=getCu();if(!u)return;document.getElementById('eName').value=u.display||'';document.getElementById('eBio').value=u.bio||'';document.getElementById('eLoc').value=u.loc||'';document.getElementById('eWeb').value=u.web||'';openEl('editModal')}
+function closeEdit(){closeEl('editModal')}
+function saveProfile(){const users=getUsers(),un=localStorage.getItem('e6c');if(!users[un])return;const n=document.getElementById('eName').value.trim();if(!n){toast('Name required','err');return}users[un].display=n;users[un].bio=document.getElementById('eBio').value.trim();users[un].loc=document.getElementById('eLoc').value.trim();users[un].web=document.getElementById('eWeb').value.trim();if(!users[un].act)users[un].act=[];users[un].act.unshift({t:'update',txt:'Updated profile',time:new Date().toISOString()});saveUsers(users);closeEdit();updNav();renderProfile();toast('Profile saved','ok')}
+function togSet(k,el){const users=getUsers(),un=localStorage.getItem('e6c');if(!users[un])return;if(!users[un].settings)users[un].settings={};users[un].settings[k]=!users[un].settings[k];el.classList.toggle('on');saveUsers(users);toast(k+(users[un].settings[k]?' enabled':' disabled'),'info')}
+function changePw(){document.querySelectorAll('#pwModal .err-msg').forEach(e=>e.classList.remove('show'));const users=getUsers(),un=localStorage.getItem('e6c');if(!users[un])return;const cur=document.getElementById('cpCur').value,np=document.getElementById('cpNew').value,cf=document.getElementById('cpConf').value;if(hashPw(cur)!==users[un].pw){showErr('cpCurErr');return}if(np.length<8){toast('Min 8 characters','err');return}if(np!==cf){showErr('cpConfErr');return}users[un].pw=hashPw(np);if(!users[un].act)users[un].act=[];users[un].act.unshift({t:'update',txt:'Changed password',time:new Date().toISOString()});saveUsers(users);closeEl('pwModal');toast('Password updated','ok')}
+function confirmDel(){const el=document.createElement('div');el.className='modal-bg show';el.style.zIndex='110';el.innerHTML=`<div class="modal" style="max-width:340px;text-align:center"><i class="fas fa-exclamation-triangle" style="font-size:28px;color:var(--red);margin-bottom:12px"></i><h2 style="font-size:16px">Delete account?</h2><p style="color:var(--muted);font-size:13px;margin:8px 0 20px">This is permanent. All your data will be gone.</p><div style="display:flex;gap:8px"><button class="btn btn-ghost modal-btn" onclick="this.closest('.modal-bg').remove()">Cancel</button><button class="btn btn-red modal-btn" onclick="delAccount()">Delete</button></div></div>`;document.body.appendChild(el)}
+function delAccount(){const users=getUsers(),un=localStorage.getItem('e6c');if(users[un])delete users[un];saveUsers(users);localStorage.removeItem('e6c');document.querySelectorAll('.modal-bg').forEach(m=>{if(m.style.zIndex==='110')m.remove()});updNav();go('home');toast('Account deleted','info')}
+function openEl(id){document.getElementById(id).classList.add('show')}
+function closeEl(id){document.getElementById(id).classList.remove('show')}
+
+// ================================================================
+//  INIT
+// ================================================================
+document.addEventListener('DOMContentLoaded',()=>{
   updNav(); renderHome();
-  document.querySelectorAll('.modal-bg').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('show') }));
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.modal-bg.show').forEach(m => m.classList.remove('show')) });
-  ['lUser', 'lPass'].forEach(id => document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') doLogin() }));
-  ['sConf'].forEach(id => document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') doSignup() }));
+  document.querySelectorAll('.modal-bg').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('show')}));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-bg.show').forEach(m=>m.classList.remove('show'))});
+  ['lUser','lPass'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()}));
+  document.getElementById('sConf').addEventListener('keydown',e=>{if(e.key==='Enter')doSignup()});
+  // reset avatarModal state on open
+  document.getElementById('avatarModal').addEventListener('show',()=>{
+    _pendingAvatar=null;
+    document.getElementById('avatarPreview').style.display='none';
+    document.getElementById('avSaveBtn').disabled=true;
+    document.getElementById('avatarInput').value='';
+  });
 });
 
-// Disable right click
-document.addEventListener('contextmenu', e => {
-    e.preventDefault();
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{
+  if(e.key==='F12'){e.preventDefault();return false}
+  if(e.ctrlKey&&e.shiftKey&&['i','j','c'].includes(e.key.toLowerCase())){e.preventDefault();return false}
+  if(e.ctrlKey&&['u','s'].includes(e.key.toLowerCase())){e.preventDefault();return false}
 });
-
-// Disable common DevTools shortcuts
-document.addEventListener('keydown', e => {
-    // F12
-    if (e.key === 'F12') {
-        e.preventDefault();
-        return false;
-    }
-
-    // Ctrl+Shift+I
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') {
-        e.preventDefault();
-        return false;
-    }
-
-    // Ctrl+Shift+J
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') {
-        e.preventDefault();
-        return false;
-    }
-
-    // Ctrl+Shift+C
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') {
-        e.preventDefault();
-        return false;
-    }
-
-    // Ctrl+U (View Source)
-    if (e.ctrlKey && e.key.toLowerCase() === 'u') {
-        e.preventDefault();
-        return false;
-    }
-
-    // Ctrl+S
-    if (e.ctrlKey && e.key.toLowerCase() === 's') {
-        e.preventDefault();
-        return false;
-    }
-});
-
-// Disable text selection
-document.addEventListener('selectstart', e => {
-    e.preventDefault();
-});
-
-// Disable drag
-document.addEventListener('dragstart', e => {
-    e.preventDefault();
-});
-
-// Detect DevTools (not reliable)
-setInterval(() => {
-    if (
-        window.outerWidth - window.innerWidth > 160 ||
-        window.outerHeight - window.innerHeight > 160
-    ) {
-        document.body.innerHTML = `
-            <div style="
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                height:100vh;
-                background:#0c0c0e;
-                color:#fff;
-                font-family:sans-serif;
-                font-size:24px;
-            ">
-                Developer tools detected
-            </div>
-        `;
-    }
-}, 1000);
-
+document.addEventListener('selectstart',e=>{if(!e.target.closest('#avatarModal'))e.preventDefault()});
+document.addEventListener('dragstart',e=>{if(!e.target.closest('#avatarDrop'))e.preventDefault()});
+setInterval(()=>{if(window.outerWidth-window.innerWidth>160||window.outerHeight-window.innerHeight>160){document.body.innerHTML=`<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#0c0c0e;color:#fff;font-family:sans-serif;font-size:24px;">Developer tools detected</div>`}},1000);
 </script>
 </body>
 </html>
