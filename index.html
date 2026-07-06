@@ -117,9 +117,7 @@
             font-size: 0.95rem;
         }
 
-        .offline {
-            color: #EF4444;
-        }
+        .offline { color: #EF4444; }
     </style>
 </head>
 <body>
@@ -134,17 +132,15 @@
         </div>
         
         <div class="status-text" id="status-text">
-            ONLINE
+            CHECKING...
         </div>
         
         <div class="subtitle">
-            Dumpy is running smoothly<br>
+            Dumpy Server Status<br>
             <span id="last-updated" style="font-size:1rem;"></span>
         </div>
 
-        <div class="stats-grid" id="stats-grid">
-            <!-- Populated by JS -->
-        </div>
+        <div class="stats-grid" id="stats-grid"></div>
     </div>
     
     <footer>
@@ -152,89 +148,67 @@
     </footer>
 
     <script>
-        let lastStatus = null;
+        // ←←← PUT YOUR API KEY HERE ↓↓↓
+        const API_KEY = "V>0mKaa|-l:T9sc6Dn1%2MSRIQe5N76{UMd<]2KaCf$nQVh5YW/u&M*{D]}|bL0s?^U9LRCQv+##`lTO%s8<7yjb)@:ha'iGz9!@13241243124132418547809357091276590725091720957912590790825791872539872893567826358263586293875618726398472918304821038409821394872983764987216340972938487210384-9210348012-387492173957203582035802839273092734723-7-2937592735972395712935792753482765827645732495-7209358209394-02934-019-20491-2049-102934-=19824=0182345972543-973204582=1-3854=210735-19287598pwyqiuahsgslkdgfbhsjhdfkjahsdauhsiduyaiwgrejaqhBMZBXVmnsbxvzxkcnhbkwjsdoirfhjwouieyuiqyh3iu4ghJLKAGSFDHJASBFAJHSGAKSJghfdiaJSHF8aysfoyu#ruh321iurgJAHBGSfkjAGSf iuG*& #gruy12q3gfruyQAGSDUYga87wRGq2876gAYsgf 876q32 gauygs8gfdqa8763grAYIusgfd87aG*&@#G@87gA*SfygAIJSHGfoilJABckjpaposjdpoapsodpoasidpoauisdpoi9ua09uwr-09uq'p9o2r/;LKM?LK.MNZ>XLKFnZ:OIXFHJp0A(*uwr08-213894-98214234342213413241241243-13242148(&^*&%&^%*&^^%*(&!&^@)**#$)_*!@&$*!&@$()&^!@$*)&!^@$*&^!@$*&^!@$&(%^!$&%!&^%!&@$%!(@$%!(@&%!&@^%&^!@%$&%!@&$(%@$!(&%!@$(&%!@&($%@$&(%!@$&(%@$&%@!$&%$(&%!@$(&^%@!$&^%@$&^!@%&@%!$&@%$&!@%$)*!@^!*@$_!(@$_+)($+@#)($+%(@_#(*%)@(#*&(_*@&#$(*&^!@_(*&!@+)#*!_@$*&)*&#%$^!$^!_$&!@+_(*$!_&@*%$!_@$^!+(@$^_@!*$&";
 
         async function fetchStatus() {
-            const el = document.getElementById('last-updated');
             const statusText = document.getElementById('status-text');
             const systemText = document.getElementById('system-text');
             const dot = document.getElementById('dot');
-            const card = document.getElementById('status-card');
             const statsGrid = document.getElementById('stats-grid');
+            const lastUpdated = document.getElementById('last-updated');
 
             try {
-                const res = await fetch('/api/stats', { 
-                    method: 'GET',
-                    cache: 'no-cache'
+                const res = await fetch('/api/stats', {
+                    headers: {
+                        'x-api-key': API_KEY
+                    }
                 });
 
+                if (res.status === 401) {
+                    throw new Error("Invalid API Key");
+                }
                 if (!res.ok) throw new Error('Server error');
 
                 const data = await res.json();
 
-                // Update main status
-                statusText.textContent = data.status === 'GREEN' ? 'ONLINE' : 
-                                       data.status === 'YELLOW' ? 'DEGRADED' : 
-                                       data.status === 'ORANGE' ? 'HEAVY LOAD' : 'CRITICAL';
+                // Main status
+                const isHealthy = data.status === 'GREEN';
+                statusText.textContent = isHealthy ? 'ONLINE' : data.status;
+                statusText.style.color = isHealthy ? '#10B981' : 
+                                       data.status === 'YELLOW' ? '#EAB308' :
+                                       data.status === 'ORANGE' ? '#F97316' : '#EF4444';
 
-                // Color logic
-                if (data.status === 'GREEN') {
-                    statusText.style.color = '#10B981';
-                    dot.style.background = '#22C55E';
-                    systemText.style.color = '#10B981';
-                    card.style.borderColor = 'rgba(16, 185, 129, 0.2)';
-                } else if (data.status === 'YELLOW') {
-                    statusText.style.color = '#EAB308';
-                    dot.style.background = '#EAB308';
-                    systemText.style.color = '#EAB308';
-                } else if (data.status === 'ORANGE') {
-                    statusText.style.color = '#F97316';
-                    dot.style.background = '#F97316';
-                    systemText.style.color = '#F97316';
-                } else {
-                    statusText.style.color = '#EF4444';
-                    dot.style.background = '#EF4444';
-                    systemText.style.color = '#EF4444';
-                    statusText.classList.add('offline');
-                }
+                dot.style.background = statusText.style.color;
+                systemText.textContent = isHealthy ? 'ALL SYSTEMS' : 'SYSTEMS UNDER LOAD';
+                systemText.style.color = statusText.style.color;
 
-                systemText.textContent = data.status === 'GREEN' ? 'ALL SYSTEMS' : 'SYSTEMS UNDER LOAD';
-
-                // Update live stats
+                // Stats
                 statsGrid.innerHTML = `
                     <div class="stat"><strong>Online Now</strong><br>${data.online}</div>
                     <div class="stat"><strong>Requests/min</strong><br>${data.reqPerMin}</div>
                     <div class="stat"><strong>CPU Load</strong><br>${data.loadPct}%</div>
-                    <div class="stat"><strong>Memory</strong><br>${data.memMB}/${data.totalMemMB} MB</div>
+                    <div class="stat"><strong>Memory</strong><br>${data.memMB}/${data.totalMemMB} MB (${data.memPct}%)</div>
                 `;
 
-                lastStatus = data;
-
-            } catch (e) {
-                // Offline state
+            } catch (err) {
                 statusText.textContent = 'OFFLINE';
                 statusText.style.color = '#EF4444';
                 dot.style.background = '#EF4444';
-                systemText.style.color = '#EF4444';
                 systemText.textContent = 'SERVER UNREACHABLE';
+                systemText.style.color = '#EF4444';
                 
-                statsGrid.innerHTML = `<div class="stat" style="grid-column: span 2; color:#EF4444;">Could not connect to Dumpy server</div>`;
+                statsGrid.innerHTML = `<div class="stat" style="grid-column: span 2; color:#EF4444; text-align:center;">
+                    ${err.message.includes('API Key') ? 'Invalid API Key' : 'Could not connect to server'}
+                </div>`;
             }
 
-            el.textContent = `Last checked • ${new Date().toLocaleTimeString()}`;
+            lastUpdated.textContent = `Last checked • ${new Date().toLocaleTimeString()}`;
         }
 
-        // Initial fetch + polling
+        // Start polling
         fetchStatus();
-        setInterval(fetchStatus, 8000); // every 8 seconds
-
-        // Also update clock more frequently
-        setInterval(() => {
-            if (lastStatus) {
-                document.getElementById('last-updated').textContent = 
-                    `Last checked • ${new Date().toLocaleTimeString()}`;
-            }
-        }, 1000);
+        setInterval(fetchStatus, 7000);
     </script>
 </body>
 </html>
