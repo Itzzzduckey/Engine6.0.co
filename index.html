@@ -7,9 +7,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
         
-        :root {
-            --purple: #7C3AED;
-        }
+        :root { --purple: #7C3AED; }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -47,9 +45,6 @@
             font-weight: 600;
             color: var(--purple);
             margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
         }
         
         .status-card {
@@ -116,8 +111,6 @@
             color: #94A3B8;
             font-size: 0.95rem;
         }
-
-        .offline { color: #EF4444; }
     </style>
 </head>
 <body>
@@ -146,7 +139,9 @@
     </footer>
 
     <script>
-        // === YOUR API KEY (must match the one in server.js) ===
+        // ================== CHANGE THIS TO YOUR SERVER URL ==================
+        const SERVER_URL = "http://localhost:3000";   // ←←← EDIT THIS LINE
+        
         const API_KEY = "V>0mKaa|-l:T9sc6Dn1%2MSRIQe5N76{UMd<]2KaCf$nQVh5YW/u&M*{D]}|bL0s?^U9LRCQv+##`lTO%s8<7yjb)@:ha'iGz9!@13241243124132418547809357091276590725091720957912590790825791872539872893567826358263586293875618726398472918304821038409821394872983764987216340972938487210384-9210348012-387492173957203582035802839273092734723-7-2937592735972395712935792753482765827645732495-7209358209394-02934-019-20491-2049-102934-=19824=0182345972543-973204582=1-3854=210735-19287598pwyqiuahsgslkdgfbhsjhdfkjahsdauhsiduyaiwgrejaqhBMZBXVmnsbxvzxkcnhbkwjsdoirfhjwouieyuiqyh3iu4ghJLKAGSFDHJASBFAJHSGAKSJghfdiaJSHF8aysfoyu#ruh321iurgJAHBGSfkjAGSf iuG*& #gruy12q3gfruyQAGSDUYga87wRGq2876gAYsgf 876q32 gauygs8gfdqa8763grAYIusgfd87aG*&@#G@87gA*SfygAIJSHGfoilJABckjpaposjdpoapsodpoasidpoauisdpoi9ua09uwr-09uq'p9o2r/;LKM?LK.MNZ>XLKFnZ:OIXFHJp0A(*uwr08-213894-98214234342213413241241243-13242148(&^*&%&^%*&^^%*(&!&^@)**#$)_*!@&$*!&@$()&^!@$*)&!^@$*&^!@$*&^!@$&(%^!$&%!&^%!&@$%!(@$%!(@&%!&@^%&^!@%$&%!@&$(%@$!(&%!@$(&%!@&($%@$&(%!@$&(%@$&%@!$&%$(&%!@$(&^%@!$&^%@$&^!@%&@%!$&@%$&!@%$)*!@^!*@$_!(@$_+)($+@#)($+%(@_#(*%)@(#*&(_*@&#$(*&^!@_(*&!@+)#*!_@$*&)*&#%$^!$^!_$&!@+_(*$!_&@*%$!_@$^!+(@$^_@!*$&";
 
         async function fetchStatus() {
@@ -157,19 +152,17 @@
             const lastUpdated = document.getElementById('last-updated');
 
             try {
-                const res = await fetch('/api/stats', {
-                    headers: { 'x-api-key': API_KEY }
+                const res = await fetch(`${SERVER_URL}/api/stats`, {
+                    headers: { 'x-api-key': API_KEY },
+                    cache: 'no-cache'
                 });
 
-                if (res.status === 401) {
-                    throw new Error("Unauthorized");
-                }
+                if (res.status === 401) throw new Error("Unauthorized - Check API Key");
                 if (!res.ok) throw new Error("Server error");
 
                 const data = await res.json();
 
                 const isHealthy = data.status === "GREEN";
-
                 statusText.textContent = isHealthy ? "ONLINE" : data.status;
                 statusText.style.color = isHealthy ? "#10B981" : 
                                        (data.status === "YELLOW" ? "#EAB308" : 
@@ -190,18 +183,16 @@
                 statusText.textContent = "OFFLINE";
                 statusText.style.color = "#EF4444";
                 dot.style.background = "#EF4444";
-                systemText.textContent = "SERVER UNREACHABLE";
+                systemText.textContent = "CANNOT CONNECT";
                 systemText.style.color = "#EF4444";
-                
-                statsGrid.innerHTML = `<div class="stat" style="grid-column: span 2; color:#EF4444; text-align:center;">Could not connect to Dumpy server</div>`;
+                statsGrid.innerHTML = `<div class="stat" style="grid-column: span 2; color:#EF4444; text-align:center;">${err.message}</div>`;
             }
 
             lastUpdated.textContent = `Last checked • ${new Date().toLocaleTimeString()}`;
         }
 
-        // Auto refresh
         fetchStatus();
-        setInterval(fetchStatus, 7000);
+        setInterval(fetchStatus, 8000);
     </script>
 </body>
 </html>
