@@ -1,214 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dumpy Status</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
-        
-        :root {
-            --purple: #7C3AED;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Inter', system_ui, sans-serif;
-            background: linear-gradient(135deg, #F8FAFC 0%, #F1E8FF 100%);
-            color: #1E2937;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .background {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 30% 40%, rgba(124, 58, 237, 0.12) 0%, transparent 60%),
-                        radial-gradient(circle at 70% 70%, rgba(167, 139, 250, 0.1) 0%, transparent 60%);
-            animation: float 30s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(40px, 30px); }
-        }
-        
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 600;
-            color: var(--purple);
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .status-card {
-            background: white;
-            border-radius: 32px;
-            padding: 4rem 5rem;
-            box-shadow: 0 20px 50px rgba(124, 58, 237, 0.12);
-            border: 1px solid rgba(124, 58, 237, 0.15);
-            text-align: center;
-            max-width: 520px;
-            width: 100%;
-        }
-        
-        .live-dot {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            background: #22C55E;
-            border-radius: 50%;
-            animation: live-pulse 2s infinite;
-            margin-right: 12px;
-            vertical-align: middle;
-        }
-        
-        @keyframes live-pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.3); opacity: 0.6; }
-        }
-        
-        .status-text {
-            font-size: 4.5rem;
-            font-weight: 700;
-            margin: 1rem 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            transition: all 0.4s ease;
-        }
-        
-        .subtitle {
-            font-size: 1.35rem;
-            color: #64748B;
-            margin-bottom: 2rem;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 2rem;
-            text-align: left;
-            font-size: 1.05rem;
-        }
-        
-        .stat {
-            background: #F8FAFC;
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-        }
-        
-        footer {
-            margin-top: 4rem;
-            color: #94A3B8;
-            font-size: 0.95rem;
-        }
+<script>
+    const API_KEY = "V>0mKaa|-l:T9sc6Dn1%2MSRIQe5N76{UMd<]2KaCf$nQVh5YW/u&M*{D]}|bL0s?^U9LRCQv+##`lTO%s8<7yjb)@:ha'iGz9!@13241243124132418547809357091276590725091720957912590790825791872539872893567826358263586293875618726398472918304821038409821394872983764987216340972938487210384-9210348012-387492173957203582035802839273092734723-7-2937592735972395712935792753482765827645732495-7209358209394-02934-019-20491-2049-102934-=19824=0182345972543-973204582=1-3854=210735-19287598pwyqiuahsgslkdgfbhsjhdfkjahsdauhsiduyaiwgrejaqhBMZBXVmnsbxvzxkcnhbkwjsdoirfhjwouieyuiqyh3iu4ghJLKAGSFDHJASBFAJHSGAKSJghfdiaJSHF8aysfoyu#ruh321iurgJAHBGSfkjAGSf iuG*& #gruy12q3gfruyQAGSDUYga87wRGq2876gAYsgf 876q32 gauygs8gfdqa8763grAYIusgfd87aG*&@#G@87gA*SfygAIJSHGfoilJABckjpaposjdpoapsodpoasidpoauisdpoi9ua09uwr-09uq'p9o2r/;LKM?LK.MNZ>XLKFnZ:OIXFHJp0A(*uwr08-213894-98214234342213413241241243-13242148(&^*&%&^%*&^^%*(&!&^@)**#$)_*!@&$*!&@$()&^!@$*)&!^@$*&^!@$*&^!@$&(%^!$&%!&^%!&@$%!(@$%!(@&%!&@^%&^!@%$&%!@&$(%@$!(&%!@$(&%!@&($%@$&(%!@$&(%@$&%@!$&%$(&%!@$(&^%@!$&^%@$&^!@%&@%!$&@%$&!@%$)*!@^!*@$_!(@$_+)($+@#)($+%(@_#(*%)@(#*&(_*@&#$(*&^!@_(*&!@+)#*!_@$*&)*&#%$^!$^!_$&!@+_(*$!_&@*%$!_@$^!+(@$^_@!*$&";
 
-        .offline { color: #EF4444; }
-    </style>
-</head>
-<body>
-    <div class="background"></div>
-    
-    <div class="logo">Dumpy Status</div>
-    
-    <div class="status-card" id="status-card">
-        <div id="live-indicator">
-            <span class="live-dot" id="dot"></span>
-            <span style="font-size:1.1rem; font-weight:600;" id="system-text">ALL SYSTEMS</span>
-        </div>
-        
-        <div class="status-text" id="status-text">
-            CHECKING...
-        </div>
-        
-        <div class="subtitle">
-            Dumpy Server Status<br>
-            <span id="last-updated" style="font-size:1rem;"></span>
-        </div>
+    async function fetchStatus() {
+        const statusText = document.getElementById('status-text');
+        const lastUpdated = document.getElementById('last-updated');
 
-        <div class="stats-grid" id="stats-grid"></div>
-    </div>
-    
-    <footer>
-        © Dumpy • Always Watching 💜
-    </footer>
+        console.log("🔍 Fetching /api/stats...");
 
-    <script>
-        // ←←← PUT YOUR API KEY HERE ↓↓↓
-        const API_KEY = "V>0mKaa|-l:T9sc6Dn1%2MSRIQe5N76{UMd<]2KaCf$nQVh5YW/u&M*{D]}|bL0s?^U9LRCQv+##`lTO%s8<7yjb)@:ha'iGz9!@13241243124132418547809357091276590725091720957912590790825791872539872893567826358263586293875618726398472918304821038409821394872983764987216340972938487210384-9210348012-387492173957203582035802839273092734723-7-2937592735972395712935792753482765827645732495-7209358209394-02934-019-20491-2049-102934-=19824=0182345972543-973204582=1-3854=210735-19287598pwyqiuahsgslkdgfbhsjhdfkjahsdauhsiduyaiwgrejaqhBMZBXVmnsbxvzxkcnhbkwjsdoirfhjwouieyuiqyh3iu4ghJLKAGSFDHJASBFAJHSGAKSJghfdiaJSHF8aysfoyu#ruh321iurgJAHBGSfkjAGSf iuG*& #gruy12q3gfruyQAGSDUYga87wRGq2876gAYsgf 876q32 gauygs8gfdqa8763grAYIusgfd87aG*&@#G@87gA*SfygAIJSHGfoilJABckjpaposjdpoapsodpoasidpoauisdpoi9ua09uwr-09uq'p9o2r/;LKM?LK.MNZ>XLKFnZ:OIXFHJp0A(*uwr08-213894-98214234342213413241241243-13242148(&^*&%&^%*&^^%*(&!&^@)**#$)_*!@&$*!&@$()&^!@$*)&!^@$*&^!@$*&^!@$&(%^!$&%!&^%!&@$%!(@$%!(@&%!&@^%&^!@%$&%!@&$(%@$!(&%!@$(&%!@&($%@$&(%!@$&(%@$&%@!$&%$(&%!@$(&^%@!$&^%@$&^!@%&@%!$&@%$&!@%$)*!@^!*@$_!(@$_+)($+@#)($+%(@_#(*%)@(#*&(_*@&#$(*&^!@_(*&!@+)#*!_@$*&)*&#%$^!$^!_$&!@+_(*$!_&@*%$!_@$^!+(@$^_@!*$&";
+        try {
+            const res = await fetch('/api/stats', {
+                headers: { 'x-api-key': API_KEY }
+            });
 
-        async function fetchStatus() {
-            const statusText = document.getElementById('status-text');
-            const systemText = document.getElementById('system-text');
-            const dot = document.getElementById('dot');
-            const statsGrid = document.getElementById('stats-grid');
-            const lastUpdated = document.getElementById('last-updated');
+            console.log("📡 Response status:", res.status);
 
-            try {
-                const res = await fetch('/api/stats', {
-                    headers: {
-                        'x-api-key': API_KEY
-                    }
-                });
-
-                if (res.status === 401) {
-                    throw new Error("Invalid API Key");
-                }
-                if (!res.ok) throw new Error('Server error');
-
-                const data = await res.json();
-
-                // Main status
-                const isHealthy = data.status === 'GREEN';
-                statusText.textContent = isHealthy ? 'ONLINE' : data.status;
-                statusText.style.color = isHealthy ? '#10B981' : 
-                                       data.status === 'YELLOW' ? '#EAB308' :
-                                       data.status === 'ORANGE' ? '#F97316' : '#EF4444';
-
-                dot.style.background = statusText.style.color;
-                systemText.textContent = isHealthy ? 'ALL SYSTEMS' : 'SYSTEMS UNDER LOAD';
-                systemText.style.color = statusText.style.color;
-
-                // Stats
-                statsGrid.innerHTML = `
-                    <div class="stat"><strong>Online Now</strong><br>${data.online}</div>
-                    <div class="stat"><strong>Requests/min</strong><br>${data.reqPerMin}</div>
-                    <div class="stat"><strong>CPU Load</strong><br>${data.loadPct}%</div>
-                    <div class="stat"><strong>Memory</strong><br>${data.memMB}/${data.totalMemMB} MB (${data.memPct}%)</div>
-                `;
-
-            } catch (err) {
-                statusText.textContent = 'OFFLINE';
-                statusText.style.color = '#EF4444';
-                dot.style.background = '#EF4444';
-                systemText.textContent = 'SERVER UNREACHABLE';
-                systemText.style.color = '#EF4444';
-                
-                statsGrid.innerHTML = `<div class="stat" style="grid-column: span 2; color:#EF4444; text-align:center;">
-                    ${err.message.includes('API Key') ? 'Invalid API Key' : 'Could not connect to server'}
-                </div>`;
+            if (res.status === 401) {
+                statusText.textContent = "UNAUTHORIZED";
+                statusText.style.color = "#EF4444";
+                console.error("❌ API Key rejected by server");
+                return;
             }
 
-            lastUpdated.textContent = `Last checked • ${new Date().toLocaleTimeString()}`;
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            const data = await res.json();
+            console.log("✅ Stats received:", data);
+
+            // Update UI
+            const isHealthy = data.status === 'GREEN';
+            statusText.textContent = isHealthy ? 'ONLINE' : data.status;
+            statusText.style.color = isHealthy ? '#10B981' : '#F97316';
+
+            document.getElementById('dot').style.background = statusText.style.color;
+            document.getElementById('system-text').textContent = isHealthy ? 'ALL SYSTEMS' : 'SYSTEMS UNDER LOAD';
+
+        } catch (err) {
+            console.error("❌ Fetch failed:", err);
+            statusText.textContent = 'OFFLINE';
+            statusText.style.color = '#EF4444';
         }
 
-        // Start polling
-        fetchStatus();
-        setInterval(fetchStatus, 7000);
-    </script>
-</body>
-</html>
+        lastUpdated.textContent = `Last checked • ${new Date().toLocaleTimeString()}`;
+    }
+
+    fetchStatus();
+    setInterval(fetchStatus, 5000);
+</script>
