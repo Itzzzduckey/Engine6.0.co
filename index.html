@@ -25,23 +25,18 @@
         }
         
         .background {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; z-index: -1;
             background: radial-gradient(circle at 30% 40%, rgba(124, 58, 237, 0.12) 0%, transparent 60%),
                         radial-gradient(circle at 70% 70%, rgba(167, 139, 250, 0.1) 0%, transparent 60%);
             animation: float 30s ease-in-out infinite;
         }
         
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(40px, 30px); }
-        }
+        @keyframes float { 0%,100% { transform: translate(0,0); } 50% { transform: translate(40px,30px); } }
         
         .logo {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.4rem;
+            font-size: 2.5rem;
             font-weight: 600;
             color: var(--purple);
             margin-bottom: 2rem;
@@ -60,8 +55,7 @@
         
         .live-dot {
             display: inline-block;
-            width: 14px;
-            height: 14px;
+            width: 14px; height: 14px;
             background: #22C55E;
             border-radius: 50%;
             animation: live-pulse 2s infinite;
@@ -69,10 +63,7 @@
             vertical-align: middle;
         }
         
-        @keyframes live-pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.3); opacity: 0.6; }
-        }
+        @keyframes live-pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.6; } }
         
         .status-text {
             font-size: 4.8rem;
@@ -82,14 +73,10 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
-            transition: all 0.4s ease;
+            transition: color 0.4s;
         }
         
-        .subtitle {
-            font-size: 1.35rem;
-            color: #64748B;
-            margin-bottom: 2rem;
-        }
+        .subtitle { font-size: 1.35rem; color: #64748B; margin-bottom: 2rem; }
         
         .stats-grid {
             display: grid;
@@ -97,7 +84,6 @@
             gap: 1rem;
             margin-top: 2rem;
             text-align: left;
-            font-size: 1.05rem;
         }
         
         .stat {
@@ -106,11 +92,7 @@
             border-radius: 14px;
         }
         
-        footer {
-            margin-top: 4rem;
-            color: #94A3B8;
-            font-size: 0.95rem;
-        }
+        footer { margin-top: 4rem; color: #94A3B8; font-size: 0.95rem; }
     </style>
 </head>
 <body>
@@ -118,7 +100,7 @@
     
     <div class="logo">Dumpy Status</div>
     
-    <div class="status-card" id="status-card">
+    <div class="status-card">
         <div>
             <span class="live-dot" id="dot"></span>
             <span style="font-size:1.1rem; font-weight:600;" id="system-text">ALL SYSTEMS</span>
@@ -134,14 +116,10 @@
         <div class="stats-grid" id="stats-grid"></div>
     </div>
     
-    <footer>
-        © Dumpy • Always Watching 💜
-    </footer>
+    <footer>© Dumpy • Always Watching 💜</footer>
 
     <script>
-        // ================== CHANGE THIS TO YOUR SERVER URL ==================
-        const SERVER_URL = "http://localhost:3000";   // ←←← EDIT THIS LINE
-        
+        const SERVER_URL = "https://dumpyonline.com";
         const API_KEY = "V>0mKaa|-l:T9sc6Dn1%2MSRIQe5N76{UMd<]2KaCf$nQVh5YW/u&M*{D]}|bL0s?^U9LRCQv+##`lTO%s8<7yjb)@:ha'iGz9!@13241243124132418547809357091276590725091720957912590790825791872539872893567826358263586293875618726398472918304821038409821394872983764987216340972938487210384-9210348012-387492173957203582035802839273092734723-7-2937592735972395712935792753482765827645732495-7209358209394-02934-019-20491-2049-102934-=19824=0182345972543-973204582=1-3854=210735-19287598pwyqiuahsgslkdgfbhsjhdfkjahsdauhsiduyaiwgrejaqhBMZBXVmnsbxvzxkcnhbkwjsdoirfhjwouieyuiqyh3iu4ghJLKAGSFDHJASBFAJHSGAKSJghfdiaJSHF8aysfoyu#ruh321iurgJAHBGSfkjAGSf iuG*& #gruy12q3gfruyQAGSDUYga87wRGq2876gAYsgf 876q32 gauygs8gfdqa8763grAYIusgfd87aG*&@#G@87gA*SfygAIJSHGfoilJABckjpaposjdpoapsodpoasidpoauisdpoi9ua09uwr-09uq'p9o2r/;LKM?LK.MNZ>XLKFnZ:OIXFHJp0A(*uwr08-213894-98214234342213413241241243-13242148(&^*&%&^%*&^^%*(&!&^@)**#$)_*!@&$*!&@$()&^!@$*)&!^@$*&^!@$*&^!@$&(%^!$&%!&^%!&@$%!(@$%!(@&%!&@^%&^!@%$&%!@&$(%@$!(&%!@$(&%!@&($%@$&(%!@$&(%@$&%@!$&%$(&%!@$(&^%@!$&^%@$&^!@%&@%!$&@%$&!@%$)*!@^!*@$_!(@$_+)($+@#)($+%(@_#(*%)@(#*&(_*@&#$(*&^!@_(*&!@+)#*!_@$*&)*&#%$^!$^!_$&!@+_(*$!_&@*%$!_@$^!+(@$^_@!*$&";
 
         async function fetchStatus() {
@@ -157,19 +135,18 @@
                     cache: 'no-cache'
                 });
 
-                if (res.status === 401) throw new Error("Unauthorized - Check API Key");
-                if (!res.ok) throw new Error("Server error");
+                if (res.status === 401) throw new Error("Invalid API Key");
+                if (!res.ok) throw new Error("Server Error");
 
                 const data = await res.json();
 
-                const isHealthy = data.status === "GREEN";
-                statusText.textContent = isHealthy ? "ONLINE" : data.status;
-                statusText.style.color = isHealthy ? "#10B981" : 
-                                       (data.status === "YELLOW" ? "#EAB308" : 
-                                       (data.status === "ORANGE" ? "#F97316" : "#EF4444"));
-
+                const healthy = data.status === "GREEN";
+                statusText.textContent = healthy ? "ONLINE" : data.status;
+                statusText.style.color = healthy ? "#10B981" : 
+                                       (data.status === "YELLOW" ? "#EAB308" : "#EF4444");
+                
                 dot.style.background = statusText.style.color;
-                systemText.textContent = isHealthy ? "ALL SYSTEMS" : "SYSTEMS UNDER LOAD";
+                systemText.textContent = healthy ? "ALL SYSTEMS" : "UNDER LOAD";
                 systemText.style.color = statusText.style.color;
 
                 statsGrid.innerHTML = `
@@ -179,20 +156,19 @@
                     <div class="stat"><strong>Memory</strong><br>${data.memMB}/${data.totalMemMB} MB</div>
                 `;
 
-            } catch (err) {
+            } catch (e) {
                 statusText.textContent = "OFFLINE";
                 statusText.style.color = "#EF4444";
                 dot.style.background = "#EF4444";
                 systemText.textContent = "CANNOT CONNECT";
                 systemText.style.color = "#EF4444";
-                statsGrid.innerHTML = `<div class="stat" style="grid-column: span 2; color:#EF4444; text-align:center;">${err.message}</div>`;
             }
 
             lastUpdated.textContent = `Last checked • ${new Date().toLocaleTimeString()}`;
         }
 
         fetchStatus();
-        setInterval(fetchStatus, 8000);
+        setInterval(fetchStatus, 7000);
     </script>
 </body>
 </html>
