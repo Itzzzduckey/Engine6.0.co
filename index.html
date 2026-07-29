@@ -6,17 +6,17 @@
     <title>Dumpy Status</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
-        
+       
         :root {
             --purple: #7C3AED;
         }
-        
+       
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+       
         body {
             font-family: 'Inter', system_ui, sans-serif;
             background: linear-gradient(135deg, #F8FAFC 0%, #F1E8FF 100%);
-            color: #1E2937;
+            color: #1E293B;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -25,7 +25,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+       
         .background {
             position: fixed;
             top: 0; left: 0;
@@ -35,12 +35,12 @@
                         radial-gradient(circle at 70% 70%, rgba(167, 139, 250, 0.1) 0%, transparent 60%);
             animation: float 30s ease-in-out infinite;
         }
-        
+       
         @keyframes float {
             0%, 100% { transform: translate(0, 0); }
             50% { transform: translate(40px, 30px); }
         }
-        
+       
         .logo {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2.2rem;
@@ -51,7 +51,7 @@
             align-items: center;
             gap: 10px;
         }
-        
+       
         .status-card {
             background: white;
             border-radius: 32px;
@@ -62,40 +62,41 @@
             max-width: 480px;
             width: 100%;
         }
-        
-        .live-dot {
+       
+        .maintenance-dot {
             display: inline-block;
             width: 14px;
             height: 14px;
-            background: #22C55E;
+            background: #F59E0B;
             border-radius: 50%;
-            animation: live-pulse 2s infinite;
+            animation: maintenance-pulse 2s infinite;
             margin-right: 12px;
             vertical-align: middle;
         }
-        
-        @keyframes live-pulse {
+       
+        @keyframes maintenance-pulse {
             0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.3); opacity: 0.6; }
+            50% { transform: scale(1.3); opacity: 0.5; }
         }
-        
+       
         .status-text {
             font-size: 4.5rem;
             font-weight: 700;
-            color: #10B981;
+            color: #F59E0B;
             margin: 1rem 0;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 15px;
         }
-        
+       
         .subtitle {
             font-size: 1.35rem;
             color: #64748B;
             margin-bottom: 2rem;
+            line-height: 1.6;
         }
-        
+       
         footer {
             margin-top: 4rem;
             color: #94A3B8;
@@ -105,47 +106,36 @@
 </head>
 <body>
     <div class="background"></div>
-    
+   
     <div class="logo">Dumpy Status</div>
-    
+   
     <div class="status-card">
         <div>
-            <span class="live-dot"></span>
-            <span style="font-size:1.1rem; font-weight:600; color:#10B981;">ALL SYSTEMS</span>
+            <span class="maintenance-dot"></span>
+            <span style="font-size:1.1rem; font-weight:600; color:#F59E0B;">ALL SYSTEMS</span>
         </div>
-        
+       
         <div class="status-text">
-            ONLINE
+            UNDER MAINTENANCE
         </div>
-        
+       
         <div class="subtitle">
-            Dumpy is running smoothly<br>
+            Dumpy is currently undergoing maintenance<br>
             <span id="last-updated" style="font-size:1rem;"></span>
         </div>
     </div>
-    
+   
     <footer>
-        © Dumpy • Always Watching 💜
+        © Dumpy • We'll be back soon 💜
     </footer>
-
     <script>
-        // Simple live clock
         function updateTime() {
             const el = document.getElementById('last-updated');
             el.textContent = `Last checked • ${new Date().toLocaleTimeString()}`;
         }
-        
+       
         updateTime();
         setInterval(updateTime, 10000);
-        
-        // Optional: Try to ping backend (fails silently)
-        async function checkBackend() {
-            try {
-                await fetch('/api/stats', { method: 'HEAD' });
-            } catch(e) {}
-        }
-        
-        checkBackend();
     </script>
 </body>
 </html>
