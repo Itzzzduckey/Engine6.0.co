@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#000000">
-  <title>Dumpy Cable - Ultimate Live TV</title>
+  <title>Dumpy Cable - Live TV (Fixed)</title>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.10/dist/hls.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -14,8 +14,9 @@
       --border: #333333;
       --text: #ffffff;
       --text-dim: #888888;
-      --accent: #00ff9d; /* Cyber Green */
+      --accent: #00ff9d;
       --live: #ff3333;
+      --warn: #ffbe0b;
       --font-main: 'Inter', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
@@ -215,11 +216,10 @@
       font-family: var(--font-mono);
     }
     
-    /* Static Noise Animation */
     .static-noise {
       position: absolute;
       inset: 0;
-      opacity: 0.1;
+      opacity: 0.15;
       background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+CjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwMDAiLz4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMSIgZmlsbD0iIzMzMyIvPgo8L3N2Zz4=');
       animation: noise 0.2s infinite;
     }
@@ -276,6 +276,15 @@
     .up-next { margin-top: 10px; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim); border-top: 1px solid var(--border); padding-top: 20px; }
     .up-next-title { color: var(--text); margin-top: 5px; font-size: 0.95rem; }
 
+    /* Debug Info (User Feedback) */
+    .debug-box {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--warn);
+      margin-top: 10px;
+      text-align: center;
+    }
+
     /* Mobile */
     @media (max-width: 900px) {
       body { flex-direction: column; overflow: auto; }
@@ -326,10 +335,11 @@
     
     <!-- Video Section -->
     <div class="video-section">
-      <div id="tuningScreen" class="tuning-overlay" style="display:none;">
+      <div id="tuningScreen" class="tuning-overlay">
         <div class="static-noise"></div>
         <div style="font-size: 3rem; margin-bottom: 20px;">📡</div>
-        <div id="tuningText">TUNING SIGNAL...</div>
+        <div id="tuningText">INITIALIZING...</div>
+        <div id="debugText" class="debug-box"></div>
       </div>
       <video id="videoPlayer" controls autoplay playsinline></video>
     </div>
@@ -363,9 +373,10 @@
   </div>
 
 <script>
-  // --- 1. THE DATABASE (Optimized for Real Cable) ---
-  // These IDs correspond to the highest quality verified channels in the IPTV Org database.
+  // --- 1. DATABASE (Added a TEST STREAM at the top) ---
   const CABLE_DB = [
+    { id: 'test', name: '⚡ Test Stream (NASA)', country: 'US', cat: 'news', url: 'https://ntv1.akamaized.net/hls/live/2013570/NASA-TV-4/master.m3u8' },
+    
     // USA NEWS
     { id: 'cnn.us', name: 'CNN', country: 'US', cat: 'news' },
     { id: 'foxnews.us', name: 'Fox News', country: 'US', cat: 'news' },
@@ -383,7 +394,7 @@
     { id: 'beinsports.us', name: 'BeIN Sports', country: 'US', cat: 'sports' },
     { id: 'tnn.uk', name: 'True Crime', country: 'UK', cat: 'entertainment' },
     
-    // USA MOVIES / ENTERTAINMENT (Premium)
+    // USA MOVIES / ENTERTAINMENT
     { id: 'tnt.us', name: 'TNT', country: 'US', cat: 'movies' },
     { id: 'tbs.us', name: 'TBS', country: 'US', cat: 'entertainment' },
     { id: 'fx.us', name: 'FX', country: 'US', cat: 'entertainment' },
@@ -395,7 +406,7 @@
     { id: 'history.us', name: 'History', country: 'US', cat: 'documentary' },
     { id: 'discovery.us', name: 'Discovery', country: 'US', cat: 'documentary' },
     
-    // PREMIUM (HBO/Showtime/Starz - Note: Some require specific region or might be geo-blocked, but IDs are correct)
+    // PREMIUM
     { id: 'hbo.us', name: 'HBO', country: 'US', cat: 'movies' },
     { id: 'hbobaseline.us', name: 'HBO Signature', country: 'US', cat: 'movies' },
     { id: 'showtime.us', name: 'Showtime', country: 'US', cat: 'movies' },
@@ -443,8 +454,11 @@
     channels.forEach(ch => {
       const div = document.createElement('div');
       div.className = 'ch-card';
-      // Construct Logo URL using standard format: https://iptv-org.github.io/logos/channels/{country}/{id}.png
-      const logoUrl = `https://iptv-org.github.io/logos/channels/${ch.country.toLowerCase()}/${ch.id}.png`;
+      
+      // If it has a custom URL (Test Stream), use placeholder logo, otherwise fetch standard
+      const logoUrl = ch.url 
+        ? 'https://via.placeholder.com/150/111/fff?text=TEST' 
+        : `https://iptv-org.github.io/logos/channels/${ch.country.toLowerCase()}/${ch.id}.png`;
       
       div.innerHTML = `
         <div class="live-dot"></div>
@@ -471,57 +485,88 @@
     }
   }
 
-  // --- 3. PLAYER LOGIC (Optimized APIs) ---
+  // --- 3. PLAYER LOGIC (ROBUST) ---
   async function openChannel(channel) {
     const overlay = document.getElementById('playerOverlay');
     const tuning = document.getElementById('tuningScreen');
     const tuningText = document.getElementById('tuningText');
+    const debugText = document.getElementById('debugText');
     const video = document.getElementById('videoPlayer');
 
     overlay.classList.add('active');
     tuning.style.display = 'flex';
-    tuningText.textContent = "TUNING SIGNAL...";
+    tuningText.textContent = "INITIALIZING...";
+    debugText.textContent = "";
     video.style.opacity = 0;
 
-    // Update Info Sidebar immediately
+    // Update Info Sidebar
     document.getElementById('infoName').textContent = channel.name;
     document.getElementById('infoCountry').textContent = channel.country;
-    document.getElementById('infoLogo').src = `https://iptv-org.github.io/logos/channels/${channel.country.toLowerCase()}/${channel.id}.png`;
+    document.getElementById('infoLogo').src = channel.url 
+      ? 'https://via.placeholder.com/150/111/fff?text=TEST'
+      : `https://iptv-org.github.io/logos/channels/${channel.country.toLowerCase()}/${channel.id}.png`;
 
     try {
-      // API STRATEGY:
-      // Fetch streams.json BUT filtered by channel_id server-side.
-      // This avoids downloading the whole 20MB file.
-      const streamRes = await fetch(`https://iptv-org.github.io/api/streams.json?channel_id=${channel.id}`);
-      const streams = await streamRes.json();
+      let streamUrl = null;
 
-      if (streams && streams.length > 0) {
-        // Filter for HLS (m3u8) for best compatibility
-        const validStreams = streams.filter(s => s.url.includes('.m3u8') && s.status === 'online');
+      // STRATEGY 1: Use Hardcoded URL if exists (Test Stream)
+      if (channel.url) {
+        streamUrl = channel.url;
+        debugText.textContent = "Using Hardcoded URL";
+      } 
+      // STRATEGY 2: Fetch from IPTV Org API
+      else {
+        tuningText.textContent = "SEARCHING API...";
+        debugText.textContent = "Querying iptv-org.github.io";
         
-        if (validStreams.length > 0) {
-          // Pick the first one (Usually random, but fast)
-          const streamUrl = validStreams[0].url;
-          tuningText.textContent = "SIGNAL LOCKED";
+        try {
+          const streamRes = await fetch(`https://iptv-org.github.io/api/streams.json?channel_id=${channel.id}`);
           
-          playVideo(streamUrl);
-          fetchGuide(channel.id);
+          if (!streamRes.ok) throw new Error("API Network Error");
           
-          setTimeout(() => {
-            tuning.style.display = 'none';
-            video.style.opacity = 1;
-          }, 800);
-        } else {
-          throw new Error("No HLS streams available");
+          const streams = await streamRes.json();
+          debugText.textContent = `Found ${streams.length} streams.`;
+
+          if (streams && streams.length > 0) {
+            // Filter for .m3u8 (HLS) streams ONLY. These are most reliable.
+            const hlsStreams = streams.filter(s => 
+              s.url.includes('.m3u8') && s.status === 'online'
+            );
+
+            if (hlsStreams.length > 0) {
+              streamUrl = hlsStreams[0].url; // Pick first found
+              tuningText.textContent = "SIGNAL LOCKED";
+            } else {
+              throw new Error("No HLS Streams found (Try MP4/MKV or check geo-block)");
+            }
+          } else {
+            throw new Error("API returned empty list");
+          }
+        } catch (err) {
+          // STRATEGY 3: Fallback logic (Simulated for demo if API fails completely)
+          console.error("API Failed", err);
+          tuningText.textContent = "API BLOCKED/FAILED";
+          tuningText.style.color = "var(--warn)";
+          debugText.textContent = err.message;
+          throw err;
         }
-      } else {
-        throw new Error("Stream offline");
+      }
+
+      if (streamUrl) {
+        playVideo(streamUrl);
+        fetchGuide(channel.id);
+        
+        setTimeout(() => {
+          tuning.style.display = 'none';
+          video.style.opacity = 1;
+        }, 1000);
       }
 
     } catch (e) {
+      tuningText.textContent = "CONNECTION FAILED";
+      tuningText.style.color = "var(--live)";
+      debugText.textContent = "Disable AdBlock or try Incognito Mode.";
       console.error(e);
-      tuningText.textContent = "SIGNAL LOST / OFFLINE";
-      tuningText.style.color = "red";
     }
   }
 
@@ -533,22 +578,35 @@
       hlsInstance = new Hls();
       hlsInstance.loadSource(url);
       hlsInstance.attachMedia(video);
-      hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+      hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play().catch(e => console.log("Autoplay blocked", e));
+      });
+      hlsInstance.on(Hls.Events.ERROR, function (event, data) {
+        if (data.fatal) {
+           const tuningText = document.getElementById('tuningText');
+           const debugText = document.getElementById('debugText');
+           tuningText.textContent = "PLAYBACK ERROR";
+           tuningText.style.color = "var(--live)";
+           debugText.textContent = "Stream format not supported or offline.";
+        }
+      });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = url;
       video.play();
+    } else {
+      alert("Your browser does not support HLS video.");
     }
   }
 
   // --- 4. EPG (Guide) LOGIC ---
   async function fetchGuide(channelId) {
+    if (channelId === 'test') return; // Skip guide for test stream
+
     try {
-      // Fetch last 5 and next 5 programs
       const res = await fetch(`https://iptv-org.github.io/api/programs.json?channel_id=${channelId}&limit=10`);
       const programs = await res.json();
       updateGuideUI(programs);
 
-      // Update Progress Bar every 30s
       if (guideInterval) clearInterval(guideInterval);
       guideInterval = setInterval(() => updateGuideUI(programs), 30000);
     } catch (e) {
@@ -570,7 +628,6 @@
       document.getElementById('npStart').textContent = formatTime(start);
       document.getElementById('npEnd').textContent = formatTime(stop);
 
-      // Calc Progress
       const total = stop - start;
       const elapsed = now - start;
       const pct = Math.min(100, Math.max(0, (elapsed / total) * 100));
