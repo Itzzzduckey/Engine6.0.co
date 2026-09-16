@@ -109,55 +109,57 @@
         </div>
     </div>
 
-    <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
-    <script>
-        // ===== PLAYLIST SOURCES =====
-        const PLAYLISTS = [
-            { name: "Pluto TV", url: "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plutotv_us.m3u" },
-            { name: "Samsung TV Plus", url: "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/samsungtvplus_us.m3u" },
-            { name: "Roku Channel", url: "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/roku_all.m3u" }
-        ];
+<script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
+<script>
+    let player;
+    let channels = [];
+    let currentChannel = null;
+    let categories = new Set(["all"]);
 
-        let player;
-        let channels = [];
-        let currentChannel = null;
-        let categories = new Set(["all"]);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            player = videojs('videoPlayer', {
-                html5: { vhs: { overrideNative: true } },
-                liveui: true,
-                controls: true
-            });
-            updateClock();
-            setInterval(updateClock, 1000);
+    document.addEventListener('DOMContentLoaded', () => {
+        player = videojs('videoPlayer', {
+            html5: { vhs: { overrideNative: true } },
+            liveui: true
         });
+        updateClock();
+        setInterval(updateClock, 1000);
+    });
 
-        async function loadAllPlaylists() {
+    // ===== NEW: File picker method =====
+    function loadAllPlaylists() {
+        // Create a hidden file input
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.m3u,.m3u8';
+        input.multiple = true;
+
+        input.onchange = async (e) => {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
+
             const listEl = document.getElementById('channelList');
-            listEl.innerHTML = `<div class="status-msg"><div class="loading-spinner"></div>Loading Pluto + Samsung + Roku...</div>`;
+            listEl.innerHTML = `<div class="status-msg"><div class="loading-spinner"></div>Reading ${files.length} playlist(s)...</div>`;
 
             channels = [];
             categories = new Set(["all"]);
-            let totalLoaded = 0;
 
-            for (const pl of PLAYLISTS) {
+            for (const file of files) {
                 try {
-                    // Using a public CORS proxy so the browser can fetch the raw GitHub files
-                    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(pl.url)}`;
-                    const res = await fetch(proxyUrl);
-                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                    const text = await res.text();
-                    const parsed = parseM3U(text, pl.name);
+                    const text = await file.text();
+                    const sourceName = file.name
+                        .replace(/\.m3u8?$/i, '')
+                        .replace(/_/g, ' ')
+                        .replace(/\b\w/g, c => c.toUpperCase());
+
+                    const parsed = parseM3U(text, sourceName);
                     channels = channels.concat(parsed);
-                    totalLoaded += parsed.length;
-                    console.log(`Loaded ${parsed.length} from ${pl.name}`);
+                    console.log(`✓ Loaded ${parsed.length} channels from ${file.name}`);
                 } catch (err) {
-                    console.error(`Failed ${pl.name}:`, err);
+                    console.error(`Failed ${file.name}:`, err);
                 }
             }
 
-            // Remove duplicates by URL
+            // Remove duplicates
             const seen = new Set();
             channels = channels.filter(ch => {
                 if (seen.has(ch.url)) return false;
@@ -165,130 +167,130 @@
                 return true;
             });
 
-            // Number them
             channels.forEach((ch, i) => ch.num = i + 1);
 
             document.getElementById('channelCount').textContent = `(${channels.length})`;
             renderCategoryTabs();
             renderChannelList();
+
             document.getElementById('epgInfo').innerHTML = `
-                <div style="text-align:center;padding:30px;color:#aaa;">
-                    <div style="font-size:18px;margin-bottom:10px;">✅ Loaded ${channels.length} free channels</div>
-                    <div>Sources: Pluto TV • Samsung TV Plus • Roku Channel</div>
-                    <div style="margin-top:15px;font-size:13px;color:#666;">Click any channel on the left to play</div>
+                <div style="text-align:center;padding:40px;color:#aaa;">
+                    <div style="font-size:20px;margin-bottom:12px;">✅ ${channels.length} free channels loaded</div>
+                    <div>From the files you selected</div>
+                    <div style="margin-top:18px;font-size:13px;color:#666;">Click any channel on the left to play</div>
                 </div>`;
 
             if (channels.length > 0) {
-                // Auto-select first channel
                 selectChannel(channels[0].num);
             } else {
-                listEl.innerHTML = `<div class="error-msg">Could not load any playlists.<br>Check console or try again later.</div>`;
+                listEl.innerHTML = `<div class="error-msg">No valid channels found in the selected files.</div>`;
             }
-        }
+        };
 
-        function parseM3U(text, source) {
-            const lines = text.split(/\r?\n/);
-            const result = [];
-            let current = null;
+        input.click(); // open the file dialog
+    }
 
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (line.startsWith('#EXTINF:')) {
-                    // Example: #EXTINF:-1 tvg-id="..." tvg-logo="..." group-title="News",Channel Name
-                    const nameMatch = line.match(/,(.+)$/);
-                    const logoMatch = line.match(/tvg-logo="([^"]+)"/i);
-                    const groupMatch = line.match(/group-title="([^"]+)"/i);
+    function parseM3U(text, source) {
+        const lines = text.split(/\r?\n/);
+        const result = [];
+        let current = null;
 
-                    current = {
-                        name: nameMatch ? nameMatch[1].trim() : "Unknown",
-                        logo: logoMatch ? logoMatch[1] : "",
-                        category: groupMatch ? groupMatch[1] : source,
-                        source: source,
-                        url: null
-                    };
-                } else if (line && !line.startsWith('#') && current) {
-                    current.url = line;
-                    if (current.url.includes('.m3u8') || current.url.includes('http')) {
-                        result.push(current);
-                        categories.add(current.category);
-                    }
-                    current = null;
+        for (const line of lines) {
+            const trimmed = line.trim();
+            if (trimmed.startsWith('#EXTINF:')) {
+                const nameMatch = trimmed.match(/,(.+)$/);
+                const logoMatch = trimmed.match(/tvg-logo="([^"]+)"/i);
+                const groupMatch = trimmed.match(/group-title="([^"]+)"/i);
+
+                current = {
+                    name: nameMatch ? nameMatch[1].trim() : "Unknown",
+                    logo: logoMatch ? logoMatch[1] : "",
+                    category: groupMatch ? groupMatch[1] : source,
+                    source: source,
+                    url: null
+                };
+            } else if (trimmed && !trimmed.startsWith('#') && current) {
+                current.url = trimmed;
+                if (current.url.startsWith('http')) {
+                    result.push(current);
+                    categories.add(current.category);
                 }
+                current = null;
             }
-            return result;
+        }
+        return result;
+    }
+
+    function renderCategoryTabs() {
+        const tabs = ['<div class="tab active" data-category="all" onclick="filterChannels(\'all\')">All</div>'];
+        [...categories].filter(c => c !== "all").sort().forEach(cat => {
+            tabs.push(`<div class="tab" data-category="${cat}" onclick="filterChannels('${cat.replace(/'/g, "\\'")}')">${cat}</div>`);
+        });
+        document.getElementById('categoryTabs').innerHTML = tabs.join('');
+    }
+
+    function renderChannelList(filter = 'all') {
+        const list = document.getElementById('channelList');
+        const filtered = filter === 'all' ? channels : channels.filter(c => c.category === filter);
+
+        if (filtered.length === 0) {
+            list.innerHTML = `<div class="status-msg">No channels in this category</div>`;
+            return;
         }
 
-        function renderCategoryTabs() {
-            const tabs = ['<div class="tab active" data-category="all" onclick="filterChannels(\'all\')">All</div>'];
-            [...categories].filter(c => c !== "all").sort().forEach(cat => {
-                tabs.push(`<div class="tab" data-category="${cat}" onclick="filterChannels('${cat.replace(/'/g,"\\'")}')">${cat}</div>`);
-            });
-            document.getElementById('categoryTabs').innerHTML = tabs.join('');
-        }
-
-        function renderChannelList(filter = 'all') {
-            const list = document.getElementById('channelList');
-            const filtered = filter === 'all' ? channels : channels.filter(c => c.category === filter);
-
-            if (filtered.length === 0) {
-                list.innerHTML = `<div class="status-msg">No channels in this category</div>`;
-                return;
-            }
-
-            list.innerHTML = filtered.map(ch => `
-                <div class="channel-item ${currentChannel && ch.num === currentChannel.num ? 'active' : ''}"
-                     onclick="selectChannel(${ch.num})" id="channel-${ch.num}">
-                    <div class="channel-number">${ch.num}</div>
-                    <div class="channel-logo">
-                        ${ch.logo ? `<img src="${ch.logo}" alt="" onerror="this.style.display='none'">` : ch.name.substring(0,2)}
-                    </div>
-                    <div class="channel-info">
-                        <div class="channel-name">${ch.name}</div>
-                        <div class="channel-now">${ch.source} • ${ch.category}</div>
-                    </div>
-                    <div class="channel-status"></div>
+        list.innerHTML = filtered.map(ch => `
+            <div class="channel-item ${currentChannel && ch.num === currentChannel.num ? 'active' : ''}"
+                 onclick="selectChannel(${ch.num})" id="channel-${ch.num}">
+                <div class="channel-number">${ch.num}</div>
+                <div class="channel-logo">
+                    ${ch.logo ? `<img src="${ch.logo}" alt="" onerror="this.style.display='none'">` : ch.name.substring(0,2)}
                 </div>
-            `).join('');
+                <div class="channel-info">
+                    <div class="channel-name">${ch.name}</div>
+                    <div class="channel-now">${ch.source} • ${ch.category}</div>
+                </div>
+                <div class="channel-status"></div>
+            </div>
+        `).join('');
+    }
+
+    function selectChannel(num) {
+        const channel = channels.find(c => c.num === num);
+        if (!channel) return;
+
+        currentChannel = channel;
+        document.getElementById('channelBadge').textContent = `CH ${channel.num} • ${channel.name}`;
+        document.getElementById('nowPlayingTitle').textContent = channel.name;
+        document.getElementById('nowPlayingMeta').innerHTML = `
+            <span>📺 ${channel.category}</span>
+            <span>📡 ${channel.source}</span>
+            <span>🔴 LIVE</span>
+        `;
+
+        document.querySelectorAll('.channel-item').forEach(el => el.classList.remove('active'));
+        const el = document.getElementById(`channel-${num}`);
+        if (el) el.classList.add('active');
+
+        try {
+            player.src({ src: channel.url, type: 'application/x-mpegURL' });
+            player.play().catch(e => console.warn("Play error:", e));
+        } catch (e) {
+            console.error(e);
         }
+    }
 
-        function selectChannel(num) {
-            const channel = channels.find(c => c.num === num);
-            if (!channel) return;
+    function filterChannels(category) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        const tab = document.querySelector(`[data-category="${category}"]`);
+        if (tab) tab.classList.add('active');
+        renderChannelList(category);
+    }
 
-            currentChannel = channel;
-            document.getElementById('channelBadge').textContent = `CH ${channel.num} • ${channel.name}`;
-            document.getElementById('nowPlayingTitle').textContent = channel.name;
-            document.getElementById('nowPlayingMeta').innerHTML = `
-                <span>📺 ${channel.category}</span>
-                <span>📡 ${channel.source}</span>
-                <span>🔴 LIVE</span>
-            `;
-
-            document.querySelectorAll('.channel-item').forEach(el => el.classList.remove('active'));
-            const el = document.getElementById(`channel-${num}`);
-            if (el) el.classList.add('active');
-
-            // Play the stream
-            try {
-                player.src({ src: channel.url, type: 'application/x-mpegURL' });
-                player.play().catch(e => console.warn("Play error:", e));
-            } catch (e) {
-                console.error("Player error:", e);
-            }
-        }
-
-        function filterChannels(category) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            const tab = document.querySelector(`[data-category="${category}"]`);
-            if (tab) tab.classList.add('active');
-            renderChannelList(category);
-        }
-
-        function updateClock() {
-            document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', {
-                hour: 'numeric', minute: '2-digit', hour12: true
-            });
-        }
-    </script>
+    function updateClock() {
+        document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', {
+            hour: 'numeric', minute: '2-digit', hour12: true
+        });
+    }
+</script>
 </body>
 </html>
